@@ -2,11 +2,17 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import AdminLogin from "../views/AdminLogin.vue";
+import Login from "../views/Login.vue";
 import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
   {
     path: "/admin",
     name: "admin",
