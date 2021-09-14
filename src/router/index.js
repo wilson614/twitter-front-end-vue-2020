@@ -14,6 +14,11 @@ const routes = [
     component: Login,
   },
   {
+    path: "/",
+    name: "Home",
+    component: Home,
+  },
+  {
     path: "/admin",
     name: "admin",
     redirect: "/admin/login",
@@ -24,9 +29,9 @@ const routes = [
     component: AdminLogin,
   },
   {
-    path: "/",
-    name: "Home",
-    component: Home,
+    path: "/admin/tweets",
+    name: "admin-tweets",
+    component: () => import("../views/AdminTweets.vue")
   },
   {
     path: "*",

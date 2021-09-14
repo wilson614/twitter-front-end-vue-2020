@@ -78,8 +78,6 @@ export default {
 // layout
 .container {
   width: 1440px;
-  // display: flex;
-  // justify-content: center;
 }
 form {
   width: 540px;
