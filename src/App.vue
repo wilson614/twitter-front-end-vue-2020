@@ -1,6 +1,10 @@
 <template>
   <div id="simple-twitter">
-    <router-view />
+
+    <main role="main" class="d-flex justify-content-center">
+      <router-view />
+    </main>
+    
   </div>
 </template>
 
