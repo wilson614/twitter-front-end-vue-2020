@@ -115,7 +115,6 @@ export default {
 }
 </script>
 
-
 <style lang="scss" scoped>
 #register {
   max-width: 540px;
@@ -157,7 +156,11 @@ export default {
     padding-bottom: 0.313rem;
     margin-bottom: 2em;
     @extend %form-input-style;
-    // TODO:待確認無法顯示
+    // TODO:待確認紅線
+    &:not(:placeholder-shown):invalid {
+      border-bottom: 3px solid $input-underline-error;
+    }
+
     &:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px $input-bg inset;
       box-shadow: 0 0 0px 1000px $input-bg inset;
