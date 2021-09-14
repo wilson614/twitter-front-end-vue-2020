@@ -41,7 +41,7 @@
         <router-link to="/admin" class="link-wrap user-login"
           >註冊 Alphitter</router-link
         >
-        <span class="seperater">.</span>
+        <span class="seperater">•</span>
         <router-link to="/admin" class="link-wrap user-login"
           >後台登入</router-link
         >
@@ -164,7 +164,6 @@ form {
     color: $signin-link;
     font-size: 18px;
     font-weight: 700;
-    margin: 0 10px;
   }
 }
 </style>
