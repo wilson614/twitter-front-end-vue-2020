@@ -14,6 +14,7 @@
           type="text"
           class="form-control"
           autocomplete="username"
+          placeholder="帳號"
           required
           autofocus
         />
@@ -28,6 +29,7 @@
           type="text"
           class="form-control"
           autocomplete="username"
+          placeholder="名稱"
           required
           autofocus
         />
@@ -42,6 +44,7 @@
           type="email"
           class="form-control"
           autocomplete="email"
+          placeholder="email"
           required
         />
       </div>
@@ -54,6 +57,7 @@
           name="password"
           type="password"
           class="form-control"
+          placeholder="密碼"
           autocomplete="new-password"
           required
         />
@@ -67,6 +71,7 @@
           name="passwordCheck"
           type="password"
           class="form-control"
+          placeholder="密碼確認"
           autocomplete="new-password"
           required
         />
@@ -82,6 +87,34 @@
     </form>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      account: '',
+      name: '',
+      email: '',
+      password: '',
+      passwordCheck: '',
+    }
+  },
+  methods: {
+    handleSubmit() {
+      const data = JSON.stringify({
+        account: this.account,
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        passwordCheck: this.passwordCheck,
+      })
+      // TODO: 向後端驗證使用者登入資訊是否合法
+      console.log('data', data)
+    },
+  },
+}
+</script>
+
 
 <style lang="scss" scoped>
 #register {
@@ -124,14 +157,16 @@
     padding-bottom: 0.313rem;
     margin-bottom: 2em;
     @extend %form-input-style;
-    // TODO:待確認紅線
-    &:not(:placeholder-shown):invalid {
-      border-bottom: 3px solid $input-underline-error;
-    }
     // TODO:待確認無法顯示
     &:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px $input-bg inset;
       box-shadow: 0 0 0px 1000px $input-bg inset;
+    }
+    &::placeholder {
+      color: transparent;
+    }
+    &:not(:placeholder-shown):invalid {
+      border-bottom: 3px solid $input-underline-error;
     }
   }
 }
@@ -154,30 +189,3 @@ a {
   text-decoration-line: underline;
 }
 </style>
-
-<script>
-export default {
-  data() {
-    return {
-      account: '',
-      name: '',
-      email: '',
-      password: '',
-      passwordCheck: '',
-    }
-  },
-  methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        account: this.account,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck,
-      })
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log('data', data)
-    },
-  },
-}
-</script>
