@@ -1,7 +1,18 @@
 <template>
   <nav class="navbar">
-    <img class="register-logo" src="@/assets/svg/logo.svg" />
-    <Sidebar :routers="links" />
+    <img class="nav-logo" src="@/assets/svg/logo.svg" />
+    <div class="nav-menu">
+      <template v-for="item in navItems">
+        <router-link
+          :key="`router-${item.name}`"
+          :to="item.to"
+          class="nav-item"
+        >
+          <component :is="item.icon" class="nav-item-img" />
+          <span>{{ item.text }}</span>
+        </router-link>
+      </template>
+    </div>
     <button class="btn" type="submit">推文</button>
     <div class="nav-bottom">
       <router-link to="/signin" class="nav-bottom-item">
@@ -13,41 +24,26 @@
 </template>
 
 <script>
-import Sidebar from '@/components/Sidebar.vue'
-
-import IconHome from '@/components/icon/NavHome.vue'
-import IconProfile from '@/components/icon/NavProfile.vue'
-import IconSetting from '@/components/icon/NavSetting.vue'
 import IconLogOut from '@/components/icon/NavLogOut.vue'
 
 export default {
   components: {
     IconLogOut,
-    Sidebar,
   },
-  data() {
-    return {
-      links: [
-        {
-          name: 'index',
-          text: '首頁',
-          to: '/',
-          icon: IconHome,
-        },
-        {
-          name: 'profile',
-          text: '個人資料',
-          to: '/profile',
-          icon: IconProfile,
-        },
-        {
-          name: 'setting',
-          text: '設定',
-          to: '/setting',
-          icon: IconSetting,
-        },
-      ],
-    }
+  props: {
+    navItems: {
+      type: Array,
+      default() {
+        return [
+          {
+            name: 'index',
+            text: '首頁',
+            to: '/',
+            icon: () => import('@/components/icon/NavHome.vue'),
+          },
+        ]
+      },
+    },
   },
 }
 </script>
@@ -63,7 +59,7 @@ nav {
   height: 100vh;
 }
 
-.register-logo {
+.nav-logo {
   width: 50px;
   height: 50px;
   margin-bottom: 1.25rem;
