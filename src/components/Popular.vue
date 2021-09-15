@@ -2,16 +2,16 @@
   <div id="popular">
     <span class="popular-title">Popular</span>
     <div class="popular-user-list" v-for="user in users" :key="user.id">
-      <img
-        :src="user.avatar"
-        alt=""
-      />
+      <img :src="user.avatar" alt="userAvatar" />
       <div class="popular-user-list-ceneter">
         <p class="user-name">{{ user.name }}</p>
         <p class="user-account">{{ user.account }}</p>
       </div>
-      <button :class="['btn', isFollowed && 'btn-orange']" type="isFollowed">
-        {{ isFollowed ? '正在跟隨' : '跟隨' }}
+      <button
+        :class="['btn', user.isFollowed && 'btn-orange']"
+        type="isFollowed"
+      >
+        {{ user.isFollowed ? '正在跟隨' : '跟隨' }}
       </button>
     </div>
   </div>
@@ -26,7 +26,7 @@ const dummyData = [
     avatar: 'https://loremflickr.com/240/240/?random=86.67237989119876',
     cover: 'https://loremflickr.com/720/240/?random=26.445800377980166',
     followerCount: 0,
-    isFollowed: 0,
+    isFollowed: 1,
     isCurrentUser: 0,
   },
   {
@@ -85,7 +85,6 @@ export default {
   data() {
     return {
       users: [],
-      isFollowed: false,
     }
   },
   created() {
@@ -159,13 +158,16 @@ export default {
     flex-grow: 1;
   }
   .btn {
-    max-width: 90px;
     padding: 0.625rem 0.938rem;
     border: 1px solid $button-color;
     font-size: 15px;
     font-weight: 700;
     color: $button-color;
     border-radius: 100px;
+  }
+  .btn-orange {
+    color: $button-text;
+    background-color: $button-color;
   }
 }
 
