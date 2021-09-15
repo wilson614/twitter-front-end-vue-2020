@@ -175,14 +175,13 @@ export default {
 }
 
 .btn {
-  width: 540px;
-  height: 50px;
   border-radius: 50px;
   background-color: $button-color;
   font-size: 18px;
   font-weight: 700;
   color: $button-text;
   margin-bottom: 1.25rem;
+  padding: 0.625rem 15.75rem;
 }
 
 a {
