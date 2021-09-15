@@ -4,24 +4,7 @@
       <div class="logo">
         <img class="logo" src="../assets/svg/logo.svg" alt="" />
       </div>
-      <ul calss="nav admin-nav-lists">
-        <li class="nav admin-nav-item d-flex justify-content-center">
-          <div class="item-icon">
-            <img class="icon home-icon" src="../assets/svg/home.svg" alt="" />
-          </div>
-          <p>推文清單</p>
-        </li>
-        <li class="nav admin-nav-item d-flex justify-content-center">
-          <div class="item-icon">
-            <img
-              class="icon user-icon"
-              src="../assets/svg/nav-profile.svg"
-              alt=""
-            />
-          </div>
-          <p>使用者列表</p>
-        </li>
-      </ul>
+      <Sidebar :routers="links"/>
     </div>
     <div class="logout-bar d-flex justify-content-center">
       <div class="item-icon">
@@ -35,7 +18,32 @@
     </div>
   </div>
 </template>
-
+<script>
+import Sidebar from '@/components/Sidebar.vue'
+export default {
+  components: {
+    Sidebar
+  },
+  data() {
+    return {
+      links: [
+        {
+          name: '...',
+          text: '推文清單',
+          to: '/admin/tweets',
+          icon: () => import('@/components/icon/NavHome.vue'),
+        },
+        {
+          name: 'userlist',
+          text: '使用者列表',
+          to: '/userlist',
+          icon: () => import('@/components/icon/NavHome.vue'),
+        },
+      ],
+    }
+  },
+}
+</script>
 <style lang="scss" scoped>
 .container {
   display: flex;

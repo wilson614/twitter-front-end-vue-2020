@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <div class="navbar">
-      <NavBars />
+      <NavBars :isLogin="true" />
     </div>
     <div class="home-center">中</div>
     <div class="home-right">

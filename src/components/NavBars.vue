@@ -1,21 +1,8 @@
 <template>
   <nav class="navbar">
     <img class="register-logo" src="@/assets/svg/logo.svg" />
-    <div class="nav-menu">
-      <router-link to="/" class="nav-item">
-        <IconHome class="nav-item-img" />
-        <span>首頁</span>
-      </router-link>
-      <router-link to="/users/:userid/profile" class="nav-item">
-        <IconProfile class="nav-item-img" />
-        <span>個人資料</span>
-      </router-link>
-      <router-link to="/setting" class="nav-item">
-        <IconSetting class="nav-item-img" />
-        <span>設定</span>
-      </router-link>
-      <button class="btn" type="submit">推文</button>
-    </div>
+    <Sidebar :routers="links" />
+    <button class="btn" type="submit">推文</button>
     <div class="nav-bottom">
       <router-link to="/signin" class="nav-bottom-item">
         <IconLogOut class="nav-bottom-item-img" />
@@ -26,6 +13,8 @@
 </template>
 
 <script>
+import Sidebar from '@/components/Sidebar.vue'
+
 import IconHome from '@/components/icon/NavHome.vue'
 import IconProfile from '@/components/icon/NavProfile.vue'
 import IconSetting from '@/components/icon/NavSetting.vue'
@@ -33,10 +22,32 @@ import IconLogOut from '@/components/icon/NavLogOut.vue'
 
 export default {
   components: {
-    IconHome,
-    IconProfile,
-    IconSetting,
     IconLogOut,
+    Sidebar,
+  },
+  data() {
+    return {
+      links: [
+        {
+          name: 'index',
+          text: '首頁',
+          to: '/',
+          icon: IconHome,
+        },
+        {
+          name: 'profile',
+          text: '個人資料',
+          to: '/profile',
+          icon: IconProfile,
+        },
+        {
+          name: 'setting',
+          text: '設定',
+          to: '/setting',
+          icon: IconSetting,
+        },
+      ],
+    }
   },
 }
 </script>
