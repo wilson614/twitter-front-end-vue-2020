@@ -13,7 +13,7 @@
         </router-link>
       </template>
     </div>
-    <button class="btn" type="submit">推文</button>
+    <button class="btn" type="submit" v-if="!isAdmin">推文</button>
     <div class="nav-bottom">
       <router-link to="/signin" class="nav-bottom-item">
         <IconLogOut class="nav-bottom-item-img" />
@@ -43,6 +43,10 @@ export default {
           },
         ]
       },
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
   },
 }

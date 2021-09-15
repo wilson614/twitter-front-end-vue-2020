@@ -53,7 +53,7 @@ export default {
 #home {
   width: 100%;
   display: flex;
-  max-width: 1440px;
+  max-width: 1245px;
 }
 
 .home-center {
