@@ -77,8 +77,9 @@
             required
           />
         </div>
-        <!-- TODO:完成儲存按鈕靠右 -->
-        <button class="btn" type="submit">儲存</button>
+        <div class="setting-block">
+          <button class="btn" type="submit">儲存</button>
+        </div>
       </form>
     </div>
   </div>
@@ -219,6 +220,12 @@ export default {
       border-bottom: 3px solid $input-underline-error;
     }
   }
+}
+
+.setting-block {
+  width: 40.125rem;
+  display: inline-flex;
+  justify-content: flex-end;
 }
 
 .btn {
