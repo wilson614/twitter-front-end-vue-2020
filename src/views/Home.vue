@@ -33,6 +33,4 @@ export default {
   flex-grow: 1;
 }
 
-.home-right {
-}
 </style>

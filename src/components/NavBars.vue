@@ -85,10 +85,9 @@ nav {
 }
 
 .btn {
-  width: 210px;
-  height: 38px;
   border-radius: 100px;
   margin: 0.625rem 0;
+  padding: 0.625rem 5.438rem;
   background-color: $button-color;
   font-size: 18px;
   font-weight: 700;
