@@ -102,6 +102,10 @@ body {
   
 }
 
+.router-link-active {
+  color: $nav-avtive-color !important;
+}
+
 .d-none {
   display: none;
 }
