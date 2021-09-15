@@ -11,7 +11,7 @@
         <p class="user-account">{{ user.account }}</p>
       </div>
       <button :class="['btn', isFollowed && 'btn-orange']" type="isFollowed">
-        {{ isFollowed ? '正在跟隨' + '123' : '跟隨' }}
+        {{ isFollowed ? '正在跟隨' : '跟隨' }}
       </button>
     </div>
   </div>
