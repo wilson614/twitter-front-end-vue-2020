@@ -4,7 +4,8 @@
       <NavBars :navItems="navItems" />
     </div>
     <div class="setting-right">
-      <form @submit.prevent.stop="handleSubmit">
+      <NavTabs />
+      <form class="setting-form" @submit.stop.prevent="handleSubmit">
         <div class="form-label-group">
           <label for="account">帳號</label>
           <input
@@ -85,10 +86,23 @@
 
 <script>
 import NavBars from '../components/NavBars.vue'
+import NavTabs from '../components/NavTabs.vue'
+
+const dummyUser = {
+  currentUser: {
+    id: 1,
+    name: '管理者',
+    account: '@root',
+    email: 'root@example.com',
+    image: 'https://i.pravatar.cc/300',
+  },
+  isAuthenticated: true,
+}
 
 export default {
   components: {
     NavBars,
+    NavTabs,
   },
   data() {
     return {
@@ -113,6 +127,7 @@ export default {
         },
       ],
       user: {
+        id: 0,
         account: '',
         name: '',
         email: '',
@@ -121,17 +136,26 @@ export default {
       },
     }
   },
+  created() {
+    this.fetchUser()
+  },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        account: this.account,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordCheck: this.passwordCheck,
-      })
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log('data', data)
+    fetchUser() {
+      const { currentUser } = dummyUser
+      const { id, account, name, email, password } = currentUser
+      this.id = id
+      this.account = account
+      this.name = name
+      this.email = email
+      this.password = password
+    },
+    handleSubmit(e) {
+      const form = e.target
+      const formData = new FormData(form)
+      // TODO: 透過 API 向伺服器更新使用者
+      for (let [name, value] of formData.entries()) {
+        console.log(name + ': ' + value)
+      }
     },
   },
 }
@@ -146,9 +170,13 @@ export default {
 
 .setting-right {
   margin-left: 2.5rem;
-  padding: 1.875rem 0 0 1rem;
+  // padding: 0 0 0 1rem;
   flex-grow: 1;
   border-left: 1px solid $popular-border;
+}
+
+.setting-form {
+  padding: 1.875rem 0 0 1rem;
 }
 
 .form-label-group {
@@ -172,7 +200,7 @@ export default {
     padding-bottom: 0.25rem;
     margin-bottom: 2em;
     color: $main-text;
-        font-size: 19px;
+    font-size: 19px;
     font-weight: 500;
     @extend %form-input-style;
     // TODO:待確認紅線
