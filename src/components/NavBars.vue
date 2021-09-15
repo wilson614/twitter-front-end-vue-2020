@@ -14,7 +14,7 @@
         <IconSetting class="nav-item-img" />
         <span>設定</span>
       </router-link>
-      <button class="btn" type="tweets">推文</button>
+      <button class="btn" type="submit">推文</button>
     </div>
     <div class="nav-bottom">
       <router-link to="/signin" class="nav-bottom-item">
@@ -45,7 +45,6 @@ export default {
 .navbar {
   display: flex;
   flex-direction: column;
-  margin-left: 7.063rem;
 }
 
 nav {

@@ -4,7 +4,7 @@
       <NavBars />
     </div>
     <div class="home-center">中</div>
-    <div class="nome-right">
+    <div class="home-right">
       <Popular />
     </div>
   </div>
@@ -26,14 +26,13 @@ export default {
 #home {
   width: 100%;
   display: flex;
+  max-width: 1440px;
 }
 
 .home-center {
   flex-grow: 1;
 }
 
-.nome-right {
-  max-width: 350px;
-  border: 1px solid black;
+.home-right {
 }
 </style>

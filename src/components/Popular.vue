@@ -3,52 +3,98 @@
     <span class="popular-title">Popular</span>
     <div class="popular-user-list" v-for="user in users" :key="user.id">
       <img
-        src="https://lh3.googleusercontent.com/a-/AOh14GjafILfVnBhDBrtDk_r4kLz4q4tpPhwo7pPWwGo=s96-c"
+        :src="user.avatar"
         alt=""
       />
       <div class="popular-user-list-ceneter">
-        <p class="user-name">McDonald's</p>
-        <p class="user-account">@McDonalds</p>
+        <p class="user-name">{{ user.name }}</p>
+        <p class="user-account">{{ user.account }}</p>
       </div>
-      <button
-        v-if="user.isFollowed"
-        @click.stop.prevent="addFollowed(user.id)"
-        class="btn"
-        type="isFollowed"
-      >
-        跟隨
-      </button>
-      <button
-        v-else
-        @click.stop.prevent="deleteFollowed(user.id)"
-        class="btn btn-followed"
-        type="isFollowed"
-      >
-        正在跟隨
+      <button :class="['btn', isFollowed && 'btn-orange']" type="isFollowed">
+        {{ isFollowed ? '正在跟隨' + '123' : '跟隨' }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
+const dummyData = [
+  {
+    id: 1,
+    name: 'root',
+    account: '@root',
+    avatar: 'https://loremflickr.com/240/240/?random=86.67237989119876',
+    cover: 'https://loremflickr.com/720/240/?random=26.445800377980166',
+    followerCount: 0,
+    isFollowed: 0,
+    isCurrentUser: 0,
+  },
+  {
+    id: 2,
+    name: 'User11',
+    account: '@user1',
+    avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
+    cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
+    followerCount: 0,
+    isFollowed: 0,
+    isCurrentUser: 0,
+  },
+  {
+    id: 3,
+    name: 'user2',
+    account: '@user2',
+    avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
+    cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
+    followerCount: 0,
+    isFollowed: 0,
+    isCurrentUser: 1,
+  },
+  {
+    id: 4,
+    name: 'user3',
+    account: '@user3',
+    avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
+    cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
+    followerCount: 0,
+    isFollowed: 0,
+    isCurrentUser: 0,
+  },
+  {
+    id: 5,
+    name: 'user4',
+    account: '@user4',
+    avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
+    cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
+    followerCount: 0,
+    isFollowed: 0,
+    isCurrentUser: 0,
+  },
+  {
+    id: 6,
+    name: 'user5',
+    account: '@user5',
+    avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
+    cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
+    followerCount: 0,
+    isFollowed: 0,
+    isCurrentUser: 0,
+  },
+]
 
-// const dummyData = {
-
-// }
-
-// export default {
-//   data() {
-//     return {
-//       users: [],
-//     }
-//   },
-//   created() {
-//     this.fetchTopUsers()
-//   },
-//   methods: {
-//     fetchTopUsers() {
-//       this.users = dummyData.users
-//     },
+export default {
+  data() {
+    return {
+      users: [],
+      isFollowed: false,
+    }
+  },
+  created() {
+    this.fetchTopUsers()
+  },
+  methods: {
+    fetchTopUsers() {
+      this.users = dummyData
+    },
     // addFollowed(userId) {
     //   this.users =  this.users
     //     .map((user) => {
@@ -77,8 +123,8 @@
     //     })
     //     .sort((a, b) => b.FollowedCount - a.FollowedCount)
     // },
-//   },
-// }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -86,7 +132,6 @@
   width: 350px;
   height: 756px;
   margin-top: 0.938rem;
-  margin-right: 5.125rem;
   border-radius: 14px;
   background-color: $popular-bg;
 }
@@ -116,7 +161,7 @@
   .btn {
     // width: 60px;
     max-width: 90px;
-    height: 35px;
+    // height: 35px;
     padding: 0.625rem 0.938rem;
     border: 1px solid $button-color;
     font-size: 15px;
