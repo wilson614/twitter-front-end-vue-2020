@@ -159,9 +159,7 @@ export default {
     flex-grow: 1;
   }
   .btn {
-    // width: 60px;
     max-width: 90px;
-    // height: 35px;
     padding: 0.625rem 0.938rem;
     border: 1px solid $button-color;
     font-size: 15px;
