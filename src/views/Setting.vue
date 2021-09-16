@@ -173,7 +173,6 @@ export default {
     position: absolute;
     left: 0.625rem;
     top: 0.313rem;
-    // padding-bottom: 2em;
     color: $input-placeholder;
     font-size: 15px;
     font-weight: 500;
@@ -181,14 +180,11 @@ export default {
   }
   input {
     width: 40.125rem;
-    height: 3.25rem;
+    height: 3.375rem;
     border-radius: 4px;
     background-color: $input-bg;
-    // TODO:待調整統一 padding 樣式
-    padding: 0.625rem;
-    padding-top: 1.25rem;
-    padding-bottom: 0.25rem;
-    margin-bottom: 2em;
+    padding: 1.25rem 0 0.25rem 0.625rem;
+    margin-bottom: 1.875rem;
     color: $main-text;
     font-size: 19px;
     font-weight: 500;
