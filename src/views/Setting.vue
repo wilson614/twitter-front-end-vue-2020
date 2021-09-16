@@ -4,8 +4,7 @@
       <NavBars :navItems="navItems" />
     </div>
     <div class="setting-right">
-      <!-- <NavTabs :tabItems="tabItems"/> -->
-      <NavTabs :user="user" />
+      <NavTabs plainText="帳戶設定" />
       <form class="setting-form" @submit.stop.prevent="handleSubmit">
         <div class="form-label-group">
           <label for="account">帳號</label>
@@ -129,18 +128,6 @@ export default {
         },
       ],
       user: null,
-      tabItems: [
-        {
-          name: 'setting',
-          text: '帳戶設定',
-          to: '/setting',
-        },
-        {
-          name: 'adminUserList',
-          text: '使用者列表',
-          to: '/admin/users',
-        },
-      ],
     }
   },
   created() {
@@ -149,12 +136,6 @@ export default {
   methods: {
     fetchUser() {
       this.user = dummyUser.currentUser
-      // const { id, account, name, email, password } = currentUser
-      // this.user.id = id
-      // this.user.account = account
-      // this.user.name = name
-      // this.user.email = email
-      // this.user.password = password
     },
     handleSubmit(e) {
       const form = e.target

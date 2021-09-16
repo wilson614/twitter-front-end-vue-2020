@@ -1,16 +1,6 @@
 <template>
   <div class="tweet-list-title">
-    <i v-if="isbackArrow">Arrow</i>
-    <!-- <template v-for="item in tabItems">
-      <h2
-        v-if="item.to === $route.path"
-        class="list-title"
-        :key="item.name"
-        :to="item.to"
-      >
-        {{ item.text }}
-      </h2>
-    </template> -->
+    <!-- <i v-if="isbackArrow">Arrow</i> -->
     <h2 class="list-title">
       <template v-if="plainText">
         {{ plainText }}
@@ -48,7 +38,7 @@ export default {
         }
       },
     },
-    isbackArrow: Boolean,
+    // isbackArrow: Boolean,
   },
 }
 </script>
