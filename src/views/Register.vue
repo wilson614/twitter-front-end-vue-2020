@@ -123,15 +123,16 @@ export default {
 
 .register-top {
   .register-logo {
-    width: 50px;
-    height: 50px;
-    margin: 60px 0 30px 0;
+    width: 40px;
+    height: 40px;
+    padding: 0.313rem;
+    margin: 3.75rem 0 1.25rem 0;
   }
   h1 {
     font-size: 23px;
     font-weight: 700;
     line-height: 33px;
-    margin-bottom: 20px;
+    margin-bottom: 2.5rem;
   }
 }
 
@@ -141,7 +142,6 @@ export default {
     position: absolute;
     left: 10px;
     top: 5px;
-    padding-bottom: 2em;
     color: $input-placeholder;
     font-size: 15px;
     font-weight: 500;
@@ -149,12 +149,12 @@ export default {
   }
   input {
     width: 540px;
-    height: 50px;
+    height: 54px;
     border-radius: 4px;
     background-color: $input-bg;
-    padding-top: 1.25rem;
-    padding-bottom: 0.313rem;
-    margin-bottom: 2em;
+    padding: 1.25rem 0 0.313rem 0.625rem;
+    margin-bottom: 1.875rem;
+    font-size: 19px;
     @extend %form-input-style;
     // TODO:待確認紅線
     &:not(:placeholder-shown):invalid {
@@ -180,7 +180,7 @@ export default {
   font-size: 18px;
   font-weight: 700;
   color: $button-text;
-  margin-bottom: 1.25rem;
+  margin: 0.625rem 0 1.25rem 0;
   padding: 0.625rem 15.75rem;
 }
 
