@@ -12,7 +12,6 @@
       >
         <AdminTweetList
           :initial-tweets="tweets"
-          @after-delete-comment="afterDeleteComment"
         />
       </section>
     </div>
@@ -1531,10 +1530,6 @@ export default {
   methods: {
     fetchTweets() {
       this.tweets = dummyData
-    },
-    afterDeleteComment(tweetId) {
-      // 以 filter 保留未被選擇的 comment.id
-      this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
     },
   },
 }

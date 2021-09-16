@@ -51,7 +51,7 @@
               v-if="currentUser.isAdmin"
               type="button"
               class="btn btn-delete"
-              @click.stop.prevent="handleDeleteButtonClick(tweet.id)"
+              @click.stop.prevent="deleteTweet(tweet.id)"
             >
               <img src="../assets/svg/admin-X.svg" alt="" />
             </button>
@@ -119,7 +119,7 @@ export default {
         this.busy = false;
       }, 500);
     },
-    handleDeleteButtonClick (tweetId) {
+    deleteTweet(tweetId) {
       // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
       // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
       //this.$emit('after-delete-comment', tweetId)
