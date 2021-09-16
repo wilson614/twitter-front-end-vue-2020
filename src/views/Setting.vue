@@ -153,7 +153,10 @@ export default {
 #setting {
   width: 100%;
   display: flex;
-  max-width: 1245px;
+}
+
+.navbar {
+  margin-left: 6.438rem;
 }
 
 .setting-right {
