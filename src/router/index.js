@@ -24,6 +24,11 @@ const routes = [
     redirect: '/admin/login',
   },
   {
+    path: '/setting',
+    name: 'setting',
+    component: () => import('../views/Setting.vue'),
+  },
+  {
     path: '/admin/login',
     name: 'admin-login',
     component: AdminLogin,

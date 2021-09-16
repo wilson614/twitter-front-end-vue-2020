@@ -18,68 +18,60 @@
 </template>
 
 <script>
-const dummyData = [
-  {
-    id: 1,
-    name: 'root',
-    account: '@root',
-    avatar: 'https://loremflickr.com/240/240/?random=86.67237989119876',
-    cover: 'https://loremflickr.com/720/240/?random=26.445800377980166',
-    followerCount: 0,
-    isFollowed: 1,
-    isCurrentUser: 0,
-  },
-  {
-    id: 2,
-    name: 'User11',
-    account: '@user1',
-    avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
-    cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
-    followerCount: 0,
-    isFollowed: 0,
-    isCurrentUser: 0,
-  },
-  {
-    id: 3,
-    name: 'user2',
-    account: '@user2',
-    avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
-    cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
-    followerCount: 0,
-    isFollowed: 0,
-    isCurrentUser: 1,
-  },
-  {
-    id: 4,
-    name: 'user3',
-    account: '@user3',
-    avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
-    cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
-    followerCount: 0,
-    isFollowed: 0,
-    isCurrentUser: 0,
-  },
-  {
-    id: 5,
-    name: 'user4',
-    account: '@user4',
-    avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
-    cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
-    followerCount: 0,
-    isFollowed: 0,
-    isCurrentUser: 0,
-  },
-  {
-    id: 6,
-    name: 'user5',
-    account: '@user5',
-    avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
-    cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
-    followerCount: 0,
-    isFollowed: 0,
-    isCurrentUser: 0,
-  },
-]
+const dummyData = {
+    "topUsers": [
+        {
+            "id": 2,
+            "name": "User11",
+            "account": "@user1",
+            "avatar": "https://loremflickr.com/240/240/?random=83.43458862610815",
+            "cover": "https://loremflickr.com/720/240/?random=29.278597549456762",
+            "followerCount": 8,
+            "isFollowed": 0,
+            "isCurrentUser": 0
+        },
+        {
+            "id": 3,
+            "name": "user2",
+            "account": "@user2",
+            "avatar": "https://loremflickr.com/240/240/?random=24.364838375146135",
+            "cover": "https://loremflickr.com/720/240/?random=21.042648290680876",
+            "followerCount": 3,
+            "isFollowed": 0,
+            "isCurrentUser": 1
+        },
+        {
+            "id": 5,
+            "name": "user4",
+            "account": "@user4",
+            "avatar": "https://loremflickr.com/240/240/?random=41.48021622303335",
+            "cover": "https://loremflickr.com/720/240/?random=46.87070242729114",
+            "followerCount": 1,
+            "isFollowed": 0,
+            "isCurrentUser": 0
+        },
+        {
+            "id": 4,
+            "name": "user3",
+            "account": "@user3",
+            "avatar": "https://loremflickr.com/240/240/?random=71.38538073169198",
+            "cover": "https://loremflickr.com/720/240/?random=28.747055278834033",
+            "followerCount": 0,
+            "isFollowed": 0,
+            "isCurrentUser": 0
+        },
+        {
+            "id": 6,
+            "name": "user5",
+            "account": "@user5",
+            "avatar": "https://loremflickr.com/240/240/?random=37.30662851245823",
+            "cover": "https://loremflickr.com/720/240/?random=94.35193490220071",
+            "followerCount": 0,
+            "isFollowed": 0,
+            "isCurrentUser": 0
+        }
+    ]
+}
 
 export default {
   data() {
@@ -92,7 +84,7 @@ export default {
   },
   methods: {
     fetchTopUsers() {
-      this.users = dummyData
+      this.users = dummyData.topUsers
     },
     // addFollowed(userId) {
     //   this.users =  this.users
