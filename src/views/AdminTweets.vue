@@ -11,7 +11,7 @@
         class="content main-content d-flex justify-content-center scrollbar"
       >
         <AdminTweetList
-          :tweets="tweets"
+          :initial-tweets="tweets"
           @after-delete-comment="afterDeleteComment"
         />
       </section>
@@ -1555,6 +1555,7 @@ export default {
   }
 }
 .admin-tweets-container {
+  width: 1245px;
   height: 100vh;
 }
 .content-wrapper {
