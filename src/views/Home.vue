@@ -3,7 +3,10 @@
     <div class="navbar">
       <NavBars :navItems="navItems" />
     </div>
-    <div class="home-center">中</div>
+    <div class="home-center">
+      <NavTabs plainText="首頁" />
+      <div class="home-center-tweet"></div>
+      </div>
     <div class="home-right">
       <Popular />
     </div>
@@ -16,10 +19,12 @@ import IconHome from '@/components/icon/NavHome.vue'
 import IconProfile from '@/components/icon/NavProfile.vue'
 import IconSetting from '@/components/icon/NavSetting.vue'
 import Popular from './../components/Popular.vue'
+import NavTabs from '../components/NavTabs.vue'
 
 export default {
   components: {
     NavBars,
+    NavTabs,
     Popular,
   },
   data() {
@@ -57,6 +62,16 @@ export default {
 }
 
 .home-center {
+  margin: 0 2.5rem;
   flex-grow: 1;
+  border-left: 1px solid $popular-border;
+  border-right: 1px solid $popular-border;
+}
+
+.home-center-tweet {
+  width: 600px;
+  height: 120px;
+  background-color: black;
+  border-bottom: 0.625rem solid $popular-border;
 }
 </style>
