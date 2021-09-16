@@ -14,12 +14,12 @@
             {{
               more[tweet.id]
                 ? tweet.description
-                : tweet.description.slice(0, 80)
+                : tweet.description.slice(0, 150)
             }}
           </span>
           <a
             class="read-more-less"
-            v-if="tweet.description.length > 100"
+            v-if="tweet.description.length > 150"
             @click="readMore(tweet.id)"
             href="#"
             >{{ more[tweet.id] ? 'less' : '...more' }}</a
@@ -116,7 +116,7 @@ export default {
 }
 
 .user-tweet {
-  margin-bottom: 0.625rem;
+  margin: 0.375rem 0 0.625rem;
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
