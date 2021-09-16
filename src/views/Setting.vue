@@ -4,13 +4,14 @@
       <NavBars :navItems="navItems" />
     </div>
     <div class="setting-right">
-      <NavTabs />
+      <!-- <NavTabs :tabItems="tabItems"/> -->
+      <NavTabs :user="user"/>
       <form class="setting-form" @submit.stop.prevent="handleSubmit">
         <div class="form-label-group">
           <label for="account">帳號</label>
           <input
             id="account"
-            v-model="account"
+            v-model="user.account"
             name="account"
             type="text"
             class="form-control"
@@ -25,7 +26,7 @@
           <label for="name">名稱</label>
           <input
             id="name"
-            v-model="name"
+            v-model="user.name"
             name="name"
             type="text"
             class="form-control"
@@ -40,7 +41,7 @@
           <label for="email">Email</label>
           <input
             id="email"
-            v-model="email"
+            v-model="user.email"
             name="email"
             type="email"
             class="form-control"
@@ -54,7 +55,7 @@
           <label for="password">密碼</label>
           <input
             id="password"
-            v-model="password"
+            v-model="user.password"
             name="password"
             type="password"
             class="form-control"
@@ -68,7 +69,7 @@
           <label for="password-check">密碼確認</label>
           <input
             id="password-check"
-            v-model="passwordCheck"
+            v-model="user.passwordCheck"
             name="passwordCheck"
             type="password"
             class="form-control"
@@ -127,14 +128,19 @@ export default {
           icon: () => import('@/components/icon/NavSetting.vue'),
         },
       ],
-      user: {
-        id: 0,
-        account: '',
-        name: '',
-        email: '',
-        password: '',
-        passwordCheck: '',
-      },
+      user: null,
+      tabItems: [
+        {
+          name: 'setting',
+          text: '帳戶設定',
+          to: '/setting',
+        },
+        {
+          name: 'adminUserList',
+          text: '使用者列表',
+          to: '/admin/users',
+        },
+      ],
     }
   },
   created() {
@@ -142,13 +148,13 @@ export default {
   },
   methods: {
     fetchUser() {
-      const { currentUser } = dummyUser
-      const { id, account, name, email, password } = currentUser
-      this.id = id
-      this.account = account
-      this.name = name
-      this.email = email
-      this.password = password
+      this.user = dummyUser.currentUser
+      // const { id, account, name, email, password } = currentUser
+      // this.user.id = id
+      // this.user.account = account
+      // this.user.name = name
+      // this.user.email = email
+      // this.user.password = password
     },
     handleSubmit(e) {
       const form = e.target
@@ -186,7 +192,7 @@ export default {
     position: absolute;
     left: 0.625rem;
     top: 0.313rem;
-    padding-bottom: 2em;
+    // padding-bottom: 2em;
     color: $input-placeholder;
     font-size: 15px;
     font-weight: 500;
@@ -197,6 +203,8 @@ export default {
     height: 3.25rem;
     border-radius: 4px;
     background-color: $input-bg;
+    // TODO:待調整統一 padding 樣式
+    padding: 0.625rem;
     padding-top: 1.25rem;
     padding-bottom: 0.25rem;
     margin-bottom: 2em;
