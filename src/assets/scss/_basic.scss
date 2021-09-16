@@ -82,7 +82,7 @@ $spacers: (
   background-color: $input-bg;
   font-size: 15px;
   font-weight: 500;
-  padding: 1em;
+  font-family: 'Noto Sans TC';
   width:60%;
   &:hover, &:focus {
     border-bottom: 3px solid $input-underline-hover-focus;
