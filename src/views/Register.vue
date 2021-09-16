@@ -67,8 +67,8 @@
         <label for="password-check">密碼確認</label>
         <input
           id="password-check"
-          v-model="passwordCheck"
-          name="passwordCheck"
+          v-model="checkPassword"
+          name="checkPassword"
           type="password"
           class="form-control"
           placeholder="密碼確認"
@@ -96,7 +96,7 @@ export default {
       name: '',
       email: '',
       password: '',
-      passwordCheck: '',
+      checkPassword: '',
     }
   },
   methods: {
@@ -106,7 +106,7 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        passwordCheck: this.passwordCheck,
+        checkPassword: this.checkPassword,
       })
       // TODO: 向後端驗證使用者登入資訊是否合法
       console.log('data', data)

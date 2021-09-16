@@ -5,7 +5,7 @@
     </div>
     <div class="setting-right">
       <!-- <NavTabs :tabItems="tabItems"/> -->
-      <NavTabs :user="user"/>
+      <NavTabs :user="user" />
       <form class="setting-form" @submit.stop.prevent="handleSubmit">
         <div class="form-label-group">
           <label for="account">帳號</label>
@@ -69,8 +69,8 @@
           <label for="password-check">密碼確認</label>
           <input
             id="password-check"
-            v-model="user.passwordCheck"
-            name="passwordCheck"
+            v-model="user.checkPassword"
+            name="checkPassword"
             type="password"
             class="form-control"
             placeholder="密碼確認"
