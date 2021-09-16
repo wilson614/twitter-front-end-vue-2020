@@ -1,7 +1,6 @@
 <template>
   <div class="container admin-users-container d-flex justify-content-center">
     <section class="navbar admin-navbar d-flex justify-content-center">
-      <AdminNavbar />
     </section>
     <div class="content-wrapper">
       <section class="navtabs admin-navtabs">
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-import AdminNavbar from "./../components/AdminNavbar.vue";
 import AdminNavtabs from "./../components/AdminNavtabs.vue";
 import AdminUserList from "./../components/AdminUserList.vue";
 
@@ -284,7 +282,6 @@ const dummyData = [
 
 export default {
   components: {
-    AdminNavbar,
     AdminNavtabs,
     AdminUserList,
   },
