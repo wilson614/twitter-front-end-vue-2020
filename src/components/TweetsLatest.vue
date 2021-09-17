@@ -15,19 +15,8 @@
         </div>
         <div class="user-tweet">
           <span class="tweet-text">
-            {{
-              more[tweet.id]
-                ? tweet.description
-                : tweet.description.slice(0, 150)
-            }}
+            {{ stringLimit(tweet.description) }}
           </span>
-          <a
-            class="read-more-less"
-            v-if="tweet.description.length > 150"
-            @click="readMore(tweet.id)"
-            href="#"
-            >{{ more[tweet.id] ? 'less' : '...more' }}</a
-          >
         </div>
         <div class="btn btn-control">
           <div class="btn-reply">
@@ -89,6 +78,9 @@ export default {
         }
         this.busy = false
       }, 500)
+    },
+    stringLimit(text) {
+      return text.length > 139 ? text.slice(0, 139) + '...' : text
     },
   },
 }
