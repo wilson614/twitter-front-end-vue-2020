@@ -79,8 +79,8 @@ export default {
         this.busy = false
       }, 500)
     },
-    stringLimit(text) {
-      return text.length > 139 ? text.slice(0, 139) + '...' : text
+    stringLimit(description) {
+      return description.length > 139 ? description.slice(0, 139) + '...' : description
     },
   },
 }
