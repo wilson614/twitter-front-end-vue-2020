@@ -169,7 +169,6 @@ export default {
     font-size: 19px;
     font-weight: 500;
     @extend %form-input-style;
-    // TODO:待確認紅線
     &:not(:placeholder-shown):invalid {
       border-bottom: 3px solid $input-underline-error;
     }
