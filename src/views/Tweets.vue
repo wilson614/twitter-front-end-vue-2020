@@ -2,7 +2,7 @@
   <div id="home">
     <div class="navbar">
       <h1>{{ $route.params.id }}</h1>
-      <NavBars/>
+      <NavBars page='normal'/>
     </div>
     <div class="home-center">
       <div class="home-center-tweet"></div>
