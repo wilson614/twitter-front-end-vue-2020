@@ -19,12 +19,13 @@
           </span>
         </div>
         <div class="btn btn-control">
-          <div class="btn-reply">
+          <router-link class="btn-reply" to="/setting">
             <TweetReply class="btn-icon" />
             <span>{{ tweet.replyCount }}</span>
-          </div>
+          </router-link>
           <div class="btn-like">
             <TweetLke class="btn-icon" />
+            <!-- :class="['btn-icon', user.isLiked && 'btn-orange']" -->
             <span>{{ tweet.likeCount }}</span>
           </div>
         </div>
