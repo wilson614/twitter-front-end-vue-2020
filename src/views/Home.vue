@@ -30,7 +30,7 @@ const dummyData = [
       'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.',
     likeCount: 0,
     replyCount: 3,
-    createdAt: '2021-09-14T13:33:32.000Z',
+    createdAt: '2021-09-02T03:33:32.000Z',
     updatedAt: '2021-09-14T13:33:32.000Z',
     User: {
       id: 2,

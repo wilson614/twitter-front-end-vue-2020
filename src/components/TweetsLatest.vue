@@ -5,9 +5,13 @@
       <div class="tweet-list-content">
         <div class="user-details">
           <span class="user-name">{{ tweet.name }}</span>
-          <span class="user-detail"
-            >{{ tweet.account }}•{{ tweet.createdAt | fromNow }}</span
-          >
+          <span class="user-detail">
+            {{ tweet.account }}•{{
+              isToday(tweet.createdAt)
+                ? fromNow(utcOffset(tweet.createdAt))
+                : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+            }}
+          </span>
         </div>
         <div class="user-tweet">
           <span class="tweet-text">
@@ -27,11 +31,11 @@
         </div>
         <div class="btn btn-control">
           <div class="btn-reply">
-            <TweetReply class="btn-icon"/>
+            <TweetReply class="btn-icon" />
             <span>{{ tweet.replyCount }}</span>
           </div>
           <div class="btn-like">
-            <TweetLke class="btn-icon"/>
+            <TweetLke class="btn-icon" />
             <span>{{ tweet.likeCount }}</span>
           </div>
         </div>
