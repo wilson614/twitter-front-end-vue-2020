@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <div class="navbar">
-      <NavBars :navItems="navItems" />
+      <NavBars/>
     </div>
     <div class="home-center">
       <NavTabs plainText="首頁" />
@@ -64,26 +64,28 @@ export default {
   },
   data() {
     return {
-      navItems: [
-        {
-          name: 'home',
-          text: '首頁',
-          to: '/',
-          icon: () => import('@/components/icon/NavHome.vue'),
-        },
-        {
-          name: 'profile',
-          text: '個人資料',
-          to: '/users/:userid/profile',
-          icon: () => import('@/components/icon/NavProfile.vue'),
-        },
-        {
-          name: 'setting',
-          text: '設定',
-          to: '/setting',
-          icon: () => import('@/components/icon/NavSetting.vue'),
-        },
-      ],
+      // navItems: [
+      //   {
+      //     name: 'home',
+      //     text: '首頁',
+      //     to: '/',
+      //     isActive: ['tweet-id'],
+      //     icon: () => import('@/components/icon/NavHome.vue'),
+      //   },
+      //   {
+      //     name: 'profile',
+      //     text: '個人資料',
+      //     to: '/users/:userid/profile',
+      //     icon: () => import('@/components/icon/NavProfile.vue'),
+      //   },
+      //   {
+      //     name: 'setting',
+      //     text: '設定',
+      //     to: '/setting',
+      //     isActive: [],
+      //     icon: () => import('@/components/icon/NavSetting.vue'),
+      //   },
+      // ],
       tweets: [],
     }
   },

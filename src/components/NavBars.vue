@@ -2,11 +2,12 @@
   <nav class="navbar">
     <img class="nav-logo" src="@/assets/svg/logo.svg" />
     <div class="nav-menu">
-      <template v-for="item in navItems">
+      <template v-for="item in navLinks">
         <router-link
           :key="`router-${item.name}`"
           :to="item.to"
           class="nav-item"
+          :class="[item.isActive.includes($route.name) && 'router-link-exact-active']"
         >
           <component :is="item.icon" class="nav-item-img" />
           <span>{{ item.text }}</span>
@@ -31,22 +32,71 @@ export default {
     IconLogOut,
   },
   props: {
-    navItems: {
-      type: Array,
-      default() {
-        return [
-          {
-            name: 'index',
-            text: '首頁',
-            to: '/',
-            icon: () => import('@/components/icon/NavHome.vue'),
-          },
-        ]
-      },
-    },
+    page: String,
+    // navItems: {
+    //   type: Array,
+    //   default() {
+    //     return [
+    //       {
+    //         name: 'index',
+    //         text: '首頁',
+    //         to: '/',
+    //         icon: () => import('@/components/icon/NavHome.vue'),
+    //       },
+    //     ]
+    //   },
+    // },
     isAdmin: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    navLinks() {
+      if ( !this.page || this.page === 'normal') {
+        return [
+          {
+            name: 'home',
+            text: '首頁',
+            to: '/',
+            isActive: ['tweet-id'],
+            icon: () => import('@/components/icon/NavHome.vue'),
+          },
+          {
+            name: 'profile',
+            text: '個人資料',
+            to: '/users/:userid/profile',
+            isActive: [],
+            icon: () => import('@/components/icon/NavProfile.vue'),
+          },
+          {
+            name: 'setting',
+            text: '設定',
+            to: '/setting',
+            isActive: [],
+            icon: () => import('@/components/icon/NavSetting.vue'),
+          },
+        ]
+      }
+      if ( this.page === 'admin') {
+        return [
+          {
+            name: 'adminTweetsList',
+            text: '推文清單',
+            to: '/admin/tweets',
+            isActive: [],
+            icon: () => import('@/components/icon/NavHome.vue'),
+          },
+          {
+            name: 'adminUserList',
+            text: '使用者列表',
+            to: '/admin/users',
+            isActive: [],
+            icon: () => import('@/components/icon/NavProfile.vue'),
+          },
+        ]
+      }
+      return []
     },
   },
 }
