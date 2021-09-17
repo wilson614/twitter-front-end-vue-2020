@@ -1,6 +1,8 @@
 <template>
   <div class="tweet-list-title">
-    <!-- <i v-if="isbackArrow">Arrow</i> -->
+    <i class="fas fa-arrow-left" v-if="isbackArrow">←</i>
+    <!-- <font-awesome-icon icon="spinner" size="xs" v-if="isbackArrow"/> -->
+    <i class="fas fa-camera" v-if="isbackArrow"></i>
     <h2 class="list-title">
       <template v-if="plainText">
         {{ plainText }}
@@ -38,7 +40,7 @@ export default {
         }
       },
     },
-    // isbackArrow: Boolean,
+    isbackArrow: Boolean,
   },
 }
 </script>
