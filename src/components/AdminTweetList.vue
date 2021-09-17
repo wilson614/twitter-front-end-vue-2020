@@ -115,12 +115,12 @@ export default {
         this.busy = false;
       }, 1000);
     },
-    handleDeleteButtonClick (tweetId) {
-      console.log('handleDeleteButtonClick', tweetId)
+    handleDeleteButtonClick(tweetId) {
+      console.log("handleDeleteButtonClick", tweetId);
       // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
       // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
-      this.$emit('after-delete-comment', tweetId)
-    }
+      this.$emit("after-delete-comment", tweetId);
+    },
   },
 };
 </script>
@@ -141,9 +141,7 @@ export default {
 }
 
 .user-avatar {
-  // border: 1px solid red;
   display: flex;
-  // align-items: center;
   height: 100%;
   .avatar {
     width: 50px;
