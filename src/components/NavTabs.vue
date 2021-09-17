@@ -1,8 +1,9 @@
 <template>
   <div class="tweet-list-title">
-    <i class="fas fa-arrow-left" v-if="isbackArrow">←</i>
+    <router-link :to="{ name: 'Home' }">
+      <i class="fas fa-arrow-left arrow" v-if="isbackArrow"></i>
+    </router-link>
     <!-- <font-awesome-icon icon="spinner" size="xs" v-if="isbackArrow"/> -->
-    <i class="fas fa-camera" v-if="isbackArrow"></i>
     <h2 class="list-title">
       <template v-if="plainText">
         {{ plainText }}
@@ -53,8 +54,19 @@ export default {
   align-items: center;
   border-bottom: 1px solid $popular-border;
   .list-title {
-    font-size: 19px;
+    margin-bottom: 4px;
+    font-size: 18px;
     font-weight: 700;
+  }
+}
+.arrow {
+  width: 24px;
+  height: 24px;
+  margin-right: 2.5rem;
+  padding: 0.313rem 0.188rem 0.25rem 0.313rem;
+  color: #000;
+  &:hover {
+    color: $nav-avtive-color;
   }
 }
 </style>
