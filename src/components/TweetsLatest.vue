@@ -128,6 +128,9 @@ export default {
   margin-bottom: 0.625rem;
   padding: 0.188rem 0;
   display: flex;
+  .btn-icon {
+    color: $input-placeholder;
+  }
   .btn-reply {
     margin-right: 3.125rem;
   }
