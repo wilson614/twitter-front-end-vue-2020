@@ -96,7 +96,7 @@ export default {
           return {
             ...user,
             FollowedCount: user.FollowedCount - 1,
-            isFollowed:  !user.isFollowed,
+            isFollowed: !user.isFollowed,
           }
         })
         .sort((a, b) => b.FollowedCount - a.FollowedCount)
@@ -143,6 +143,10 @@ export default {
     font-weight: 700;
     color: $button-color;
     border-radius: 100px;
+    &:hover {
+      color: $button-text;
+      background-color: $button-color;
+    }
   }
   .btn-orange {
     color: $button-text;
