@@ -19,14 +19,24 @@ const routes = [
     component: Home,
   },
   {
-    path: '/admin',
-    name: 'admin',
-    redirect: '/admin/login',
-  },
-  {
     path: '/setting',
     name: 'setting',
     component: () => import('../views/Setting.vue'),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('../views/Register.vue'),
+  },
+  {
+    path: '/tweets/:id',
+    name: 'tweet-id',
+    component: () => import('../views/Tweets.vue'),
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    redirect: '/admin/login',
   },
   {
     path: '/admin/login',
@@ -39,14 +49,9 @@ const routes = [
     component: () => import('../views/AdminTweets.vue'),
   },
   {
-    path: "/admin/users",
-    name: "admin-users",
-    component: () => import("../views/AdminUsers.vue")
-  },
-  {
-    path: '/register',
-    name: 'register',
-    component: () => import('../views/Register.vue'),
+    path: '/admin/users',
+    name: 'admin-users',
+    component: () => import('../views/AdminUsers.vue'),
   },
   {
     path: '*',
