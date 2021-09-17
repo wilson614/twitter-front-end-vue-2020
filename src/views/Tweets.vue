@@ -2,15 +2,13 @@
   <div id="home">
     <div class="navbar">
       <h1>{{ $route.params.id }}</h1>
-      <NavBars page='normal'/>
+      <NavBars page="normal" />
     </div>
     <div class="home-center">
       <div class="home-center-tweet"></div>
-      <div class="home-center-tweets">
-      </div>
+      <div class="home-center-tweets"></div>
     </div>
-    <div class="home-right">
-    </div>
+    <div class="home-right"></div>
   </div>
 </template>
 

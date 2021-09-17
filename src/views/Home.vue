@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <div class="navbar">
-      <NavBars page='normal'/>
+      <NavBars page="normal" />
     </div>
     <div class="home-center">
       <NavTabs plainText="首頁" />

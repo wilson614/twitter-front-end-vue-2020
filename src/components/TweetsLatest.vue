@@ -19,7 +19,10 @@
           </span>
         </div>
         <div class="btn btn-control">
-          <router-link class="btn-reply" to="/setting">
+          <router-link
+            class="btn-reply"
+            :to="{ name: 'tweets', params: { id: tweet.id } }"
+          >
             <TweetReply class="btn-icon" />
             <span>{{ tweet.replyCount }}</span>
           </router-link>
@@ -81,7 +84,9 @@ export default {
       }, 500)
     },
     stringLimit(description) {
-      return description.length > 139 ? description.slice(0, 139) + '...' : description
+      return description.length > 139
+        ? description.slice(0, 139) + '...'
+        : description
     },
   },
 }
@@ -130,6 +135,7 @@ export default {
     margin-left: 0.625rem;
     font-size: 13px;
     font-weight: 500;
+    color: $input-placeholder;
     vertical-align: middle;
   }
   span::before {

@@ -1,7 +1,7 @@
 <template>
   <div id="setting">
     <div class="navbar">
-      <NavBars page='normal' />
+      <NavBars page="normal" />
     </div>
     <div class="setting-right">
       <NavTabs plainText="帳戶設定" />
