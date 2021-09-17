@@ -36,7 +36,7 @@
 <script>
 import { fromNowFilter } from './../utils/mixins'
 import TweetReply from '@/components/icon/TweetReply.vue'
-import TweetLke from '@/components/icon/TweetReply.vue'
+import TweetLke from '@/components/icon/TweetLike.vue'
 
 export default {
   mixins: [fromNowFilter],
@@ -129,6 +129,13 @@ export default {
     margin-left: 0.625rem;
     font-size: 13px;
     font-weight: 500;
+    vertical-align: middle;
+  }
+  span::before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
   }
 }
 </style>
