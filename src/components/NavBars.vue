@@ -59,7 +59,7 @@ export default {
             name: 'home',
             text: '首頁',
             to: '/',
-            isActive: ['tweet-id'],
+            isActive: ['tweets'],
             icon: () => import('@/components/icon/NavHome.vue'),
           },
           {
