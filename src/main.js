@@ -9,9 +9,8 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(faEnvelope);
-Vue.component("font-awesome-icon", FontAwesomeIcon);
-
 Vue.config.productionTip = false;
+Vue.component("font-awesome-icon", FontAwesomeIcon);
 
 new Vue({
   router,

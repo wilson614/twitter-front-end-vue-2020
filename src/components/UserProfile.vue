@@ -9,7 +9,7 @@
       <!-- currentUser -->
       <template v-if="profile.id === currentUser.id">
         <div class="btn-control current-user d-flex justify-content-end">
-          <button type="button" class="btn edit-profile-btn">
+          <button type="button" class="btn edit-profile-btn" @click="showModal">
             編輯個人資料
           </button>
         </div>
@@ -20,11 +20,7 @@
         <div class="btn-control user d-flex justify-content-end">
           <!-- message -->
           <button type="button" class="btn btn-msg">
-            <font-awesome-icon
-              :icon="['far', 'envelope']"
-              size="lg"
-              :style="{ color: '#FF6600' }"
-            />
+            <i class="far fa-envelope fa-lg"></i>
           </button>
           <!-- notify -->
           <button
@@ -91,11 +87,21 @@
         </div>
       </div>
     </div>
+    <UserEditModal
+      :initial-profile="profile"
+      v-show="isModalVisible"
+      @close="closeModal"
+    />
   </div>
 </template>
 
 <script>
+import UserEditModal from "./../components/UserEditModal.vue";
+
 export default {
+  components: {
+    UserEditModal,
+  },
   props: {
     initialProfile: {
       type: Object,
@@ -109,9 +115,16 @@ export default {
   data() {
     return {
       profile: this.initialProfile,
-    }
+      isModalVisible: false,
+    };
   },
   methods: {
+    showModal() {
+      this.isModalVisible = true;
+    },
+    closeModal() {
+      this.isModalVisible = false;
+    },
     follow() {
       this.profile = {
         ...this.profile,
@@ -216,6 +229,11 @@ export default {
     margin-top: 4px;
     width: 35px;
     height: 35px;
+    color: $button-color;
+    &:hover {
+      background: $button-color;
+      color: $body-bg;
+    }
   }
   .envelope:hover {
     color: #ffffff !important;

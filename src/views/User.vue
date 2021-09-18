@@ -83,7 +83,7 @@ export default {
     };
   },
   created() {
-    const { id: profileId } = this.$route.params;
+    const { userid: profileId } = this.$route.params;
     this.ftechUsers(profileId);
   },
   methods: {
