@@ -231,7 +231,7 @@ export default {
   .reply-likes {
     margin-top: 12px;
     .reply-wrapper {
-      margin-right: 4em;
+      margin-right: 3em;
     }
     .reply-icon,
     .like-icon {
