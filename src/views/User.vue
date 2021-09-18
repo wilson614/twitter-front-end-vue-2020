@@ -8,7 +8,12 @@
       <div class="profile-center-profile">
         <UserProfile :initial-profile="profile" :current-user="currentUser" />
       </div>
-      <div class="profile-tabs"></div>
+      <div class="profile-tabs">
+        <UserProfileTabs />
+      </div>
+      <div class="profile-tabs-content d-flex justify-content-center">
+        <router-view></router-view>
+      </div>
     </div>
     <div class="profile-right">
       <Popular />
@@ -22,6 +27,7 @@ import IconProfile from "@/components/icon/NavProfile.vue";
 import IconSetting from "@/components/icon/NavSetting.vue";
 import Popular from "./../components/Popular.vue";
 import UserProfile from "./../components/UserProfile.vue";
+import UserProfileTabs from "./../components/UserProfileTabs.vue";
 
 const dummyData = {
   id: 2,
@@ -55,6 +61,7 @@ export default {
     NavBars,
     Popular,
     UserProfile,
+    UserProfileTabs,
   },
   data() {
     return {
@@ -139,7 +146,10 @@ export default {
     height: 55px;
   }
   .profile-tabs {
-    height: 892px;
+    height: 53px;
+  }
+  .profile-tabs-content {
+    height: 720px;
   }
 }
 </style>
