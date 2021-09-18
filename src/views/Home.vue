@@ -52,6 +52,7 @@ const dummyData = [
     name: 'user1',
     avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
     account: '@user1',
+    isLiked: true,
   },
 ]
 

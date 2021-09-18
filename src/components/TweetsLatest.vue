@@ -27,8 +27,7 @@
             <span>{{ tweet.replyCount }}</span>
           </router-link>
           <div class="btn-like">
-            <TweetLke class="btn-icon" />
-            <!-- :class="['btn-icon', user.isLiked && 'btn-orange']" -->
+            <TweetLke :class="['btn-icon', tweet.isLiked && 'btn-red']" />
             <span>{{ tweet.likeCount }}</span>
           </div>
         </div>
@@ -130,6 +129,10 @@ export default {
   display: flex;
   .btn-icon {
     color: $input-placeholder;
+  }
+  // TODO: 確認正確的 SVG
+  .btn-red {
+    fill: $like-icon;
   }
   .btn-reply {
     margin-right: 3.125rem;
