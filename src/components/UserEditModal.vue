@@ -162,6 +162,7 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
@@ -172,7 +173,7 @@ export default {
   overflow-x: auto;
   display: flex;
   flex-direction: column;
-  margin-top: 2em;
+  margin-top: 55px;
   width: 600px;
   height: 657px;
   border-radius: 14px;

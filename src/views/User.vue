@@ -11,7 +11,7 @@
       <div class="profile-tabs">
         <UserProfileTabs />
       </div>
-      <div class="profile-tabs-content d-flex justify-content-center">
+      <div class="profile-tabs-content d-flex justify-content-center scrollbar" >
         <router-view></router-view>
       </div>
     </div>
@@ -150,6 +150,7 @@ export default {
   }
   .profile-tabs-content {
     height: 720px;
+    overflow-y: scroll;
   }
 }
 </style>

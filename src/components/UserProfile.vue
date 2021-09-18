@@ -126,24 +126,24 @@ export default {
       this.isModalVisible = false;
     },
     follow() {
-      this.profile = {
-        ...this.profile,
-        isFollowed: true,
-      };
+      //TODO emit or call api
+      this.profile.isFollowed = true;
+      this.profile.followerCount++;
     },
     unfollow() {
-      this.profile = {
-        ...this.profile,
-        isFollowed: false,
-      };
+      //TODO emit or call api
+      this.profile.isFollowed = false;
+      this.profile.followerCount--;
     },
     notify() {
+      //TODO emit or call api
       this.profile = {
         ...this.profile,
         isNotified: true,
       };
     },
     unNotify() {
+      //TODO emit or call api
       this.profile = {
         ...this.profile,
         isNotified: false,
