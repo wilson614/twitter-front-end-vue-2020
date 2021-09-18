@@ -131,7 +131,7 @@ export default {
   top: 0;
 }
 .profile-center {
-  margin: 0 2.5rem;
+  margin: 0 2rem;
   flex-grow: 1;
   border-left: 1px solid $popular-border;
   border-right: 1px solid $popular-border;

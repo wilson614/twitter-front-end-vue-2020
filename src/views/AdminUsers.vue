@@ -335,24 +335,21 @@ export default {
   }
 }
 .admin-users-container {
-  width: 1245px;
+  width: 1300px;
   height: 100vh;
-}
-.admin-navbar {
-  border-right: 1px solid $popular-border;
-  width: 378px;
 }
 .content-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-left: 1px solid $popular-border;
 }
 .admin-navtabs {
   height: 55px;
 }
 .main-content {
   border-top: 1px solid $popular-border;
-  width: 1062px;
+  width: 100%;
   flex: 1;
   overflow-y: scroll;
 }

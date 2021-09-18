@@ -172,7 +172,7 @@ export default {
   overflow-x: auto;
   display: flex;
   flex-direction: column;
-  margin-top: 55px;
+  margin-top: 2em;
   width: 600px;
   height: 657px;
   border-radius: 14px;
