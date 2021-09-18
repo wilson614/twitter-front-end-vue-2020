@@ -127,6 +127,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.scrollbar {
+  padding-left: 6px;
+  // 整體的樣式
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  // bar的樣式
+  &::-webkit-scrollbar-thumb {
+    background-color: $popular-border;
+    border-radius: 2px;
+  }
+}
+
 #profile {
   position: relative;
   width: 100%;

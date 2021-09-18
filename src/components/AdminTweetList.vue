@@ -25,7 +25,7 @@
                 >
                 <span class="seperater">•</span>
                 <span class="created-at"
-                  >{{ tweet.createdAt | fromNow }} 小時</span
+                  >{{ tweet.createdAt | fromNow }}</span
                 >
               </div>
               <div class="user-tweet">

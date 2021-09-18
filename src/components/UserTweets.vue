@@ -13,7 +13,9 @@
             <span class="user name">John Doe</span>
             <a href="" class="user account">@heyjohn</a>
             <span class="seperater">•</span>
-            <span class="user created-at">{{ tweet.createdAt }}小時</span>
+            <span class="user created-at"
+              >{{ tweet.createdAt | fromNow }}</span
+            >
           </div>
           <p class="tweet-content">
             {{ tweet.description }}
@@ -49,6 +51,8 @@
 </template>
 
 <script>
+import { fromNowFilter } from "./../utils/mixins";
+
 const dummyData = [
   {
     id: 1,
@@ -158,6 +162,7 @@ const dummyData = [
   },
 ];
 export default {
+  mixins: [fromNowFilter],
   data() {
     return {
       tweets: [],
