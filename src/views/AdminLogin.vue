@@ -141,7 +141,7 @@ form {
     color: $button-text;
     font-size: 18px;
     font-weight: 700;
-    box-shadow: 1px 1px 2px #a6a6a6;
+    // box-shadow: 0.5px 0.5px 0.5px #a6a6a6;
     &:hover {
       box-shadow: 1px 1px 3px $input-underline-default;
     }

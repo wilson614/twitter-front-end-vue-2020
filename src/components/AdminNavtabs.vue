@@ -1,9 +1,12 @@
 <template>
-<div class="container title-container">
-  <div class="tweet-list-title">
+  <div class="container title-container">
+    <div v-if="this.$route.name === 'admin-tweets'" class="tweet-list-title">
       <h2 class="list-title">推特清單</h2>
+    </div>
+    <div v-else class="tweet-list-title">
+      <h2 class="list-title">使用者列表</h2>
+    </div>
   </div>
-</div>
 </template>
 
 <style lang="scss" scoped>

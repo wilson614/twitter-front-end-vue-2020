@@ -51,7 +51,7 @@
               v-if="currentUser.isAdmin"
               type="button"
               class="btn btn-delete"
-              @click.stop.prevent="handleDeleteButtonClick(tweet.id)"
+              @click.stop.prevent="deleteTweet(tweet.id)"
             >
               <img src="../assets/svg/admin-X.svg" alt="" />
             </button>
@@ -81,7 +81,7 @@ export default {
   mixins: [fromNowFilter],
   directives: { infiniteScroll },
   props: {
-    tweets: {
+    initialTweets: {
       type: Array,
       required: true,
     },
@@ -92,6 +92,8 @@ export default {
       more: {},
       busy: false,
       offset: 0,
+      limit: 20,
+      tweets: [],
     };
   },
   methods: {
@@ -102,25 +104,27 @@ export default {
     loadTweets() {
       console.log("load tweets");
       this.busy = true;
+      if (this.offset >= this.initialTweets.length) {
+        return;
+      }
       setTimeout(() => {
         //TODO call api get tweets
         for (
           let i = 0;
-          this.offset < this.tweets.length && i < 5;
+          this.offset < this.initialTweets.length && i < this.limit;
           i++, this.offset++
         ) {
-          this.tweets.push(this.tweets[this.offset]);
+          this.tweets.push(this.initialTweets[this.offset]);
         }
-        console.log(this.tweets);
         this.busy = false;
-      }, 1000);
+      }, 500);
     },
-    handleDeleteButtonClick(tweetId) {
-      console.log("handleDeleteButtonClick", tweetId);
+    deleteTweet(tweetId) {
       // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
       // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
-      this.$emit("after-delete-comment", tweetId);
-    },
+      //this.$emit('after-delete-comment', tweetId)
+      this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+    }
   },
 };
 </script>
@@ -175,7 +179,7 @@ export default {
     font-weight: 500;
   }
   .read-more-less {
-    color: $signin-link;
+    color: $input-placeholder;
   }
 }
 </style>

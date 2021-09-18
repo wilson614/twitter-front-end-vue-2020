@@ -11,8 +11,7 @@
         class="content main-content d-flex justify-content-center scrollbar"
       >
         <AdminTweetList
-          :tweets="tweets"
-          @after-delete-comment="afterDeleteComment"
+          :initial-tweets="tweets"
         />
       </section>
     </div>
@@ -1532,10 +1531,6 @@ export default {
     fetchTweets() {
       this.tweets = dummyData
     },
-    afterDeleteComment(tweetId) {
-      // 以 filter 保留未被選擇的 comment.id
-      this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
-    },
   },
 }
 </script>
@@ -1555,6 +1550,7 @@ export default {
   }
 }
 .admin-tweets-container {
+  width: 1245px;
   height: 100vh;
 }
 .content-wrapper {
