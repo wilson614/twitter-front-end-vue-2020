@@ -5,7 +5,9 @@
     </div>
     <div class="home-center">
       <NavTabs plainText="首頁" />
-      <div class="home-center-tweet"></div>
+      <div class="home-center-tweet">
+        <TweetCreate />
+      </div>
       <div class="home-center-tweets">
         <TweetsLatest :initial-tweets="tweets" />
       </div>
@@ -21,6 +23,7 @@ import NavBars from './../components/NavBars.vue'
 import Popular from './../components/Popular.vue'
 import NavTabs from '../components/NavTabs.vue'
 import TweetsLatest from '@/components/TweetsLatest.vue'
+import TweetCreate from '@/components/TweetCreate.vue'
 
 const dummyData = [
   {
@@ -61,6 +64,7 @@ export default {
     NavBars,
     NavTabs,
     Popular,
+    TweetCreate,
     TweetsLatest,
   },
   data() {
@@ -96,7 +100,7 @@ export default {
 .home-center-tweet {
   width: 100%;
   height: 120px;
-  background-color: black;
+  // background-color: black;
   border-bottom: 0.625rem solid $popular-border;
 }
 </style>
