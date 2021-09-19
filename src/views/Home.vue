@@ -6,7 +6,7 @@
     <div class="home-center">
       <NavTabs plainText="首頁" />
       <div class="home-center-tweet">
-        <TweetCreate />
+        <TweetCreate :current-user="currentUser" />
       </div>
       <div class="home-center-tweets">
         <TweetsLatest :initial-tweets="tweets" />
@@ -58,6 +58,17 @@ const dummyData = [
     isLiked: true,
   },
 ]
+const dummyUser = {
+  id: 2,
+  name: 'user1',
+  account: '@user1',
+  avatar: 'https://loremflickr.com/240/240/?random=44.498223728686305',
+  role: 'user',
+  cover: 'https://loremflickr.com/720/240/?random=78.80177917119791',
+  followerCount: 0,
+  followingCount: 0,
+  tweetCount: 10,
+}
 
 export default {
   components: {
@@ -70,14 +81,23 @@ export default {
   data() {
     return {
       tweets: [],
+      currentUser: {},
     }
   },
   created() {
     this.fetchTweets()
+    this.fetchUser()
+    // this.currentUser = dummyUser.currentUser
   },
   methods: {
     fetchTweets() {
       this.tweets = dummyData
+    },
+    fetchUser() {
+      this.currentUser = {
+        id: dummyUser.id,
+        avatar: dummyUser.avatar,
+      }
     },
   },
 }

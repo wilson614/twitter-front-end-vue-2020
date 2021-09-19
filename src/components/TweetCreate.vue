@@ -1,14 +1,30 @@
 <template>
   <div class="tweet-create">
     <textarea placeholder="有什麼新鮮事？"></textarea>
-    <img
-      class="avatar"
-      src="https://lh3.googleusercontent.com/a-/AOh14GjafILfVnBhDBrtDk_r4kLz4q4tpPhwo7pPWwGo=s96-c"
-      alt="avatar"
-    />
-    <button class="btn">推文</button>
+    <img class="avatar" :src="currentUser.avatar" alt="avatar" />
+    <button class="btn" @click="showModal">推文</button>
   </div>
 </template>
+
+<script>
+export default {
+  //TODO: 確認當前使用者頭貼
+  props: {
+    currentUser: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    showModal() {
+      this.isModalVisible = true
+    },
+    closeModal() {
+      this.isModalVisible = false
+    },
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 .tweet-create {
@@ -20,6 +36,7 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 1.313rem 0 0 4.688rem;
+  // TODO:合併分支後需要移除
   resize: none;
   outline: none;
   border: none;
@@ -42,7 +59,7 @@ img {
   bottom: 10px;
   right: 15px;
   padding: 0.625rem 0.938rem;
-  border: 1px solid $button-color;
+  margin-bottom: 2.5px;
   font-family: inherit;
   font-size: 18px;
   color: $button-text;
