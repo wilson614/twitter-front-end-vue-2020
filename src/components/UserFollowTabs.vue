@@ -1,7 +1,7 @@
 <template>
-  <ul class="nav profile-nav-tabs d-flex">
-    <li v-for="tab in tabs" :key="tab.id" class="nav-item">
-      <router-link :to="tab.path" class="nav-link">
+  <ul class="follow-tabs d-flex">
+    <li v-for="tab in tabs" :key="tab.id" class="tab-item">
+      <router-link :to="tab.path" class="tab-link">
         {{ tab.title }}
       </router-link>
     </li>
@@ -17,18 +17,13 @@ export default {
       tabs: [
         {
           id: uuidv4(),
-          title: "推文",
-          path: "/users/:userid/profile",
+          title: "跟隨者",
+          path: "/users/:userid/followers",
         },
         {
           id: uuidv4(),
-          title: "推文與回覆",
-          path: "/users/:userid/replies",
-        },
-        {
-          id: uuidv4(),
-          title: "喜歡的內容",
-          path: "/users/:userid/likes",
+          title: "正在跟隨",
+          path: "/users/:userid/followings",
         },
       ],
     };
@@ -37,10 +32,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.profile-nav-tabs {
+.follow-tabs {
   border-bottom: 1px solid $popular-border;
 }
-.nav-item {
+.tab-item {
   display: flex;
   a{
     padding: 15px 0;

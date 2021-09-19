@@ -20,6 +20,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import NavBars from "./../components/NavBars.vue";
 import IconHome from "@/components/icon/NavHome.vue";
@@ -162,6 +163,7 @@ export default {
     height: 53px;
   }
   .profile-tabs-content {
+    width:100%;
     height: 720px;
     overflow-y: scroll;
   }

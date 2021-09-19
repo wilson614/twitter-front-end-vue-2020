@@ -47,6 +47,16 @@ const routes = [
     ],
   },
   {
+    path: "/users/:userid/followers",
+    name: "followers",
+    component: () => import("../views/UserFollowers.vue"),
+  },
+  {
+    path: "/users/:userid/followings",
+    name: "followers",
+    component: () => import("../views/UserFollowings.vue"),
+  },
+  {
     path: "/setting",
     name: "setting",
     component: () => import("../views/Setting.vue"),

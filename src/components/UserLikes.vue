@@ -5,13 +5,13 @@
         <div class="user-avatar">
           <img
             class="avatar"
-            src="https://loremflickr.com/240/240/?random=44.498223728686305"
+            :src="like.Tweet.User.avatar"
           />
         </div>
         <div class="user-like-main">
           <div class="user-info">
-            <span class="user name">Devon Lane</span>
-            <a href="" class="user account">@DL</a>
+            <span class="user name">{{like.Tweet.User.name}}</span>
+            <a href="" class="user account">{{like.Tweet.User.account}}</a>
             <span class="seperater">•</span>
             <span class="user created-at">{{
               like.Tweet.createdAt | fromNow
@@ -45,55 +45,49 @@ import { fromNowFilter } from "./../utils/mixins";
 
 const dummyData = [
   {
-    id: 6,
-    UserId: 4,
-    TweetId: 28,
-    createdAt: "2021-09-17T09:34:19.000Z",
-    updatedAt: "2021-09-17T09:34:19.000Z",
-    isLiked: true,
+    id: 9,
+    UserId: 5,
+    TweetId: 48,
+    createdAt: "2021-09-19T04:49:32.000Z",
+    updatedAt: "2021-09-19T04:49:32.000Z",
+    isLiked: 0,
     Tweet: {
-      id: 28,
-      UserId: 4,
-      description: "Qui sit omnis ea expedita quibusdam.",
+      id: 48,
+      UserId: 6,
+      description: "repellat",
       likeCount: 1,
       replyCount: 3,
       createdAt: "2021-09-17T07:05:56.000Z",
-      updatedAt: "2021-09-17T09:34:19.000Z",
+      updatedAt: "2021-09-19T04:49:32.000Z",
+      User: {
+        id: 6,
+        account: "@user5",
+        name: "user5",
+        avatar: "https://loremflickr.com/240/240/?random=58.97211358858128",
+      },
     },
   },
   {
-    id: 5,
-    UserId: 4,
-    TweetId: 20,
-    createdAt: "2021-09-17T09:34:13.000Z",
-    updatedAt: "2021-09-17T09:34:13.000Z",
-    isLiked: true,
+    id: 8,
+    UserId: 5,
+    TweetId: 50,
+    createdAt: "2021-09-19T04:49:28.000Z",
+    updatedAt: "2021-09-19T04:49:28.000Z",
+    isLiked: 0,
     Tweet: {
-      id: 20,
-      UserId: 3,
-      description: "amet",
+      id: 50,
+      UserId: 6,
+      description: "aperiam",
       likeCount: 1,
       replyCount: 3,
       createdAt: "2021-09-17T07:05:56.000Z",
-      updatedAt: "2021-09-17T09:34:14.000Z",
-    },
-  },
-  {
-    id: 4,
-    UserId: 4,
-    TweetId: 4,
-    createdAt: "2021-09-17T09:34:08.000Z",
-    updatedAt: "2021-09-17T09:34:08.000Z",
-    isLiked: true,
-    Tweet: {
-      id: 4,
-      UserId: 2,
-      description:
-        "Quidem est soluta autem accusamus repellat. Necessitatibus non adipisci maiores enim. Dolorem ut voluptas a blanditiis odio minus. Magnam.",
-      likeCount: 1,
-      replyCount: 3,
-      createdAt: "2021-09-17T07:05:56.000Z",
-      updatedAt: "2021-09-17T09:34:08.000Z",
+      updatedAt: "2021-09-19T04:49:28.000Z",
+      User: {
+        id: 6,
+        account: "@user5",
+        name: "user5",
+        avatar: "https://loremflickr.com/240/240/?random=58.97211358858128",
+      },
     },
   },
 ];
@@ -121,6 +115,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user-likes-container {
+  width: 100%;
+}
+.user-like-list {
+  width: 100%;
+}
 .like-item {
   padding: 10px 15px;
   border-bottom: 1px solid $popular-border;

@@ -71,18 +71,18 @@
 
       <div class="card-body d-flex flex-column">
         <p class="card-name">{{ profile.name }}</p>
-        <a class="card-account" href="">{{ profile.account }}</a>
+        <router-link class="card-account" to="#">{{ profile.account }}</router-link>
         <p class="introduction my-2">
           {{ profile.introduction }}
         </p>
         <div class="follows d-flex">
           <div class="following-wrapper">
             <span class="following">{{ profile.followingCount }} 個</span>
-            <a class="a-following" href="#">跟隨中</a>
+            <router-link class="a-following" to="/users/:userid/followings">跟隨中</router-link>
           </div>
           <div class="follower-wrapper ml-5">
             <span class="follower">{{ profile.followerCount }} 位</span>
-            <a class="a-follower" href="#">跟隨者</a>
+            <router-link class="a-follower" to="/users/:userid/followers">跟隨者</router-link>
           </div>
         </div>
       </div>

@@ -3,19 +3,14 @@
     <ul class="user-tweet-list">
       <li v-for="tweet in tweets" :key="tweet.id" class="tweet-item d-flex">
         <div class="user-avatar">
-          <img
-            class="avatar"
-            src="https://loremflickr.com/240/240/?random=44.498223728686305"
-          />
+          <img class="avatar" :src="tweet.User.avatar" />
         </div>
         <div class="user-tweet-main">
           <div class="user-info">
-            <span class="user name">John Doe</span>
-            <a href="" class="user account">@heyjohn</a>
+            <span class="user name">{{ tweet.User.name }}</span>
+            <a href="" class="user account">{{ tweet.User.account }}</a>
             <span class="seperater">•</span>
-            <span class="user created-at"
-              >{{ tweet.createdAt | fromNow }}</span
-            >
+            <span class="user created-at">{{ tweet.createdAt | fromNow }}</span>
           </div>
           <p class="tweet-content">
             {{ tweet.description }}
@@ -58,109 +53,38 @@ const dummyData = [
     id: 1,
     UserId: 2,
     description:
-      "Modi amet nihil minus nihil modi laborum tempore nobis architecto.\nAd fuga rerum omnis amet ut consequatur pariatur.\nLabore non facilis repu",
+      "Modi amet nihil minus nihil modi laborum tempore nobis architecto.\nAd fuga rerum omnis amet ut consequatur pariatur \nLabore non facilis repu",
+    createdAt: "2021-09-17T07:05:56.000Z",
+    updatedAt: "2021-09-17T09:34:09.000Z",
     likeCount: 0,
     replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
+    isLiked: 0,
+    User: {
+      id: 2,
+      name: "user1",
+      account: "@user1",
+      avatar: "https://loremflickr.com/240/240/?random=15.971597470975652",
+    },
   },
   {
     id: 2,
     UserId: 2,
     description:
-      "Aut necessitatibus illo aut. Totam veniam atque et ea voluptate quis. Reiciendis unde sed vel. Aliquid sunt optio quia voluptatem reiciendis",
+      "Modi amet nihil minus nihil modi laborum tempore nobis architecto.\nAd fuga rerum omnis amet ut consequatur pariatur \nLabore non facilis repu",
+    createdAt: "2021-09-17T07:05:56.000Z",
+    updatedAt: "2021-09-17T09:34:09.000Z",
     likeCount: 0,
     replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 3,
-    UserId: 2,
-    description: "eius dolor officiis",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 4,
-    UserId: 2,
-    description:
-      "Quidem est soluta autem accusamus repellat. Necessitatibus non adipisci maiores enim. Dolorem ut voluptas a blanditiis odio minus. Magnam be",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 5,
-    UserId: 2,
-    description: "dolor iure vel",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 6,
-    UserId: 2,
-    description:
-      "Voluptas ipsam doloremque ducimus nam numquam. Qui aut et ratione quisquam. Ratione quam doloribus explicabo.",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 7,
-    UserId: 2,
-    description: "sit incidunt sunt",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 8,
-    UserId: 2,
-    description:
-      "Culpa vero quod officia. Dolores qui doloremque rerum a aut magni aut. Impedit ea rerum distinctio velit qui ut eos dignissimos. Beatae ad r",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 9,
-    UserId: 2,
-    description: "voluptatum ab molestiae",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
-  },
-  {
-    id: 10,
-    UserId: 2,
-    description:
-      "Delectus quidem maiores hic vel distinctio quia. Veniam incidunt ipsam qui vel. Ut quaerat dicta voluptatem voluptas. Impedit ducimus quod q",
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: false,
+    isLiked: 0,
+    User: {
+      id: 2,
+      name: "user1",
+      account: "@user1",
+      avatar: "https://loremflickr.com/240/240/?random=15.971597470975652",
+    },
   },
 ];
+
 export default {
   mixins: [fromNowFilter],
   data() {
