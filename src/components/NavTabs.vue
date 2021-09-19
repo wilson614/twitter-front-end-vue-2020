@@ -1,7 +1,7 @@
 <template>
   <div class="tweet-list-title">
     <router-link :to="{ name: 'Home' }">
-      <i class="fas fa-arrow-left arrow" v-if="isbackArrow"></i>
+      <i class="fas fa-arrow-left arrow" v-if="isbackArrow" @click="$router.back()"></i>
     </router-link>
     <!-- <font-awesome-icon icon="spinner" size="xs" v-if="isbackArrow"/> -->
     <h2 class="list-title">
