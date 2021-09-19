@@ -91,6 +91,7 @@
       :initial-profile="profile"
       v-show="isModalVisible"
       @close="closeModal"
+      @after-submit="handleAfterSubmit"
     />
   </div>
 </template>
@@ -148,6 +149,13 @@ export default {
         ...this.profile,
         isNotified: false,
       };
+    },
+    handleAfterSubmit(data){
+      this.profile = {
+        ...this.profile,
+        ...data,
+      }
+      this.isModalVisible = false;
     },
   },
 };
