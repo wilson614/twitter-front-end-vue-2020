@@ -6,7 +6,7 @@
     <div class="tweets-center">
       <NavTabs plainText="推文" :isbackArrow="true"/>
       <div class="tweets-center-tweet"><TweetDetail /></div>
-      <div class="tweets-center-tweets"></div>
+      <div class="tweets-center-tweets"><TweetReply /></div>
     </div>
     <div class="tweets-right"><Popular /></div>
   </div>
@@ -17,6 +17,7 @@ import NavBars from './../components/NavBars.vue'
 import NavTabs from '../components/NavTabs.vue'
 import Popular from './../components/Popular.vue'
 import TweetDetail from '@/components/TweetDetail.vue'
+import TweetReply from '@/components/TweetReply.vue'
 
 export default {
   components: {
@@ -24,6 +25,7 @@ export default {
     NavTabs,
     Popular,
     TweetDetail,
+    TweetReply,
   },
 }
 </script>

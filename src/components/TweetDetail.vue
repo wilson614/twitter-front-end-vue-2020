@@ -3,7 +3,7 @@
     <div class="tweet-header">
       <img
         src="https://loremflickr.com/240/240/?random=83.43458862610815"
-        alt=""
+        alt="avator"
       />
       <div class="user-detail">
         <span class="user-name">name</span>
