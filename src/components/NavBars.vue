@@ -7,14 +7,19 @@
           :key="`router-${item.name}`"
           :to="item.to"
           class="nav-item"
-          :class="[item.isActive.includes($route.name) && 'router-link-exact-active']"
+          :class="[
+            item.isActive.includes($route.name) && 'router-link-exact-active',
+          ]"
         >
           <component :is="item.icon" class="nav-item-img" />
           <span>{{ item.text }}</span>
         </router-link>
       </template>
     </div>
-    <button class="btn" type="submit" v-if="!isAdmin">推文</button>
+    <button class="btn" type="submit" v-if="!isAdmin" @click="showModal">
+      推文
+    </button>
+    <TweetCreateModal v-show="isModalVisible" @close="closeModal" />
     <div class="nav-bottom">
       <router-link to="/signin" class="nav-bottom-item">
         <IconLogOut class="nav-bottom-item-img" />
@@ -26,10 +31,17 @@
 
 <script>
 import IconLogOut from '@/components/icon/NavLogOut.vue'
+import TweetCreateModal from '@/components/TweetCreateModal.vue'
 
 export default {
   components: {
     IconLogOut,
+    TweetCreateModal,
+  },
+  data() {
+    return {
+      isModalVisible: false,
+    }
   },
   props: {
     page: String,
@@ -53,7 +65,7 @@ export default {
   },
   computed: {
     navLinks() {
-      if ( !this.page || this.page === 'normal') {
+      if (!this.page || this.page === 'normal') {
         return [
           {
             name: 'home',
@@ -78,7 +90,7 @@ export default {
           },
         ]
       }
-      if ( this.page === 'admin') {
+      if (this.page === 'admin') {
         return [
           {
             name: 'adminTweetsList',
@@ -97,6 +109,14 @@ export default {
         ]
       }
       return []
+    },
+  },
+    methods: {
+    showModal() {
+      this.isModalVisible = true
+    },
+    closeModal() {
+      this.isModalVisible = false
     },
   },
 }

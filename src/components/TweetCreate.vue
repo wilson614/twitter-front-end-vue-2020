@@ -3,12 +3,22 @@
     <textarea placeholder="有什麼新鮮事？"></textarea>
     <img class="avatar" :src="currentUser.avatar" alt="avatar" />
     <button class="btn" @click="showModal">推文</button>
+     <TweetCreateModal  v-show="isModalVisible" @close="closeModal"/>
   </div>
 </template>
 
 <script>
+import TweetCreateModal from '@/components/TweetCreateModal.vue'
 export default {
-  //TODO: 確認當前使用者頭貼
+  components: {
+    TweetCreateModal,
+  },
+  data() {
+    return {
+      // profile: this.initialProfile,
+      isModalVisible: false,
+    };
+  },
   props: {
     currentUser: {
       type: Object,
