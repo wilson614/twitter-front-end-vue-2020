@@ -1,10 +1,14 @@
 <template>
   <div id="tweetslatest">
     <div class="tweet-list" v-for="tweet in initialTweets" :key="tweet.id">
-      <img :src="tweet.avatar" alt="userAvatar" />
+      <router-link :to="{ name: 'user', params: { id: tweet.UserId } }">
+        <img :src="tweet.avatar" alt="userAvatar" />
+      </router-link>
       <div class="tweet-list-content">
         <div class="user-details">
-          <span class="user-name">{{ tweet.name }}</span>
+          <router-link :to="{ name: 'user', params: { id: tweet.UserId } }">
+            <span class="user-name">{{ tweet.name }}</span>
+          </router-link>
           <span class="user-detail">
             {{ tweet.account }}•{{
               isToday(tweet.createdAt)
@@ -13,19 +17,18 @@
             }}
           </span>
         </div>
-        <div class="user-tweet">
-          <span class="tweet-text">
-            {{ stringLimit(tweet.description) }}
-          </span>
-        </div>
+        <router-link :to="{ name: 'tweets', params: { id: tweet.id } }">
+          <div class="user-tweet">
+            <span class="tweet-text">
+              {{ stringLimit(tweet.description) }}
+            </span>
+          </div>
+        </router-link>
         <div class="btn btn-control">
-          <router-link
-            class="btn-reply"
-            :to="{ name: 'tweets', params: { id: tweet.id } }"
-          >
+          <div class="btn-reply">
             <TweetReply class="btn-icon" />
             <span>{{ tweet.replyCount }}</span>
-          </router-link>
+          </div>
           <div class="btn-like">
             <TweetLke :class="['btn-icon', tweet.isLiked && 'btn-red']" />
             <span>{{ tweet.likeCount }}</span>
@@ -118,6 +121,7 @@ export default {
 
 .user-tweet {
   margin: 0.375rem 0 0.625rem;
+  color: $main-text;
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
