@@ -1,22 +1,26 @@
 <template>
-  <div class="tweet-create">
-    <textarea placeholder="有什麼新鮮事？"></textarea>
+  <form class="tweet-create"  @submit.stop.prevent="handleSubmit">
+    <textarea v-model.trim="description" name="description" placeholder="有什麼新鮮事？" rows="3"></textarea>
     <img class="avatar" :src="currentUser.avatar" alt="avatar" />
-    <button class="btn" @click="showModal">推文</button>
-     <TweetCreateModal  v-show="isModalVisible" @close="closeModal"/>
-  </div>
+    <!-- <span v-if="description.length >= 140" class="error-msg">字數不可超過 140 字</span> -->
+      <button class="btn" type="submit">推文</button>
+     <!-- <TweetCreateModal  v-show="isModalVisible" @close="closeModal"/> -->
+  </form>
 </template>
 
 <script>
-import TweetCreateModal from '@/components/TweetCreateModal.vue'
+// import TweetCreateModal from '@/components/TweetCreateModal.vue'
+import { v4 as uuidv4 } from "uuid"
+
 export default {
-  components: {
-    TweetCreateModal,
-  },
+  // components: {
+  //   TweetCreateModal,
+  // },
   data() {
     return {
       // profile: this.initialProfile,
       isModalVisible: false,
+      description: '',
     };
   },
   props: {
@@ -26,12 +30,21 @@ export default {
     },
   },
   methods: {
-    showModal() {
-      this.isModalVisible = true
-    },
-    closeModal() {
-      this.isModalVisible = false
-    },
+    // showModal() {
+    //   this.isModalVisible = true
+    // },
+    // closeModal() {
+    //   this.isModalVisible = false
+    // },
+    handleSubmit () {
+      // TODO: 向 API 發送 POST 請求
+      // 伺服器新增 Comment 成功後...
+      this.$emit('after-create-tweet', {
+        tweetId: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
+        description: this.description
+      })
+      this.description = '' // 將表單內的資料清空
+    }
   },
 }
 </script>

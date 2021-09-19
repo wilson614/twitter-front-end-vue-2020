@@ -6,7 +6,10 @@
     <div class="home-center">
       <NavTabs plainText="首頁" />
       <div class="home-center-tweet">
-        <TweetCreate :current-user="currentUser" />
+        <TweetCreate
+          :current-user="currentUser"
+          @after-create-tweet="afterCreateTweet"
+        />
       </div>
       <div class="home-center-tweets">
         <TweetsLatest :initial-tweets="tweets" />
@@ -98,6 +101,21 @@ export default {
         id: dummyUser.id,
         avatar: dummyUser.avatar,
       }
+    },
+    afterCreateTweet(payload) {
+      const { tweetId, description } = payload
+      this.tweets.push({
+        id: tweetId,
+        User: {
+          id: this.currentUser.id,
+          name: this.currentUser.name,
+          account: this.currentUser.account,
+          avatar: this.currentUser.avatar,
+        },
+        description,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
     },
   },
 }
