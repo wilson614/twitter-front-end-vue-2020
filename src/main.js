@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faEnvelope)
 
+library.add(faEnvelope);
 Vue.config.productionTip = false;
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

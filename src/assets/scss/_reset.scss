@@ -65,6 +65,12 @@ input {
   border: none;
 }
 
+textarea {
+  padding: 0;
+  border: none;
+  resize: none;
+}
+
 input:required {
   box-shadow: none;
 }

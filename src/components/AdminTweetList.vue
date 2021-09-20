@@ -25,7 +25,7 @@
                 >
                 <span class="seperater">•</span>
                 <span class="created-at"
-                  >{{ tweet.createdAt | fromNow }} 小時</span
+                  >{{ tweet.createdAt | fromNow }}</span
                 >
               </div>
               <div class="user-tweet">
@@ -145,9 +145,7 @@ export default {
 }
 
 .user-avatar {
-  // border: 1px solid red;
   display: flex;
-  // align-items: center;
   height: 100%;
   .avatar {
     width: 50px;

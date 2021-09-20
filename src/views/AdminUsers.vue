@@ -1,6 +1,7 @@
 <template>
   <div class="container admin-users-container d-flex justify-content-center">
-    <section class="navbar admin-navbar d-flex justify-content-center">
+    <section class="navbar">
+      <NavBars :navItems="navItems" :isAdmin="true" />
     </section>
     <div class="content-wrapper">
       <section class="navtabs admin-navtabs">
@@ -14,17 +15,20 @@
 </template>
 
 <script>
-import AdminNavtabs from "./../components/AdminNavtabs.vue";
-import AdminUserList from "./../components/AdminUserList.vue";
+import AdminNavtabs from './../components/AdminNavtabs.vue'
+import AdminUserList from './../components/AdminUserList.vue'
+import NavBars from './../components/NavBars.vue'
+import IconProfile from '@/components/icon/NavProfile.vue'
+
 
 const dummyData = [
   {
     id: 2,
-    name: "user1",
-    account: "@user1",
-    avatar: "https://loremflickr.com/240/240/?random=83.43458862610815",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=29.278597549456762",
+    name: 'user1',
+    account: '@user1',
+    avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -33,11 +37,11 @@ const dummyData = [
   },
   {
     id: 3,
-    name: "user2",
-    account: "@user2",
-    avatar: "https://loremflickr.com/240/240/?random=24.364838375146135",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=21.042648290680876",
+    name: 'user2',
+    account: '@user2',
+    avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -46,11 +50,11 @@ const dummyData = [
   },
   {
     id: 4,
-    name: "user3",
-    account: "@user3",
-    avatar: "https://loremflickr.com/240/240/?random=71.38538073169198",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=28.747055278834033",
+    name: 'user3',
+    account: '@user3',
+    avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -59,11 +63,11 @@ const dummyData = [
   },
   {
     id: 5,
-    name: "user4",
-    account: "@user4",
-    avatar: "https://loremflickr.com/240/240/?random=41.48021622303335",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=46.87070242729114",
+    name: 'user4',
+    account: '@user4',
+    avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -72,11 +76,11 @@ const dummyData = [
   },
   {
     id: 6,
-    name: "user5",
-    acco9unt: "@user5",
-    avatar: "https://loremflickr.com/240/240/?random=37.30662851245823",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=94.35193490220071",
+    name: 'user5',
+    acco9unt: '@user5',
+    avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -85,11 +89,11 @@ const dummyData = [
   },
   {
     id: 7,
-    name: "user1",
-    account: "@user1",
-    avatar: "https://loremflickr.com/240/240/?random=83.43458862610815",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=29.278597549456762",
+    name: 'user1',
+    account: '@user1',
+    avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -98,11 +102,11 @@ const dummyData = [
   },
   {
     id: 8,
-    name: "user2",
-    account: "@user2",
-    avatar: "https://loremflickr.com/240/240/?random=24.364838375146135",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=21.042648290680876",
+    name: 'user2',
+    account: '@user2',
+    avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -111,11 +115,11 @@ const dummyData = [
   },
   {
     id: 9,
-    name: "user3",
-    account: "@user3",
-    avatar: "https://loremflickr.com/240/240/?random=71.38538073169198",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=28.747055278834033",
+    name: 'user3',
+    account: '@user3',
+    avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -124,11 +128,11 @@ const dummyData = [
   },
   {
     id: 10,
-    name: "user4",
-    account: "@user4",
-    avatar: "https://loremflickr.com/240/240/?random=41.48021622303335",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=46.87070242729114",
+    name: 'user4',
+    account: '@user4',
+    avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -137,11 +141,11 @@ const dummyData = [
   },
   {
     id: 11,
-    name: "user5",
-    account: "@user5",
-    avatar: "https://loremflickr.com/240/240/?random=37.30662851245823",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=94.35193490220071",
+    name: 'user5',
+    account: '@user5',
+    avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -150,11 +154,11 @@ const dummyData = [
   },
   {
     id: 12,
-    name: "user1",
-    account: "@user1",
-    avatar: "https://loremflickr.com/240/240/?random=83.43458862610815",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=29.278597549456762",
+    name: 'user1',
+    account: '@user1',
+    avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -163,11 +167,11 @@ const dummyData = [
   },
   {
     id: 13,
-    name: "user2",
-    account: "@user2",
-    avatar: "https://loremflickr.com/240/240/?random=24.364838375146135",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=21.042648290680876",
+    name: 'user2',
+    account: '@user2',
+    avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -176,11 +180,11 @@ const dummyData = [
   },
   {
     id: 14,
-    name: "user3",
-    account: "@user3",
-    avatar: "https://loremflickr.com/240/240/?random=71.38538073169198",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=28.747055278834033",
+    name: 'user3',
+    account: '@user3',
+    avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -189,11 +193,11 @@ const dummyData = [
   },
   {
     id: 15,
-    name: "user4",
-    account: "@user4",
-    avatar: "https://loremflickr.com/240/240/?random=41.48021622303335",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=46.87070242729114",
+    name: 'user4',
+    account: '@user4',
+    avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -202,11 +206,11 @@ const dummyData = [
   },
   {
     id: 16,
-    name: "user5",
-    acco9unt: "@user5",
-    avatar: "https://loremflickr.com/240/240/?random=37.30662851245823",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=94.35193490220071",
+    name: 'user5',
+    acco9unt: '@user5',
+    avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -215,11 +219,11 @@ const dummyData = [
   },
   {
     id: 17,
-    name: "user1",
-    account: "@user1",
-    avatar: "https://loremflickr.com/240/240/?random=83.43458862610815",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=29.278597549456762",
+    name: 'user1',
+    account: '@user1',
+    avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -228,11 +232,11 @@ const dummyData = [
   },
   {
     id: 18,
-    name: "user2",
-    account: "@user2",
-    avatar: "https://loremflickr.com/240/240/?random=24.364838375146135",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=21.042648290680876",
+    name: 'user2',
+    account: '@user2',
+    avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -241,11 +245,11 @@ const dummyData = [
   },
   {
     id: 19,
-    name: "user3",
-    account: "@user3",
-    avatar: "https://loremflickr.com/240/240/?random=71.38538073169198",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=28.747055278834033",
+    name: 'user3',
+    account: '@user3',
+    avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -254,11 +258,11 @@ const dummyData = [
   },
   {
     id: 20,
-    name: "user4",
-    account: "@user4",
-    avatar: "https://loremflickr.com/240/240/?random=41.48021622303335",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=46.87070242729114",
+    name: 'user4',
+    account: '@user4',
+    avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
@@ -267,38 +271,53 @@ const dummyData = [
   },
   {
     id: 21,
-    name: "user5",
-    account: "@user5",
-    avatar: "https://loremflickr.com/240/240/?random=37.30662851245823",
-    role: "user",
-    cover: "https://loremflickr.com/720/240/?random=94.35193490220071",
+    name: 'user5',
+    account: '@user5',
+    avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
+    role: 'user',
+    cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
     followerCount: 0,
     followingCount: 0,
     tweetCount: 10,
     replyCount: 31,
     likeCount: 0,
   },
-];
+]
 
 export default {
   components: {
+    NavBars,
     AdminNavtabs,
     AdminUserList,
   },
   data() {
     return {
       users: [],
-    };
+      navItems: [
+        {
+          name: 'adminTweetsList',
+          text: '推文清單',
+          to: '/admin/tweets',
+          icon: () => import('@/components/icon/NavHome.vue'),
+        },
+        {
+          name: 'adminUserList',
+          text: '使用者列表',
+          to: '/admin/users',
+          icon: IconProfile,
+        },
+      ],
+    }
   },
   created() {
-    this.fetchUsers();
+    this.fetchUsers()
   },
   methods: {
     fetchUsers() {
-      this.users = dummyData;
+      this.users = dummyData
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -316,24 +335,21 @@ export default {
   }
 }
 .admin-users-container {
-  width: 1245px;
+  width: 1300px;
   height: 100vh;
-}
-.admin-navbar {
-  border-right: 1px solid $popular-border;
-  width: 378px;
 }
 .content-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
+  border-left: 1px solid $popular-border;
 }
 .admin-navtabs {
   height: 55px;
 }
 .main-content {
   border-top: 1px solid $popular-border;
-  width: 1062px;
+  width: 100%;
   flex: 1;
   overflow-y: scroll;
 }
