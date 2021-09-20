@@ -143,6 +143,7 @@ export default {
         // 成功登入後轉址到登入頁
         this.$router.push('/signin')
       } catch (error) {
+        console.log(error)
         Toast.fire({
           icon: 'warning',
           title: `無法註冊 - ${error.message}`,

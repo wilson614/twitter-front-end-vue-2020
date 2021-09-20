@@ -10,8 +10,6 @@ export default {
     })
   },
   signUp(data) {
-    return apiHelper.post('/users', {
-      ...data,
-    })
-  },
+    return apiHelper.post('/users', { ...data })
+  }
 }
