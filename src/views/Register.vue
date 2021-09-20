@@ -106,6 +106,7 @@ export default {
   methods: {
     async handleSubmit() {
       try {
+        this.isProcessing = true
         if (
           !this.account ||
           !this.name ||
@@ -117,6 +118,7 @@ export default {
             icon: 'warning',
             title: '請確認已填寫所有欄位',
           })
+          this.isProcessing = false
           return
         }
         if (this.password !== this.checkPassword) {
@@ -124,11 +126,10 @@ export default {
             icon: 'warning',
             title: '兩次輸入的密碼不同',
           })
+          this.password = ''
           this.checkPassword = ''
           return
         }
-        this.isProcessing = true
-
         const data = await authorizationAPI.signUp({
           account: this.account,
           name: this.name,
