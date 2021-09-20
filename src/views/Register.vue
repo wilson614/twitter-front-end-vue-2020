@@ -77,7 +77,7 @@
         />
       </div>
 
-      <button class="btn" type="submit">註冊</button>
+      <button class="btn" type="submit" :disabled="isProcessing">註冊</button>
 
       <div class="text-center">
         <p>
@@ -100,6 +100,7 @@ export default {
       email: '',
       password: '',
       checkPassword: '',
+      isProcessing: false,
     }
   },
   methods: {
@@ -126,6 +127,8 @@ export default {
           this.checkPassword = ''
           return
         }
+        this.isProcessing = true
+
         const data = await authorizationAPI.signUp({
           account: this.account,
           name: this.name,
@@ -143,7 +146,7 @@ export default {
         // 成功登入後轉址到登入頁
         this.$router.push('/signin')
       } catch (error) {
-        console.log(error)
+        this.isProcessing = false
         Toast.fire({
           icon: 'warning',
           title: `無法註冊 - ${error.message}`,
