@@ -41,11 +41,13 @@
 
 <script>
 import { fromNowFilter } from './../utils/mixins'
+import infiniteScroll from "vue-infinite-scroll";
 import TweetReply from '@/components/icon/TweetReply.vue'
 import TweetLke from '@/components/icon/TweetLike.vue'
 
 export default {
   mixins: [fromNowFilter],
+  directives: { infiniteScroll },
   components: {
     TweetReply,
     TweetLke,
@@ -73,7 +75,7 @@ export default {
       if (this.offset >= this.initialTweets.length) {
         return
       }
-      setTimeout(() => {
+    setTimeout(() => {
         //TODO call api get tweets
         for (
           let i = 0;
