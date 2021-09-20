@@ -58,7 +58,6 @@
               <div class="form-group-avatar">
                 <div class="label-control">
                   <label for="avatar-edit" class="cover-edit">
-                    <!-- <i class="fas fa-camera fa-2x"></i> -->
                     <img
                       src="../assets/svg/editProfile-upload.svg"
                       alt=""
@@ -96,7 +95,6 @@
                 <small class="word-count d-inline-block"
                   >{{ profile.name.length }}/50</small
                 >
-                <!-- <small class="error-msg d-inline-block">字數超出上限</small> -->
               </div>
               <div class="form-label-group">
                 <textarea
@@ -111,7 +109,6 @@
                 <small class="word-count d-inline-block"
                   >{{ profile.introduction.length }}/160</small
                 >
-                <!-- <small class="error-msg d-inline-block">字數超出上限</small> -->
               </div>
             </div>
           </section>
