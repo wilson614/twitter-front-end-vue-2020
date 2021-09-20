@@ -128,6 +128,7 @@ export default {
           })
           this.password = ''
           this.checkPassword = ''
+          this.isProcessing = false
           return
         }
         const data = await authorizationAPI.signUp({
@@ -147,22 +148,30 @@ export default {
         // 成功登入後轉址到登入頁
         this.$router.push('/login')
       } catch (error) {
-        // TODO: 尚未完成 account、 mail 驗證重複
         const { data } = error.response
-        console.log(data)
-        console.log(data.message)
 
-        if (data.message === 'Account is exists.') {
+        if (data.message.length === 1) {
+          if (data.message[0].error === 'Account is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: '帳號已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          } else if (data.message[0].error === 'Email is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: 'Email 已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          }
+        } else if (data.message.length === 2) {
           Toast.fire({
             icon: 'warning',
-            title: '帳號已重覆註冊',
+            title: '帳號及 Email 皆已重覆註冊',
           })
-          return
-        } else if (data.message === 'Email is exists.') {
-          Toast.fire({
-            icon: 'warning',
-            title: 'Email 已重覆註冊',
-          })
+          this.isProcessing = false
           return
         } else {
           Toast.fire({
@@ -170,6 +179,25 @@ export default {
             title: `無法註冊 - ${error.message}`,
           })
         }
+        // TODO:待研究較好解法
+        // if (data.message.some(errorMag => errorMag.error === 'Account is exists.')) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: '帳號已重覆註冊',
+        //   })
+        //   return
+        // } else if (data.message.some(errorMag => errorMag.error === 'Email is exists.')) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: 'Email 已重覆註冊',
+        //   })
+        //   return
+        // } else {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: `無法註冊 - ${error.message}`,
+        //   })
+        // }
       }
     },
   },
