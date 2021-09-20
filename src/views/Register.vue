@@ -156,7 +156,6 @@ export default {
     margin-bottom: 1.875rem;
     font-size: 19px;
     @extend %form-input-style;
-    // TODO:待確認紅線
     &:not(:placeholder-shown):invalid {
       border-bottom: 3px solid $input-underline-error;
     }

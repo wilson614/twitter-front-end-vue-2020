@@ -1,7 +1,7 @@
 <template>
   <div id="setting">
     <div class="navbar">
-      <NavBars :navItems="navItems" />
+      <NavBars page="normal" />
     </div>
     <div class="setting-right">
       <NavTabs plainText="帳戶設定" />
@@ -107,26 +107,6 @@ export default {
   },
   data() {
     return {
-      navItems: [
-        {
-          name: 'home',
-          text: '首頁',
-          to: '/',
-          icon: () => import('@/components/icon/NavHome.vue'),
-        },
-        {
-          name: 'profile',
-          text: '個人資料',
-          to: '/users/:userid/profile',
-          icon: () => import('@/components/icon/NavProfile.vue'),
-        },
-        {
-          name: 'setting',
-          text: '設定',
-          to: '/setting',
-          icon: () => import('@/components/icon/NavSetting.vue'),
-        },
-      ],
       user: null,
     }
   },
@@ -192,7 +172,6 @@ export default {
     font-size: 19px;
     font-weight: 500;
     @extend %form-input-style;
-    // TODO:待確認紅線
     &:not(:placeholder-shown):invalid {
       border-bottom: 3px solid $input-underline-error;
     }

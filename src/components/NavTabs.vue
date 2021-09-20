@@ -1,6 +1,9 @@
 <template>
   <div class="tweet-list-title">
-    <!-- <i v-if="isbackArrow">Arrow</i> -->
+    <router-link :to="{ name: 'Home' }">
+      <i class="fas fa-arrow-left arrow" v-if="isbackArrow" @click="$router.back()"></i>
+    </router-link>
+    <!-- <font-awesome-icon icon="spinner" size="xs" v-if="isbackArrow"/> -->
     <h2 class="list-title">
       <template v-if="plainText">
         {{ plainText }}
@@ -38,7 +41,7 @@ export default {
         }
       },
     },
-    // isbackArrow: Boolean,
+    isbackArrow: Boolean,
   },
 }
 </script>
@@ -51,8 +54,19 @@ export default {
   align-items: center;
   border-bottom: 1px solid $popular-border;
   .list-title {
-    font-size: 19px;
+    margin-bottom: 4px;
+    font-size: 18px;
     font-weight: 700;
+  }
+}
+.arrow {
+  width: 24px;
+  height: 24px;
+  margin-right: 2.5rem;
+  padding: 0.313rem 0.188rem 0.25rem 0.313rem;
+  color: #000;
+  &:hover {
+    color: $nav-avtive-color;
   }
 }
 </style>

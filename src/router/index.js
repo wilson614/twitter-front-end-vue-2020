@@ -77,9 +77,9 @@ const routes = [
     component: () => import("../views/AdminTweets.vue"),
   },
   {
-    path: "/admin/users",
-    name: "admin-users",
-    component: () => import("../views/AdminUsers.vue"),
+    path: '/admin/users',
+    name: 'admin-users',
+    component: () => import('../views/AdminUsers.vue'),
   },
   {
     path: "*",

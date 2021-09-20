@@ -9,7 +9,8 @@
       </div>
       <button
         :class="['btn', user.isFollowed && 'btn-orange']"
-        type="isFollowed"
+        type="submit"
+        @click.stop.prevent="deleteFollowed(user.id)"
       >
         {{ user.isFollowed ? '正在跟隨' : '跟隨' }}
       </button>
@@ -19,58 +20,58 @@
 
 <script>
 const dummyData = {
-    "topUsers": [
-        {
-            "id": 2,
-            "name": "User11",
-            "account": "@user1",
-            "avatar": "https://loremflickr.com/240/240/?random=83.43458862610815",
-            "cover": "https://loremflickr.com/720/240/?random=29.278597549456762",
-            "followerCount": 8,
-            "isFollowed": 0,
-            "isCurrentUser": 0
-        },
-        {
-            "id": 3,
-            "name": "user2",
-            "account": "@user2",
-            "avatar": "https://loremflickr.com/240/240/?random=24.364838375146135",
-            "cover": "https://loremflickr.com/720/240/?random=21.042648290680876",
-            "followerCount": 3,
-            "isFollowed": 0,
-            "isCurrentUser": 1
-        },
-        {
-            "id": 5,
-            "name": "user4",
-            "account": "@user4",
-            "avatar": "https://loremflickr.com/240/240/?random=41.48021622303335",
-            "cover": "https://loremflickr.com/720/240/?random=46.87070242729114",
-            "followerCount": 1,
-            "isFollowed": 0,
-            "isCurrentUser": 0
-        },
-        {
-            "id": 4,
-            "name": "user3",
-            "account": "@user3",
-            "avatar": "https://loremflickr.com/240/240/?random=71.38538073169198",
-            "cover": "https://loremflickr.com/720/240/?random=28.747055278834033",
-            "followerCount": 0,
-            "isFollowed": 0,
-            "isCurrentUser": 0
-        },
-        {
-            "id": 6,
-            "name": "user5",
-            "account": "@user5",
-            "avatar": "https://loremflickr.com/240/240/?random=37.30662851245823",
-            "cover": "https://loremflickr.com/720/240/?random=94.35193490220071",
-            "followerCount": 0,
-            "isFollowed": 0,
-            "isCurrentUser": 0
-        }
-    ]
+  topUsers: [
+    {
+      id: 2,
+      name: 'User11',
+      account: '@user1',
+      avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
+      cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
+      followerCount: 8,
+      isFollowed: 1,
+      isCurrentUser: 0,
+    },
+    {
+      id: 3,
+      name: 'user2',
+      account: '@user2',
+      avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
+      cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
+      followerCount: 3,
+      isFollowed: 0,
+      isCurrentUser: 1,
+    },
+    {
+      id: 5,
+      name: 'user4',
+      account: '@user4',
+      avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
+      cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
+      followerCount: 1,
+      isFollowed: 0,
+      isCurrentUser: 0,
+    },
+    {
+      id: 4,
+      name: 'user3',
+      account: '@user3',
+      avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
+      cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
+      followerCount: 0,
+      isFollowed: 0,
+      isCurrentUser: 0,
+    },
+    {
+      id: 6,
+      name: 'user5',
+      account: '@user5',
+      avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
+      cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
+      followerCount: 0,
+      isFollowed: 0,
+      isCurrentUser: 0,
+    },
+  ],
 }
 
 export default {
@@ -86,34 +87,20 @@ export default {
     fetchTopUsers() {
       this.users = dummyData.topUsers
     },
-    // addFollowed(userId) {
-    //   this.users =  this.users
-    //     .map((user) => {
-    //       if (user.id !== userId) {
-    //         return user
-    //       }
-    //       return {
-    //         ...user,
-    //         FollowedCount: user.FollowedCount + 1,
-    //         isFollowed: true,
-    //       }
-    //     })
-    //     .sort((a, b) => b.FollowedCount - a.FollowedCount)
-    // },
-    // deleteFollowed(userId) {
-    //   this.users =  this.users
-    //     .map((user) => {
-    //       if (user.id !== userId) {
-    //         return restaurant
-    //       }
-    //       return {
-    //         ...user,
-    //         FollowedCount: user.FollowedCount - 1,
-    //         isFollowed: false,
-    //       }
-    //     })
-    //     .sort((a, b) => b.FollowedCount - a.FollowedCount)
-    // },
+    deleteFollowed(userId) {
+      this.users = this.users
+        .map((user) => {
+          if (user.id !== userId) {
+            return user
+          }
+          return {
+            ...user,
+            FollowedCount: user.FollowedCount - 1,
+            isFollowed: !user.isFollowed,
+          }
+        })
+        .sort((a, b) => b.FollowedCount - a.FollowedCount)
+    },
   },
 }
 </script>
@@ -156,6 +143,10 @@ export default {
     font-weight: 700;
     color: $button-color;
     border-radius: 100px;
+    &:hover {
+      color: $button-text;
+      background-color: $button-color;
+    }
   }
   .btn-orange {
     color: $button-text;
