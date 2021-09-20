@@ -81,7 +81,7 @@
 
       <div class="text-center">
         <p>
-          <router-link to="/signin">取消</router-link>
+          <router-link to="/login">取消</router-link>
         </p>
       </div>
     </form>
