@@ -11,7 +11,7 @@
           @after-create-tweet="afterCreateTweet"
         />
       </div>
-      <div class="home-center-tweets">
+      <div class="home-center-tweets scrollbar">
         <TweetsLatest :initial-tweets="tweets" />
       </div>
     </div>
@@ -100,6 +100,7 @@ export default {
 
 <style lang="scss" scoped>
 #home {
+  position: relative;
   width: 100%;
   display: flex;
   max-width: 1245px;
@@ -117,5 +118,24 @@ export default {
   height: 120px;
   // background-color: black;
   border-bottom: 0.625rem solid $popular-border;
+}
+
+.home-center-tweets {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+//scrollbar樣式crad list與form panel可共用
+.scrollbar {
+  padding-left: 6px;
+  // 整體的樣式
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  // bar的樣式
+  &::-webkit-scrollbar-thumb {
+    background-color: $popular-border;
+    border-radius: 2px;
+  }
 }
 </style>

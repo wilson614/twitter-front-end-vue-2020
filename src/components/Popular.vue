@@ -22,61 +22,6 @@
 import userAPI from './../apis/user'
 import { Toast } from './../utils/helpers'
 
-// const dummyData = {
-//   topUsers: [
-//     {
-//       id: 2,
-//       name: 'User11',
-//       account: '@user1',
-//       avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
-//       cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
-//       followerCount: 8,
-//       isFollowed: 1,
-//       isCurrentUser: 0,
-//     },
-//     {
-//       id: 3,
-//       name: 'user2',
-//       account: '@user2',
-//       avatar: 'https://loremflickr.com/240/240/?random=24.364838375146135',
-//       cover: 'https://loremflickr.com/720/240/?random=21.042648290680876',
-//       followerCount: 3,
-//       isFollowed: 0,
-//       isCurrentUser: 1,
-//     },
-//     {
-//       id: 5,
-//       name: 'user4',
-//       account: '@user4',
-//       avatar: 'https://loremflickr.com/240/240/?random=41.48021622303335',
-//       cover: 'https://loremflickr.com/720/240/?random=46.87070242729114',
-//       followerCount: 1,
-//       isFollowed: 0,
-//       isCurrentUser: 0,
-//     },
-//     {
-//       id: 4,
-//       name: 'user3',
-//       account: '@user3',
-//       avatar: 'https://loremflickr.com/240/240/?random=71.38538073169198',
-//       cover: 'https://loremflickr.com/720/240/?random=28.747055278834033',
-//       followerCount: 0,
-//       isFollowed: 0,
-//       isCurrentUser: 0,
-//     },
-//     {
-//       id: 6,
-//       name: 'user5',
-//       account: '@user5',
-//       avatar: 'https://loremflickr.com/240/240/?random=37.30662851245823',
-//       cover: 'https://loremflickr.com/720/240/?random=94.35193490220071',
-//       followerCount: 0,
-//       isFollowed: 0,
-//       isCurrentUser: 0,
-//     },
-//   ],
-// }
-
 export default {
   data() {
     return {
@@ -87,14 +32,14 @@ export default {
     this.fetchTopUsers()
   },
   methods: {
-    async fetchTopUsers () {
+    async fetchTopUsers() {
       try {
         const { data } = await userAPI.getTopUsers()
         this.users = data.topUsers
       } catch (error) {
         Toast.fire({
           icon: 'error',
-          title: '無法取得追蹤者，請稍後再試'
+          title: '無法取得追蹤者，請稍後再試',
         })
       }
     },
