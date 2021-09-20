@@ -40,6 +40,14 @@
   </div>
 </template>
 
+<script>
+import { fromNowFilter } from './../utils/mixins'
+
+export default {
+  mixins: [fromNowFilter],
+}
+</script>
+
 <style lang="scss" scoped>
 #tweetdetail {
   width: 100%;

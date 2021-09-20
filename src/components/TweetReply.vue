@@ -1,8 +1,7 @@
-<template>
+<template v-for="reply in tweetReplys" :key="reply.id">
   <div id="tweet-reply">
     <img
-      src="https://loremflickr.com/240/240/?random=83.43458862610815"
-      alt="avator"
+      :src="reply.user.avatar" alt="avator"
     />
     <div class="reply-content">
       <div class="user-details">
@@ -24,6 +23,20 @@
     </div>
   </div>
 </template>
+
+<script>
+import { fromNowFilter } from './../utils/mixins'
+
+export default {
+  mixins: [fromNowFilter],
+  props: {
+    tweetReplys: {
+      type: Array,
+      required: true
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 #tweet-reply {
