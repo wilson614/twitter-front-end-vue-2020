@@ -35,7 +35,7 @@
         <label class="placeholder">密碼</label>
       </div>
       <div class="btn-control btn-login">
-        <button class="btn btn-login" type="submit">登入</button>
+        <button class="btn btn-login" type="submit" :disabled="isProcessing">登入</button>
       </div>
       <div class="link-wrapper">
         <router-link to="/admin" class="link-wrap user-login"
@@ -51,27 +51,56 @@
 </template>
 
 <script>
+import authorizationAPI from './../apis/authorizationAPI'
+import { Toast } from './../utils/helpers'
+
 export default {
   data() {
     return {
-      email: "",
-      account: "",
-      password: "",
-    };
+      email: '',
+      account: '',
+      password: '',
+      isProcessing: false,
+    }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        email: this.email,
-        account: this.account,
-        password: this.password,
-      });
+    handleSubmit(e) {
+      if (!this.email || !this.password) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請填入 email 和 password',
+        })
+        return
+      }
+      this.isProcessing = true
 
-      //TODO: 向後端驗證管理者登入資訊是否正確
-      console.log("data", data);
+      // 使用 authorizationAPI 的 signIn 方法
+      // 並且帶入使用者填寫的 email 和 password
+      authorizationAPI
+        .signIn({
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          const { data } = response
+
+          // 將 token 存放在 localStorage 內
+          localStorage.setItem('token', data.token)
+
+          // 成功登入後轉址到餐聽首頁
+          this.$router.push('/')
+        })
+        .catch((error) => {
+          Toast.fire({
+            icon: 'warning',
+            title: '請確認您輸入了正確的帳號密碼',
+          })
+          this.isProcessing = false
+          console.log('error', error)
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
