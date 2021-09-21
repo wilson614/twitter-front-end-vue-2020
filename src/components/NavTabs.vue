@@ -7,18 +7,18 @@
         @click="$router.back()"
       ></i>
     </router-link>
-    <!-- <font-awesome-icon icon="spinner" size="xs" v-if="isbackArrow"/> -->
     <h2 class="list-title">
       <template v-if="plainText">
         {{ plainText }}
       </template>
-      <div class="user">
-        <template v-if="user">
-          <span class="name">{{ user.name }}</span>
-          <span class="tweetCount">{{ user.tweetCount }}&ensp;推文</span>
-        </template>
-      </div>
     </h2>
+    <!-- TODO:確認推文顯示原因 -->
+    <template v-if="user">
+      <div class="user-title">
+        <span class="name">{{ user.name }}</span>
+        <span class="tweetCount">{{ user.tweetCount }}&ensp;推文</span>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -76,7 +76,7 @@ export default {
   }
 }
 
-.user {
+.user-title {
   display: flex;
   flex-direction: column;
   .name {
