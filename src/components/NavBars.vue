@@ -16,7 +16,12 @@
         </router-link>
       </template>
     </div>
-    <button class="btn" type="submit" v-if="!isAdmin" @click="showModal">
+    <button
+      class="btn"
+      type="submit"
+      v-if="this.page !== 'admin'"
+      @click="showModal"
+    >
       推文
     </button>
     <TweetCreateModal v-show="isModalVisible" @close="closeModal" />
@@ -30,9 +35,9 @@
 </template>
 
 <script>
-import IconLogOut from '@/components/icon/NavLogOut.vue'
-import TweetCreateModal from '@/components/TweetCreateModal.vue'
-import { currentUser } from './../utils/helpers'
+import IconLogOut from "@/components/icon/NavLogOut.vue";
+import TweetCreateModal from "@/components/TweetCreateModal.vue";
+import { currentUser } from "./../utils/helpers";
 
 export default {
   components: {
@@ -42,7 +47,7 @@ export default {
   data() {
     return {
       isModalVisible: false,
-    }
+    };
   },
   props: {
     page: String,
@@ -66,61 +71,61 @@ export default {
   },
   computed: {
     navLinks() {
-      if (!this.page || this.page === 'normal') {
+      if (!this.page || this.page === "normal") {
         return [
           {
-            name: 'home',
-            text: '首頁',
-            to: '/',
-            isActive: ['tweets'],
-            icon: () => import('@/components/icon/NavHome.vue'),
+            name: "home",
+            text: "首頁",
+            to: "/",
+            isActive: ["tweets"],
+            icon: () => import("@/components/icon/NavHome.vue"),
           },
           {
-            name: 'profile',
-            text: '個人資料',
-            to: { name: 'profile', params: { userid: currentUser.id } },
+            name: "profile",
+            text: "個人資料",
+            to: { name: "profile", params: { userid: currentUser.id } },
             isActive: [],
-            icon: () => import('@/components/icon/NavProfile.vue'),
+            icon: () => import("@/components/icon/NavProfile.vue"),
           },
           {
-            name: 'setting',
-            text: '設定',
-            to: '/setting',
+            name: "setting",
+            text: "設定",
+            to: "/setting",
             isActive: [],
-            icon: () => import('@/components/icon/NavSetting.vue'),
+            icon: () => import("@/components/icon/NavSetting.vue"),
           },
-        ]
+        ];
       }
-      if (this.page === 'admin') {
+      if (this.page === "admin") {
         return [
           {
-            name: 'adminTweetsList',
-            text: '推文清單',
-            to: '/admin/tweets',
+            name: "adminTweetsList",
+            text: "推文清單",
+            to: "/admin/tweets",
             isActive: [],
-            icon: () => import('@/components/icon/NavHome.vue'),
+            icon: () => import("@/components/icon/NavHome.vue"),
           },
           {
-            name: 'adminUserList',
-            text: '使用者列表',
-            to: '/admin/users',
+            name: "adminUserList",
+            text: "使用者列表",
+            to: "/admin/users",
             isActive: [],
-            icon: () => import('@/components/icon/NavProfile.vue'),
+            icon: () => import("@/components/icon/NavProfile.vue"),
           },
-        ]
+        ];
       }
-      return []
+      return [];
     },
   },
-    methods: {
+  methods: {
     showModal() {
-      this.isModalVisible = true
+      this.isModalVisible = true;
     },
     closeModal() {
-      this.isModalVisible = false
+      this.isModalVisible = false;
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

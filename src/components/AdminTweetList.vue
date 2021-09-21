@@ -50,7 +50,6 @@
           </div>
           <div class="btn btn-control">
             <button
-              v-if="currentUser.isAdmin"
               type="button"
               class="btn btn-delete"
               @click.stop.prevent="deleteTweet(tweet.id)"
@@ -67,33 +66,17 @@
 <script>
 import infiniteScroll from "vue-infinite-scroll";
 import { fromNowFilter } from "./../utils/mixins";
-
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "管理者",
-    email: "root@example.com",
-    image: "https://i.pravatar.cc/300",
-    isAdmin: true,
-  },
-  isAuthenticated: true,
-};
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
 
 export default {
   mixins: [fromNowFilter],
   directives: { infiniteScroll },
-  props: {
-    initialTweets: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
-      currentUser: dummyUser.currentUser,
       more: {},
       busy: false,
-      offset: 0,
+      page: 1,
       limit: 20,
       tweets: [],
     };
@@ -103,29 +86,43 @@ export default {
       let isMore = this.more[id];
       this.$set(this.more, id, !isMore);
     },
-    loadTweets() {
-      console.log("load tweets");
+    async loadTweets() {
       this.busy = true;
-      if (this.offset >= this.initialTweets.length) {
-        return;
-      }
-      setTimeout(() => {
-        //TODO call api get tweets
-        for (
-          let i = 0;
-          this.offset < this.initialTweets.length && i < this.limit;
-          i++, this.offset++
-        ) {
-          this.tweets.push(this.initialTweets[this.offset]);
+      try {
+        const { data } = await adminAPI.tweets.get({ page: this.page });
+        if (data.length === 0) {
+          Toast.fire({
+            icon: "warning",
+            title: "沒有推文",
+          });
+          return;
         }
+        data.forEach((tweet) => {
+          this.tweets.push(tweet);
+        });
+        console.log(this.tweets);
         this.busy = false;
-      }, 500);
+        this.page++;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得資料，請稍後再試",
+        });
+      }
     },
-    deleteTweet(tweetId) {
-      // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
-      // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
-      //this.$emit('after-delete-comment', tweetId)
-      this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+    async deleteTweet(tweetId) {
+      try {
+        const { data } = await adminAPI.tweets.delete({ tweetId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法刪除資料，請稍後再試",
+        });
+      }
     },
   },
 };
