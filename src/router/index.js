@@ -24,6 +24,11 @@ const routes = [
     component: Home,
   },
   {
+    path: "/tweets/:id",
+    name: "tweets",
+    component: () => import("../views/Tweets.vue"),
+  },
+  {
     path: "/users/:userid",
     name: "user",
     redirect: "/users/:userid/profile",
@@ -77,9 +82,9 @@ const routes = [
     component: () => import("../views/AdminTweets.vue"),
   },
   {
-    path: '/admin/users',
-    name: 'admin-users',
-    component: () => import('../views/AdminUsers.vue'),
+    path: "/admin/users",
+    name: "admin-users",
+    component: () => import("../views/AdminUsers.vue"),
   },
   {
     path: "*",

@@ -18,12 +18,18 @@ export default {
         {
           id: uuidv4(),
           title: "跟隨者",
-          path: "/users/:userid/followers",
+          path: {
+            name: "followers",
+            params: { userid: this.$route.params.userid },
+          },
         },
         {
           id: uuidv4(),
           title: "正在跟隨",
-          path: "/users/:userid/followings",
+          path: {
+            name: "followings",
+            params: { userid: this.$route.params.userid },
+          },
         },
       ],
     };
@@ -37,14 +43,15 @@ export default {
 }
 .tab-item {
   display: flex;
-  a{
+  a {
     padding: 15px 0;
     width: 130px;
     text-align: center;
     font-size: 15px;
     font-weight: 700;
     color: $input-placeholder;
-    &:hover, &:active {
+    &:hover,
+    &:active {
       color: $button-color;
       border-bottom: 2px solid $button-color;
     }

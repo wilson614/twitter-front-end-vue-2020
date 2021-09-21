@@ -10,7 +10,11 @@
             <span class="user name">{{ tweet.User.name }}</span>
             <a href="" class="user account">{{ tweet.User.account }}</a>
             <span class="seperater">•</span>
-            <span class="user created-at">{{ tweet.createdAt | fromNow }}</span>
+            <span class="user created-at">{{
+              isToday(tweet.createdAt)
+                ? fromNow(utcOffset(tweet.createdAt))
+                : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+            }}</span>
           </div>
           <p class="tweet-content">
             {{ tweet.description }}

@@ -21,15 +21,14 @@
           <div class="modal-input">
             <section class="modal-create-tweet">
               <textarea
+                v-model="newTweet.description"
                 placeholder="有什麼新鮮事？"
               ></textarea>
-              <img class="avatar" alt="avatar" />
-              <!-- <span v-show="displayErrorMessage" class="error-message">{{
-              errorMessage
-            }}</span> -->
-              <button
-                class="btn"
-              >
+              <img class="avatar" alt="avatar" :src="profile.avatar" />
+              <span v-show="errorMessage" class="error-message">{{
+                errorMessage
+              }}</span>
+              <button @click.stop.prevent="handleCreateTweet" class="btn">
                 推文
               </button>
             </section>
@@ -41,26 +40,38 @@
 </template>
 
 <script>
+import { currentUser } from "./../utils/helpers";
 export default {
-  name: 'TweetCreateModal',
-  props: {
-      //TODO: 確認當前使用者頭貼
-    // currentUser: {
-    //   type: Object,
-    //   required: true,
-    // },
-  },
+  name: "TweetCreateModal",
   data() {
     return {
-      // profile: this.initialProfile,
+      profile: { ...currentUser },
+      newTweet: {},
+      errorMessage: "",
     };
   },
   methods: {
     close() {
-      this.$emit('close')
+      this.$emit("close");
+      setTimeout(() => {
+        this.newTweet = {};
+        this.errorMessage = "";
+      }, 500);
+    },
+    handleCreateTweet() {
+      if (!this.newTweet.description) {
+        this.errorMessage = "內容不可空白";
+        return;
+      }
+      if (this.newTweet.description.length > 140) {
+        this.errorMessage = "字數不可超過140";
+        return;
+      }
+      //call API create tweet
+      this.close();
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -141,6 +152,14 @@ img {
   height: 50px;
   margin-right: 0.625rem;
   border-radius: 50px;
+}
+.error-message {
+  font-size: 15px;
+  font-weight: 500;
+  color: $input-error-msg;
+  position: absolute;
+  bottom: 28px;
+  right: 100px;
 }
 
 .btn {

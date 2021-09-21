@@ -283,7 +283,7 @@ export default {
       position: absolute;
       top: -11px;
       left: calc(75px - 11px);
-      z-index: 9999;
+      z-index: 1;
     }
   }
 }

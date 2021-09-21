@@ -11,5 +11,11 @@ export default {
   },
   signUp(data) {
     return apiHelper.post('/users', { ...data })
+  },
+  adminLogin({email,password}) {
+    return apiHelper.post('/adminLogin', {
+      email,
+      password,
+    })
   }
 }
