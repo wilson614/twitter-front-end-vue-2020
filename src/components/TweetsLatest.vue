@@ -25,13 +25,19 @@
           </div>
         </router-link>
         <div class="btn btn-control">
-          <div class="btn-reply">
-            <TweetReply class="btn-icon" />
+          <!-- <div class="btn-reply">
+            <TweetReply class="btn-icon"/>
+            <TweetReplyModal v-show="tweetReplyModal" @close="closeModal" />
             <span>{{ tweet.replyCount }}</span>
-          </div>
+          </div> -->
+          <span class="btn-reply cursor-pointer" @click="showtweetReplyModal">
+            <TweetReply class="btn-icon"/>
+            <TweetReplyModal v-show="tweetReplyModal" @close="closetweetReplyModal" />
+            <span class="btn-text">{{ tweet.replyCount }}</span>
+          </span>
           <div class="btn-like">
             <TweetLke :class="['btn-icon', tweet.isLiked && 'btn-red']" />
-            <span>{{ tweet.likeCount }}</span>
+            <span class="btn-text">{{ tweet.likeCount }}</span>
           </div>
         </div>
       </div>
@@ -41,9 +47,10 @@
 
 <script>
 import { fromNowFilter } from './../utils/mixins'
-import infiniteScroll from "vue-infinite-scroll";
+import infiniteScroll from 'vue-infinite-scroll'
 import TweetReply from '@/components/icon/TweetReply.vue'
 import TweetLke from '@/components/icon/TweetLike.vue'
+import TweetReplyModal from '@/components/TweetReplyModal.vue'
 
 export default {
   mixins: [fromNowFilter],
@@ -51,6 +58,7 @@ export default {
   components: {
     TweetReply,
     TweetLke,
+    TweetReplyModal,
   },
   props: {
     initialTweets: {
@@ -62,6 +70,7 @@ export default {
     return {
       tweets: [],
       more: {},
+      tweetReplyModal: false,
     }
   },
   methods: {
@@ -75,7 +84,7 @@ export default {
       if (this.offset >= this.initialTweets.length) {
         return
       }
-    setTimeout(() => {
+      setTimeout(() => {
         //TODO call api get tweets
         for (
           let i = 0;
@@ -91,6 +100,12 @@ export default {
       return description.length > 139
         ? description.slice(0, 139) + '...'
         : description
+    },
+    showtweetReplyModal() {
+      this.tweetReplyModal = true
+    },
+    closetweetReplyModal() {
+      this.tweetReplyModal = false
     },
   },
 }
@@ -143,14 +158,14 @@ export default {
   .btn-reply {
     margin-right: 3.125rem;
   }
-  span {
+  .btn-text {
     margin-left: 0.625rem;
     font-size: 13px;
     font-weight: 500;
     color: $input-placeholder;
     vertical-align: middle;
   }
-  span::before {
+  .btn-text::before {
     content: '';
     display: inline-block;
     vertical-align: middle;
