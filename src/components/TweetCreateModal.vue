@@ -24,7 +24,7 @@
                 v-model="newTweet.description"
                 placeholder="有什麼新鮮事？"
               ></textarea>
-              <img class="avatar" alt="avatar" :src="profile.avatar" />
+              <img class="avatar" alt="avatar" :src="currentUser.avatar" />
               <span v-show="errorMessage" class="error-message">{{
                 errorMessage
               }}</span>
@@ -40,12 +40,12 @@
 </template>
 
 <script>
-import { currentUser } from "./../utils/helpers";
+import { mapState } from 'vuex'
+
 export default {
   name: "TweetCreateModal",
   data() {
     return {
-      profile: { ...currentUser },
       newTweet: {},
       errorMessage: "",
     };
@@ -70,6 +70,9 @@ export default {
       //call API create tweet
       this.close();
     },
+  },
+  computed: {
+    ...mapState(['currentUser', 'isAuthenticated'])
   },
 };
 </script>

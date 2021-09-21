@@ -100,7 +100,7 @@ export default {
         data.forEach((tweet) => {
           this.tweets.push(tweet);
         });
-        console.log(this.tweets);
+        //console.log(this.tweets);
         this.busy = false;
         this.page++;
       } catch (error) {

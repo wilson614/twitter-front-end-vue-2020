@@ -26,10 +26,10 @@
     </button>
     <TweetCreateModal v-show="isModalVisible" @close="closeModal" />
     <div class="nav-bottom">
-      <router-link to="/signin" class="nav-bottom-item">
+      <div class="nav-bottom-item" @click.stop.prevent="logout()">
         <IconLogOut class="nav-bottom-item-img" />
         <span>登出</span>
-      </router-link>
+      </div>
     </div>
   </nav>
 </template>
@@ -37,7 +37,8 @@
 <script>
 import IconLogOut from "@/components/icon/NavLogOut.vue";
 import TweetCreateModal from "@/components/TweetCreateModal.vue";
-import { currentUser } from "./../utils/helpers";
+import { Toast } from "./../utils/helpers";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -70,6 +71,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
     navLinks() {
       if (!this.page || this.page === "normal") {
         return [
@@ -83,7 +85,10 @@ export default {
           {
             name: "profile",
             text: "個人資料",
-            to: { name: "profile", params: { userid: currentUser.id } },
+            to: {
+              name: "profile",
+              params: { userid: this.currentUser.id },
+            },
             isActive: [],
             icon: () => import("@/components/icon/NavProfile.vue"),
           },
@@ -123,6 +128,14 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    logout() {
+      this.$store.commit("revokeAuthentication");
+      Toast.fire({
+        icon: "success",
+        title: "您已成功登出",
+      });
+      this.$router.push(this.page === "admin" ? "/admin/login" : "/login");
     },
   },
 };

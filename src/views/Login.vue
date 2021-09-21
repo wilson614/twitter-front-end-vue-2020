@@ -38,7 +38,7 @@
         <button class="btn btn-login" type="submit" :disabled="isProcessing">登入</button>
       </div>
       <div class="link-wrapper">
-        <router-link to="/admin" class="link-wrap user-login"
+        <router-link to="/register" class="link-wrap user-login"
           >註冊 Alphitter</router-link
         >
         <span class="seperater">•</span>
