@@ -100,7 +100,6 @@ export default {
 
 <style lang="scss" scoped>
 #home {
-  position: relative;
   width: 100%;
   display: flex;
   max-width: 1245px;
