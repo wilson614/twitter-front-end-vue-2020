@@ -4,7 +4,7 @@
       <NavBars page="normal" />
     </div>
     <div class="profile-center">
-      <div class="navtabs"></div>
+      <NavTabs :user="currentUser" :isbackArrow="true" />
       <div class="profile-center-profile">
         <UserProfile :initial-profile="profile" :current-user="currentUser" />
       </div>
@@ -24,6 +24,7 @@
 <script>
 import NavBars from "./../components/NavBars.vue";
 import Popular from "./../components/Popular.vue";
+import NavTabs from '../components/NavTabs.vue'
 import UserProfile from "./../components/UserProfile.vue";
 import UserProfileTabs from "./../components/UserProfileTabs.vue";
 
@@ -57,6 +58,7 @@ const dummyUser = {
 export default {
   components: {
     NavBars,
+    NavTabs,
     Popular,
     UserProfile,
     UserProfileTabs,

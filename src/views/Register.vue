@@ -81,7 +81,7 @@
 
       <div class="text-center">
         <p>
-          <router-link to="/signin">取消</router-link>
+          <router-link to="/login">取消</router-link>
         </p>
       </div>
     </form>
@@ -106,6 +106,7 @@ export default {
   methods: {
     async handleSubmit() {
       try {
+        this.isProcessing = true
         if (
           !this.account ||
           !this.name ||
@@ -117,6 +118,7 @@ export default {
             icon: 'warning',
             title: '請確認已填寫所有欄位',
           })
+          this.isProcessing = false
           return
         }
         if (this.password !== this.checkPassword) {
@@ -124,11 +126,11 @@ export default {
             icon: 'warning',
             title: '兩次輸入的密碼不同',
           })
+          this.password = ''
           this.checkPassword = ''
+          this.isProcessing = false
           return
         }
-        this.isProcessing = true
-
         const data = await authorizationAPI.signUp({
           account: this.account,
           name: this.name,
@@ -144,13 +146,58 @@ export default {
           title: data.message,
         })
         // 成功登入後轉址到登入頁
-        this.$router.push('/signin')
+        this.$router.push('/login')
       } catch (error) {
-        this.isProcessing = false
-        Toast.fire({
-          icon: 'warning',
-          title: `無法註冊 - ${error.message}`,
-        })
+        const { data } = error.response
+
+        if (data.message.length === 1) {
+          if (data.message[0].error === 'Account is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: '帳號已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          } else if (data.message[0].error === 'Email is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: 'Email 已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          }
+        } else if (data.message.length === 2) {
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號及 Email 皆已重覆註冊',
+          })
+          this.isProcessing = false
+          return
+        } else {
+          Toast.fire({
+            icon: 'warning',
+            title: `無法註冊 - ${error.message}`,
+          })
+        }
+        // TODO:待研究較好解法
+        // if (data.message.some(errorMag => errorMag.error === 'Account is exists.')) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: '帳號已重覆註冊',
+        //   })
+        //   return
+        // } else if (data.message.some(errorMag => errorMag.error === 'Email is exists.')) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: 'Email 已重覆註冊',
+        //   })
+        //   return
+        // } else {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: `無法註冊 - ${error.message}`,
+        //   })
+        // }
       }
     },
   },

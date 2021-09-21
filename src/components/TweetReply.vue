@@ -1,7 +1,7 @@
 <template v-for="reply in tweetReplys" :key="reply.id">
   <div id="tweet-reply">
     <img
-      :src="reply.user.avatar" alt="avator"
+      :src="reply.User.avatar" alt="avator"
     />
     <div class="reply-content">
       <div class="user-details">
