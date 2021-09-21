@@ -10,7 +10,11 @@
             <span class="user name">{{ reply.User.name }}</span>
             <a href="" class="user account">{{ reply.User.account }}</a>
             <span class="seperater">•</span>
-            <span class="user created-at">{{ reply.createdAt | fromNow }}</span>
+            <span class="user created-at">{{
+              isToday(reply.createdAt)
+                ? fromNow(utcOffset(reply.createdAt))
+                : timeFormat(utcOffset(reply.createdAt), 'MM月DD日')
+            }}</span>
           </div>
           <div class="replay-to d-flex align-items-center">
             <span class="reply-title">回覆</span>

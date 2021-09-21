@@ -24,9 +24,11 @@
                   ><a href="">{{ tweet.account }}</a></span
                 >
                 <span class="seperater">•</span>
-                <span class="created-at"
-                  >{{ tweet.createdAt | fromNow }}</span
-                >
+                <span class="created-at">{{
+                  isToday(tweet.createdAt)
+                    ? fromNow(utcOffset(tweet.createdAt))
+                    : timeFormat(utcOffset(tweet.createdAt), "MM月DD日")
+                }}</span>
               </div>
               <div class="user-tweet">
                 <span class="tweet-text">
@@ -124,7 +126,7 @@ export default {
       // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
       //this.$emit('after-delete-comment', tweetId)
       this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
-    }
+    },
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="user-follower">
     <div class="navbar">
-      <NavBars :navItems="navItems" />
+      <NavBars />
     </div>
     <div class="follower-center">
       <div class="navtabs"></div>
@@ -55,9 +55,6 @@
 
 <script>
 import NavBars from "./../components/NavBars.vue";
-import IconHome from "@/components/icon/NavHome.vue";
-import IconProfile from "@/components/icon/NavProfile.vue";
-import IconSetting from "@/components/icon/NavSetting.vue";
 import Popular from "./../components/Popular.vue";
 import UserFollowTabs from "./../components/UserFollowTabs.vue";
 
@@ -88,26 +85,6 @@ export default {
   data() {
     return {
       followers: [],
-      navItems: [
-        {
-          name: "home",
-          text: "首頁",
-          to: "/",
-          icon: IconHome,
-        },
-        {
-          name: "profile",
-          text: "個人資料",
-          to: "/users/:userid/profile",
-          icon: IconProfile,
-        },
-        {
-          name: "setting",
-          text: "設定",
-          to: "/setting",
-          icon: IconSetting,
-        },
-      ],
     };
   },
   created() {

@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
     <div class="navbar">
-      <NavBars :navItems="navItems" />
+      <NavBars page="normal" />
     </div>
     <div class="profile-center">
       <NavTabs :user="currentUser" :isbackArrow="true" />
@@ -23,9 +23,6 @@
 
 <script>
 import NavBars from "./../components/NavBars.vue";
-import IconHome from "@/components/icon/NavHome.vue";
-import IconProfile from "@/components/icon/NavProfile.vue";
-import IconSetting from "@/components/icon/NavSetting.vue";
 import Popular from "./../components/Popular.vue";
 import NavTabs from '../components/NavTabs.vue'
 import UserProfile from "./../components/UserProfile.vue";
@@ -70,26 +67,6 @@ export default {
     return {
       profile: {},
       currentUser: {},
-      navItems: [
-        {
-          name: "home",
-          text: "首頁",
-          to: "/",
-          icon: IconHome,
-        },
-        {
-          name: "profile",
-          text: "個人資料",
-          to: "/users/:userid/profile",
-          icon: IconProfile,
-        },
-        {
-          name: "setting",
-          text: "設定",
-          to: "/setting",
-          icon: IconSetting,
-        },
-      ],
     };
   },
   created() {
@@ -144,14 +121,9 @@ export default {
 }
 
 #profile {
-  position: relative;
   width: 100%;
   display: flex;
   max-width: 1245px;
-}
-.navbar {
-  position: sticky;
-  top: 0;
 }
 .profile-center {
   margin: 0 2rem;

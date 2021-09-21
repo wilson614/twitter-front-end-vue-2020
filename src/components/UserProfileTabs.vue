@@ -18,17 +18,17 @@ export default {
         {
           id: uuidv4(),
           title: "推文",
-          path: "/users/:userid/profile",
+          path: { name: 'profile', params: { userid: this.$route.params.userid } },
         },
         {
           id: uuidv4(),
           title: "推文與回覆",
-          path: "/users/:userid/replies",
+          path: { name: 'replies', params: { userid: this.$route.params.userid } },
         },
         {
           id: uuidv4(),
           title: "喜歡的內容",
-          path: "/users/:userid/likes",
+          path: { name: 'likes', params: { userid: this.$route.params.userid } },
         },
       ],
     };

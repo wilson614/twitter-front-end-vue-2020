@@ -32,6 +32,7 @@
 <script>
 import IconLogOut from '@/components/icon/NavLogOut.vue'
 import TweetCreateModal from '@/components/TweetCreateModal.vue'
+import { currentUser } from './../utils/helpers'
 
 export default {
   components: {
@@ -77,7 +78,7 @@ export default {
           {
             name: 'profile',
             text: '個人資料',
-            to: '/users/:userid/profile',
+            to: { name: 'profile', params: { userid: currentUser.id } },
             isActive: [],
             icon: () => import('@/components/icon/NavProfile.vue'),
           },

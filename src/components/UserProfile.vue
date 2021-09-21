@@ -71,18 +71,32 @@
 
       <div class="card-body d-flex flex-column">
         <p class="card-name">{{ profile.name }}</p>
-        <router-link class="card-account" to="#">{{ profile.account }}</router-link>
+        <router-link class="card-account" to="#">{{
+          profile.account
+        }}</router-link>
         <p class="introduction my-2">
           {{ profile.introduction }}
         </p>
         <div class="follows d-flex">
           <div class="following-wrapper">
             <span class="following">{{ profile.followingCount }} 個</span>
-            <router-link class="a-following" to="/users/:userid/followings">跟隨中</router-link>
+            <router-link
+              class="a-following"
+              :to="{
+                name: 'followings',
+                params: { userid: this.$route.params.userid },
+              }"
+              >跟隨中</router-link
+            >
           </div>
           <div class="follower-wrapper ml-5">
             <span class="follower">{{ profile.followerCount }} 位</span>
-            <router-link class="a-follower" to="/users/:userid/followers">跟隨者</router-link>
+            <router-link class="a-follower" :to="{
+                name: 'followers',
+                params: { userid: this.$route.params.userid },
+              }"
+              >跟隨者</router-link
+            >
           </div>
         </div>
       </div>
@@ -150,11 +164,11 @@ export default {
         isNotified: false,
       };
     },
-    handleAfterSubmit(data){
+    handleAfterSubmit(data) {
       this.profile = {
         ...this.profile,
         ...data,
-      }
+      };
       this.isModalVisible = false;
     },
   },

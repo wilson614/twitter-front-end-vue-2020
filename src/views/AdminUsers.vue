@@ -1,7 +1,7 @@
 <template>
   <div class="container admin-users-container d-flex justify-content-center">
-    <section class="navbar">
-      <NavBars :navItems="navItems" :isAdmin="true" />
+    <section class="navbar mr-4">
+      <NavBars page="admin"/>
     </section>
     <div class="content-wrapper">
       <section class="navtabs admin-navtabs">
@@ -18,7 +18,6 @@
 import AdminNavtabs from './../components/AdminNavtabs.vue'
 import AdminUserList from './../components/AdminUserList.vue'
 import NavBars from './../components/NavBars.vue'
-import IconProfile from '@/components/icon/NavProfile.vue'
 
 
 const dummyData = [
@@ -293,20 +292,6 @@ export default {
   data() {
     return {
       users: [],
-      navItems: [
-        {
-          name: 'adminTweetsList',
-          text: '推文清單',
-          to: '/admin/tweets',
-          icon: () => import('@/components/icon/NavHome.vue'),
-        },
-        {
-          name: 'adminUserList',
-          text: '使用者列表',
-          to: '/admin/users',
-          icon: IconProfile,
-        },
-      ],
     }
   },
   created() {
