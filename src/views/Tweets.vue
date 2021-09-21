@@ -5,7 +5,7 @@
     </div>
     <div class="tweets-center">
       <NavTabs plainText="推文" :isbackArrow="true" />
-      <div class="tweets-center-tweet"><TweetDetail /></div>
+      <div class="tweets-center-tweet"><TweetDetail :tweet="tweet" /></div>
       <div class="tweets-center-tweets">
         <TweetReply :tweet-replys="tweetReplys" />
       </div>
@@ -21,65 +21,113 @@ import Popular from './../components/Popular.vue'
 import TweetDetail from '@/components/TweetDetail.vue'
 import TweetReply from '@/components/TweetReply.vue'
 
-const dummyData = {
-  tweets: {
-    id: 5,
-    UserId: 2,
-    description:
-      'Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis ullamco cillum dolor. Voluptate exercitation incididunt aliquip deserunt reprehenderit elit laborum.',
-    likeCount: 0,
-    replyCount: 3,
-    createdAt: '2021-09-02T03:33:32.000Z',
-    updatedAt: '2021-09-14T13:33:32.000Z',
+const dummyData = [
+  {
+    id: 165,
+    UserId: 35,
+    TweetId: 55,
+    comment: 'Sunt labore illum perspiciatis aut doloribus sapiente.',
+    createdAt: '2021-09-20T05:07:00.000Z',
+    updatedAt: '2021-09-20T05:07:00.000Z',
     User: {
-      id: 2,
-      email: 'user1@example.com',
-      password: '$2a$10$T0/LtfFf6NOyUKiG36uPNuOIUaf1MWL4Jo7xk.NFHRGMbSPl2NVwK',
-      name: 'user1',
-      avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
+      id: 35,
+      email: 'user3@example.com',
+      password: '$2a$10$VqbmrgPkcbv1DltF3cvQIuDQBjW1x6bPdc2vFlfI3wmPfpdaPsOMu',
+      name: 'user3',
+      avatar: 'https://loremflickr.com/240/240/?random=53.377647020413235',
       introduction:
-        'Quam distinctio doloremque consequuntur.\nEt et aut qui enim ea.\nEst cupiditate voluptatem totam commodi excepturi ducimus aut.\nEst nihil veniam vel pariatur.\nEst maiores non eum est molestiae.',
+        'Quis sed dolore enim fuga eligendi est harum et. Quod eveniet inventore maiores et nihil.',
       role: 'user',
-      account: '@user1',
-      cover: 'https://loremflickr.com/720/240/?random=29.278597549456762',
+      account: '@user3',
+      cover: 'https://loremflickr.com/720/240/?random=84.99804545220988',
       followerCount: 0,
       followingCount: 0,
       tweetCount: 10,
-      createdAt: '2021-09-14T13:33:32.000Z',
-      updatedAt: '2021-09-14T13:33:32.000Z',
+      createdAt: '2021-09-20T05:07:00.000Z',
+      updatedAt: '2021-09-20T05:07:00.000Z',
     },
-    name: 'user1',
-    avatar: 'https://loremflickr.com/240/240/?random=83.43458862610815',
-    account: '@user1',
-    isLiked: true,
+    Tweet: {
+      id: 55,
+      UserId: 15,
+      description:
+        'Dolor consequatur deleniti voluptatem error veritatis voluptatem quia odio fugit.',
+      likeCount: 0,
+      replyCount: 3,
+      createdAt: '2021-09-20T05:07:00.000Z',
+      updatedAt: '2021-09-20T05:07:00.000Z',
+    },
   },
-  replys: [
-    {
-      id: 13,
-      UserId: 3,
-      TweetId: 5,
-      comment: 'qui',
-      createdAt: '2021-07-04T17:03:02.000Z',
-      updatedAt: '2021-07-04T17:03:02.000Z',
+  {
+    id: 175,
+    UserId: 35,
+    TweetId: 55,
+    comment: 'Pariatur dolores commodi vel.',
+    createdAt: '2021-09-20T05:07:00.000Z',
+    updatedAt: '2021-09-20T05:07:00.000Z',
+    User: {
+      id: 35,
+      email: 'user3@example.com',
+      password: '$2a$10$VqbmrgPkcbv1DltF3cvQIuDQBjW1x6bPdc2vFlfI3wmPfpdaPsOMu',
+      name: 'user3',
+      avatar: 'https://loremflickr.com/240/240/?random=53.377647020413235',
+      introduction:
+        'Quis sed dolore enim fuga eligendi est harum et. Quod eveniet inventore maiores et nihil.',
+      role: 'user',
+      account: '@user3',
+      cover: 'https://loremflickr.com/720/240/?random=84.99804545220988',
+      followerCount: 0,
+      followingCount: 0,
+      tweetCount: 10,
+      createdAt: '2021-09-20T05:07:00.000Z',
+      updatedAt: '2021-09-20T05:07:00.000Z',
     },
-    {
-      id: 14,
-      UserId: 4,
-      TweetId: 5,
-      comment: 'beatae',
-      createdAt: '2021-07-04T17:03:02.000Z',
-      updatedAt: '2021-07-04T17:03:02.000Z',
+    Tweet: {
+      id: 55,
+      UserId: 15,
+      description:
+        'Dolor consequatur deleniti voluptatem error veritatis voluptatem quia odio fugit.',
+      likeCount: 0,
+      replyCount: 3,
+      createdAt: '2021-09-20T05:07:00.000Z',
+      updatedAt: '2021-09-20T05:07:00.000Z',
     },
-    {
-      id: 15,
-      UserId: 5,
-      TweetId: 5,
-      comment: 'aliquid',
-      createdAt: '2021-07-04T17:03:02.000Z',
-      updatedAt: '2021-07-04T17:03:02.000Z',
+  },
+  {
+    id: 155,
+    UserId: 45,
+    TweetId: 55,
+    comment: 'et eaque id',
+    createdAt: '2021-09-20T05:07:00.000Z',
+    updatedAt: '2021-09-20T05:07:00.000Z',
+    User: {
+      id: 45,
+      email: 'user4@example.com',
+      password: '$2a$10$QkhKLuvNE0pGrWWA5tVd3eRzyYvH82Gxm1mu9YHpvTBVRa8oJuAJm',
+      name: 'user4',
+      avatar: 'https://loremflickr.com/240/240/?random=91.70236270872843',
+      introduction:
+        'Itaque suscipit autem officiis et. Ullam voluptatum voluptate et esse eaque dignissimos dolores dolor. Quo ducimus optio ut ipsum pariatur dicta laborum. Dolore',
+      role: 'user',
+      account: '@user4',
+      cover: 'https://loremflickr.com/720/240/?random=18.725205804644986',
+      followerCount: 0,
+      followingCount: 0,
+      tweetCount: 10,
+      createdAt: '2021-09-20T05:07:00.000Z',
+      updatedAt: '2021-09-20T05:07:00.000Z',
     },
-  ],
-}
+    Tweet: {
+      id: 55,
+      UserId: 15,
+      description:
+        'Dolor consequatur deleniti voluptatem error veritatis voluptatem quia odio fugit.',
+      likeCount: 0,
+      replyCount: 3,
+      createdAt: '2021-09-20T05:07:00.000Z',
+      updatedAt: '2021-09-20T05:07:00.000Z',
+    },
+  },
+]
 
 export default {
   components: {
@@ -100,7 +148,9 @@ export default {
   },
   methods: {
     fetchReplys() {
-      this.tweetReplys = dummyData.replys
+      this.tweetReplys = dummyData
+      // TODO:確認回覆內容傳遞
+      const { id, avatar, name, account, createdAt } = dummyData.User
     },
   },
 }

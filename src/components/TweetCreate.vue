@@ -59,10 +59,6 @@ textarea {
   width: 100%;
   height: 100%;
   padding: 1.313rem 0 0 4.688rem;
-  // TODO:合併分支後需要移除
-  resize: none;
-  outline: none;
-  border: none;
   font-size: 18px;
   font-weight: 500;
   font-family: inherit;
