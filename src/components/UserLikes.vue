@@ -14,7 +14,9 @@
             <a href="" class="user account">{{like.Tweet.User.account}}</a>
             <span class="seperater">•</span>
             <span class="user created-at">{{
-              like.Tweet.createdAt | fromNow
+              isToday(like.Tweet.createdAt)
+                ? fromNow(utcOffset(like.Tweet.createdAt))
+                : timeFormat(utcOffset(like.Tweet.createdAt), 'MM月DD日')
             }}</span>
           </div>
           <p class="like-content">
