@@ -1,17 +1,23 @@
 <template>
   <div class="tweet-list-title">
     <router-link :to="{ name: 'Home' }">
-      <i class="fas fa-arrow-left arrow" v-if="isbackArrow" @click="$router.back()"></i>
+      <i
+        class="fas fa-arrow-left arrow"
+        v-if="isbackArrow"
+        @click="$router.back()"
+      ></i>
     </router-link>
     <!-- <font-awesome-icon icon="spinner" size="xs" v-if="isbackArrow"/> -->
     <h2 class="list-title">
       <template v-if="plainText">
         {{ plainText }}
       </template>
-      <template v-if="user.name">
-        <span>{{ user.name }}</span>
-        <span>{{ user.id }}</span>
-      </template>
+      <div class="user">
+        <template v-if="user">
+          <span class="name">{{ user.name }}</span>
+          <span class="tweetCount">{{ user.tweetCount }}&ensp;推文</span>
+        </template>
+      </div>
     </h2>
   </div>
 </template>
@@ -37,7 +43,7 @@ export default {
       default() {
         return {
           name: '',
-          postsCount: '',
+          tweetCount: '',
         }
       },
     },
@@ -67,6 +73,22 @@ export default {
   color: #000;
   &:hover {
     color: $nav-avtive-color;
+  }
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  .name {
+    font-size: 19px;
+    font-weight: 900;
+    line-height: 27.51px;
+  }
+  .tweetCount {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 18.82px;
+    color: $input-placeholder;
   }
 }
 </style>

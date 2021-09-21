@@ -4,7 +4,7 @@
       <NavBars :navItems="navItems" />
     </div>
     <div class="profile-center">
-      <div class="navtabs"></div>
+      <NavTabs :user="currentUser" :isbackArrow="true" />
       <div class="profile-center-profile">
         <UserProfile :initial-profile="profile" :current-user="currentUser" />
       </div>
@@ -27,6 +27,7 @@ import IconHome from "@/components/icon/NavHome.vue";
 import IconProfile from "@/components/icon/NavProfile.vue";
 import IconSetting from "@/components/icon/NavSetting.vue";
 import Popular from "./../components/Popular.vue";
+import NavTabs from '../components/NavTabs.vue'
 import UserProfile from "./../components/UserProfile.vue";
 import UserProfileTabs from "./../components/UserProfileTabs.vue";
 
@@ -60,6 +61,7 @@ const dummyUser = {
 export default {
   components: {
     NavBars,
+    NavTabs,
     Popular,
     UserProfile,
     UserProfileTabs,
