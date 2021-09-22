@@ -90,7 +90,7 @@ export default {
         // User: {
         //   id: this.currentUser.id,
         // },
-        id: '',
+        // id: '',
         description,
         avatar: this.currentUser.avatar,
         name: this.currentUser.name,

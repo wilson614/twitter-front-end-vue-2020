@@ -2,18 +2,20 @@
   <form class="tweet-create"  @submit.stop.prevent="handleSubmit">
     <textarea v-model.trim="description" name="description" placeholder="有什麼新鮮事？" rows="3"></textarea>
     <img class="avatar" :src="currentUser.avatar" alt="avatar" />
-    <!-- <span v-if="description.length >= 140" class="error-msg">字數不可超過 140 字</span> -->
+    <!-- <span v-show="errorMessage" class="error-msg">{{errorMessage}}</span> -->
       <button class="btn" type="submit">推文</button>
   </form>
 </template>
 
 <script>
+import { Toast } from './../utils/helpers'
 
 export default {
   data() {
     return {
       isModalVisible: false,
       description: '',
+      errorMessage: '',
     };
   },
   props: {
@@ -24,6 +26,20 @@ export default {
   },
   methods: {
     handleSubmit () {
+      if (!this.description) {
+        Toast.fire({
+          icon: 'error',
+          title: '內容不可空白',
+        })
+        return
+      }
+      if (this.description.length > 140) {
+        Toast.fire({
+          icon: 'error',
+          title: '字數不可超過 140 字',
+        })
+        return
+      }
       this.$emit('after-create-tweet', {
         id: this.currentUser.id,
         description: this.description
