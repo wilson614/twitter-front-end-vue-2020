@@ -13,6 +13,7 @@ export default new Vuex.Store({
       avatar: '',
       role: '',
       cover: '',
+      email: '',
       followerCount: -1,
       followingCount: -1,
       tweetCount: -1,
