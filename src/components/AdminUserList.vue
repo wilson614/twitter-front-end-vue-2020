@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="container admin-user-list"
-    v-infinite-scroll="loadUsers"
-    infinite-scroll-throttle-delay="500"
-    infinite-scroll-disabled="busy"
-    infinite-scroll-distance="10"
-  >
+  <div class="container admin-user-list">
     <div v-for="user in users" :key="user.id" class="card">
       <div class="card-top">
         <img class="cover-img" :src="user.cover" alt="..." />
@@ -13,7 +7,7 @@
       </div>
       <div class="card-body d-flex flex-column align-items-center">
         <p class="card-name">{{ user.name }}</p>
-        <a class="card-account mt-2" href="">{{ user.account }}</a>
+        <p class="card-account mt-2">{{ user.account }}</p>
         <div class="tweet-like d-flex mt-2">
           <div class="tweet-count-wrapper d-flex align-items-center">
             <img
@@ -34,17 +28,13 @@
         </div>
         <div class="follows mt-2">
           <span class="following"
-            >{{ user.followingCount }}個<a
-              class="a-following"
-              href="/users/:id/following"
-              >跟隨中</a
+            >{{ user.followingCount }}個<span class="a-following"
+              >跟隨中</span
             ></span
           >
           <span class="follower ml-3"
-            >{{ user.followingCount }}位<a
-              class="a-follower"
-              href="/users/:id/follower"
-              >跟隨者</a
+            >{{ user.followingCount }}位<span class="a-follower"
+              >跟隨者</span
             ></span
           >
         </div>
@@ -54,43 +44,30 @@
 </template>
 
 <script>
-import infiniteScroll from "vue-infinite-scroll";
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
 
 export default {
-  directives: { infiniteScroll },
-  props: {
-    initialUsers: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
       users: [],
       more: {},
-      busy: false,
-      offset: 0,
-      limit: 8,
     };
   },
+  created() {
+    this.loadUsers();
+  },
   methods: {
-    loadUsers() {
-      console.log("load users");
-      this.busy = true;
-      if (this.offset >= this.initialUsers.length) {
-        return;
+    async loadUsers() {
+      try {
+        const { data } = await adminAPI.users.get();
+        this.users = data;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得，請稍後再試",
+        });
       }
-      setTimeout(() => {
-        //TODO call api get users
-        for (
-          let i = 0;
-          this.offset < this.initialUsers.length && i < this.limit;
-          i++, this.offset++
-        ) {
-          this.users.push(this.initialUsers[this.offset]);
-        }
-        this.busy = false;
-      }, 500);
     },
   },
 };

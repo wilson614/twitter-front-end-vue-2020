@@ -10,15 +10,18 @@ export default {
     },
   },
   tweets: {
-    get() {
+    get({ page }) {
       return apiHelper.get('/admin/tweets', {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
+        params: {
+          page,
+        }
       })
     },
     delete({ tweetId }) {
-      return apiHelper.delete(`api/admin/tweets/${tweetId}`, {
+      return apiHelper.delete(`/admin/tweets/${tweetId}`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

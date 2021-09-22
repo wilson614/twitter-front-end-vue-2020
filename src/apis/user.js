@@ -7,6 +7,11 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
   },
+  getCurrentUser() {
+    return apiHelper.get('/current_user', {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    });
+  }
   // addFollowed({ userId }) {
   //   return apiHelper.post(`/following/${userId}`, null, {
   //     headers: { Authorization: `Bearer ${getToken()}` },
