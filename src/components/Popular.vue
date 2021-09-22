@@ -25,10 +25,13 @@
 </template>
 
 <script>
+// TODO: 確認無觸發實際追蹤值，API正常，但 VUE 沒有改
 import userAPI from './../apis/user'
 import { Toast } from './../utils/helpers'
+import { mapState, mapActions } from 'vuex'
 
 export default {
+  name: 'Popular',
   data() {
     return {
       users: [],
@@ -37,7 +40,13 @@ export default {
   created() {
     this.fetchTopUsers()
   },
+  computed: {
+    ...mapState({
+      currentUser: 'currentUser',
+    }),
+  },
   methods: {
+    ...mapActions(['fetchCurrentUser']),
     async fetchTopUsers() {
       try {
         const { data } = await userAPI.getTopUsers()
@@ -45,7 +54,7 @@ export default {
       } catch (error) {
         Toast.fire({
           icon: 'error',
-          title: '無法取得追蹤者，請稍後再試',
+          title: '無法取得追蹤，請稍後再試',
         })
       }
     },
@@ -84,7 +93,7 @@ export default {
       } catch (error) {
         Toast.fire({
           icon: 'error',
-          title: '無法取得追蹤，請稍後再試',
+          title: '目前無法追蹤，請稍後再試',
         })
       }
     },
