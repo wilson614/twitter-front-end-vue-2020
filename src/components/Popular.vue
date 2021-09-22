@@ -95,10 +95,10 @@ export default {
 <style lang="scss" scoped>
 #popular {
   width: 350px;
-  height: 756px;
   margin-top: 0.938rem;
   border-radius: 14px;
   background-color: $popular-bg;
+  padding-bottom: 0.688rem;
 }
 .popular-title {
   display: block;
