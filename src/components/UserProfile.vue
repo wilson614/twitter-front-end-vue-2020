@@ -113,6 +113,8 @@
 <script>
 import UserEditModal from "./../components/UserEditModal.vue";
 import { mapState } from "vuex";
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
 
 export default {
   components: {
@@ -148,15 +150,46 @@ export default {
     closeModal() {
       this.isModalVisible = false;
     },
-    follow() {
-      //TODO emit or call api
-      this.user.isFollowed = true;
-      this.user.followerCount++;
+    async follow() {
+      try {
+        console.log(this.userid);
+        const { data } = await userAPI.addFollowed({ id: this.user.id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功跟隨",
+        });
+        this.user.isFollowed = true;
+        this.user.followerCount++;
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法跟隨，請稍後再試",
+        });
+      }
     },
-    unfollow() {
-      //TODO emit or call api
-      this.user.isFollowed = false;
-      this.user.followerCount--;
+    async unfollow() {
+      try {
+        const { data } = await userAPI.deleteFollowed({ id: this.user.id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功取消跟隨",
+        });
+        this.user.isFollowed = false;
+        this.user.followerCount--;
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法取消跟隨，請稍後再試",
+        });
+      }
     },
     notify() {
       //TODO emit or call api

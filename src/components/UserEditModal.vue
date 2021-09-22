@@ -120,6 +120,8 @@
 
 <script>
 import { mapState } from "vuex";
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
 
 
 export default {
@@ -177,13 +179,32 @@ export default {
         this.user.avatar = imageURL;
       }
     },
-    handleSubmit(e) {
+    async handleSubmit(e) {
       const form = e.target;
       const formData = new FormData(form);
-      //TODO call edit API and verify
-      //TODO if failed this.$emit("close"); & toast
-      //success
-      this.$emit("after-submit", this.user);
+      try {
+        const user = {
+          name: this.user.name,
+          introduction: this.user.introduction,
+          avatar: this.user.avatar,
+          cover: this.user.cover,
+        };
+        console.log(user);
+        const { data } = await userAPI.editUserProfile({userid:this.currentUser.id,body:user})
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功更新個人資料",
+        });
+        this.$emit("after-submit", this.user);
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "更新失敗，請稍後再試",
+        });
+      }
     },
   },
 };

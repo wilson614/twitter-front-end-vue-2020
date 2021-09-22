@@ -31,11 +31,7 @@
                   </button>
                 </div>
               </div>
-              <p class="introduction">
-                Aut necessitatibus illo aut. Totam veniam atque et ea voluptate
-                quis. Reiciendis unde sed vel. Aliquid sunt optio quia
-                voluptatem reiciendis
-              </p>
+              <p class="introduction">{{following.introduction}}</p>
             </div>
           </li>
         </ul>
@@ -49,51 +45,8 @@
 import NavBars from "./../components/NavBars.vue";
 import Popular from "./../components/Popular.vue";
 import UserFollowTabs from "./../components/UserFollowTabs.vue";
-
-const dummyData = [
-  {
-    followingId: 5,
-    name: "user4",
-    account: "@user4",
-    avatar: "https://loremflickr.com/240/240/?random=82.34086245031686",
-    cover: "https://loremflickr.com/720/240/?random=95.0042116135972",
-    Followship: {
-      id: 3,
-      followerId: 4,
-      followingId: 5,
-      createdAt: "2021-09-19T03:29:01.000Z",
-      updatedAt: "2021-09-19T03:29:01.000Z",
-    },
-  },
-  {
-    followingId: 3,
-    name: "管理者",
-    account: "@user2",
-    avatar: "https://loremflickr.com/240/240/?random=72.55545383550334",
-    cover: "https://loremflickr.com/720/240/?random=54.458978979787595",
-    Followship: {
-      id: 2,
-      followerId: 4,
-      followingId: 3,
-      createdAt: "2021-09-19T03:28:55.000Z",
-      updatedAt: "2021-09-19T03:28:55.000Z",
-    },
-  },
-  {
-    followingId: 2,
-    name: "user1",
-    account: "@user1",
-    avatar: "https://loremflickr.com/240/240/?random=15.971597470975652",
-    cover: "https://loremflickr.com/720/240/?random=43.394395528261676",
-    Followship: {
-      id: 1,
-      followerId: 4,
-      followingId: 2,
-      createdAt: "2021-09-19T03:28:46.000Z",
-      updatedAt: "2021-09-19T03:28:46.000Z",
-    },
-  },
-];
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
 
 export default {
   components: {
@@ -107,17 +60,46 @@ export default {
     };
   },
   created() {
-    this.fetchFollowings();
+    const { userid: userid } = this.$route.params;
+    this.fetchFollowings(userid);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { userid } = to.params;
+    this.fetchFollowings(userid);
+    next();
   },
   methods: {
-    fetchFollowings() {
-      this.followings = dummyData;
+    async fetchFollowings(userid) {
+      try {
+        const { data } = await userAPI.getUserFollowings({ userid });
+        this.followings = data;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得資料，請稍後再試",
+        });
+      }
     },
-    unFollow(id) {
-      //TODO API calling
-      this.followings = this.followings.filter(
-        (following) => following.followingId !== id
-      );
+    async unFollow(id) {
+      try {
+        const { data } = await userAPI.deleteFollowed({ id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功取消跟隨",
+        });
+        this.followings = this.followings.filter(
+          (following) => following.followingId !== id
+        );
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法取消跟隨，請稍後再試",
+        });
+      }
     },
   },
 };

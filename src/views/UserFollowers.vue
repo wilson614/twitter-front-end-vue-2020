@@ -39,11 +39,7 @@
                   </button>
                 </div>
               </div>
-              <p class="introduction">
-                Aut necessitatibus illo aut. Totam veniam atque et ea voluptate
-                quis. Reiciendis unde sed vel. Aliquid sunt optio quia
-                voluptatem reiciendis
-              </p>
+              <p class="introduction">{{follower.introduction}}</p>
             </div>
           </li>
         </ul>
@@ -57,24 +53,8 @@
 import NavBars from "./../components/NavBars.vue";
 import Popular from "./../components/Popular.vue";
 import UserFollowTabs from "./../components/UserFollowTabs.vue";
-
-const dummyData = [
-  {
-    followerId: 5,
-    name: "user4",
-    account: "@user4",
-    avatar: "https://loremflickr.com/240/240/?random=82.34086245031686",
-    cover: "https://loremflickr.com/720/240/?random=95.0042116135972",
-    Followship: {
-      id: 5,
-      followerId: 5,
-      followingId: 4,
-      createdAt: "2021-09-19T03:31:24.000Z",
-      updatedAt: "2021-09-19T03:31:24.000Z",
-    },
-    isFollowed: false,
-  },
-];
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
 
 export default {
   components: {
@@ -85,28 +65,76 @@ export default {
   data() {
     return {
       followers: [],
+      userid: "",
     };
   },
   created() {
-    this.fetchFollowers();
+    const { userid: userid } = this.$route.params;
+    this.userid = userid;
+    this.fetchFollowers(userid);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { userid } = to.params;
+    this.userid = userid;
+    this.fetchFollowers(userid);
+    next();
   },
   methods: {
-    fetchFollowers() {
-      this.followers = dummyData;
+    async fetchFollowers(userid) {
+      try {
+        const { data } = await userAPI.getUserFollowers({ userid });
+        this.followers = data;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得資料，請稍後再試",
+        });
+      }
     },
-    follow(id) {
-      const follower = this.followers.find(
-        (follower) => follower.followerId === id
-      );
-      follower.isFollowed = true;
-      //TODO call follow api
+    async follow(id) {
+      try {
+        console.log(this.userid);
+        const { data } = await userAPI.addFollowed({ id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功跟隨",
+        });
+        const follower = this.followers.find(
+          (follower) => follower.followerId === id
+        );
+        follower.isFollowed = true;
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法跟隨，請稍後再試",
+        });
+      }
     },
-    unfollow(id) {
-      //TODO call  unfollow api
-      const follower = this.followers.find(
-        (follower) => follower.followerId === id
-      );
-      follower.isFollowed = false;
+    async unfollow(id) {
+      try {
+        const { data } = await userAPI.deleteFollowed({ id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功取消跟隨",
+        });
+        const follower = this.followers.find(
+          (follower) => follower.followerId === id
+        );
+        follower.isFollowed = false;
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法取消跟隨，請稍後再試",
+        });
+      }
     },
   },
 };
