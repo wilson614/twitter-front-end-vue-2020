@@ -77,17 +77,20 @@ export default {
         })
       }
     },
+    // TODO: 待修復 tweetID
     afterCreateTweet(payload) {
-      const { tweetId, description } = payload
+      const { id, description } = payload
+      // console.log(payload)
       this.handleCreateTweet({
-        UserId: tweetId,
+        UserId: id,
         description: description,
       })
       this.tweets.unshift({
-        id: tweetId,
-        User: {
-          id: this.currentUser.id,
-        },
+        UserId: id,
+        // User: {
+        //   id: this.currentUser.id,
+        // },
+        id: '',
         description,
         avatar: this.currentUser.avatar,
         name: this.currentUser.name,

@@ -4,21 +4,14 @@
     <img class="avatar" :src="currentUser.avatar" alt="avatar" />
     <!-- <span v-if="description.length >= 140" class="error-msg">字數不可超過 140 字</span> -->
       <button class="btn" type="submit">推文</button>
-     <!-- <TweetCreateModal  v-show="isModalVisible" @close="closeModal"/> -->
   </form>
 </template>
 
 <script>
-// import TweetCreateModal from '@/components/TweetCreateModal.vue'
-import { v4 as uuidv4 } from "uuid"
 
 export default {
-  // components: {
-  //   TweetCreateModal,
-  // },
   data() {
     return {
-      // profile: this.initialProfile,
       isModalVisible: false,
       description: '',
     };
@@ -32,7 +25,7 @@ export default {
   methods: {
     handleSubmit () {
       this.$emit('after-create-tweet', {
-        UserId: this.id,
+        id: this.currentUser.id,
         description: this.description
       })
       this.description = '' // 將表單內的資料清空
