@@ -13,12 +13,19 @@
             <span class="user created-at">{{
               isToday(reply.createdAt)
                 ? fromNow(utcOffset(reply.createdAt))
-                : timeFormat(utcOffset(reply.createdAt), 'MM月DD日')
+                : timeFormat(utcOffset(reply.createdAt), "MM月DD日")
             }}</span>
           </div>
           <div class="replay-to d-flex align-items-center">
             <span class="reply-title">回覆</span>
-            <a class="reply-account" href="">{{ reply.Tweet.User.account }}</a>
+            <router-link
+              class="reply-account"
+              :to="{
+                name: 'profile',
+                params: { userid: reply.Tweet.User.id },
+              }"
+              >{{ reply.Tweet.User.account }}</router-link
+            >
           </div>
           <p class="reply-content">{{ reply.comment }}</p>
         </div>
@@ -29,39 +36,8 @@
 
 <script>
 import { fromNowFilter } from "./../utils/mixins";
-
-const dummyData = [
-  {
-    id: 4,
-    UserId: 5,
-    TweetId: 2,
-    comment: "perferendis quia est",
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T07:05:56.000Z",
-    isLiked: 0,
-    User: {
-      id: 5,
-      account: "@user4",
-      name: "user4",
-      avatar: "https://loremflickr.com/240/240/?random=82.34086245031686",
-    },
-    Tweet: {
-      id: 2,
-      UserId: 2,
-      description:
-        "Aut necessitatibus illo aut. Totam veniam atque et ea voluptate quis. Reiciendis unde sed vel. Aliquid sunt optio quia voluptatem reiciendis",
-      likeCount: 1,
-      replyCount: 3,
-      createdAt: "2021-09-17T07:05:56.000Z",
-      updatedAt: "2021-09-19T04:49:25.000Z",
-      User: {
-        id: 2,
-        name: "user1",
-        account: "@user1",
-      },
-    },
-  },
-];
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
 
 export default {
   mixins: [fromNowFilter],
@@ -71,11 +47,25 @@ export default {
     };
   },
   created() {
-    this.fetchReplies();
+    const { userid: userid } = this.$route.params;
+    this.fetchReplies(userid);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { userid } = to.params;
+    this.fetchReplies(userid);
+    next();
   },
   methods: {
-    fetchReplies() {
-      this.replies = dummyData;
+    async fetchReplies(userid) {
+      try {
+        const { data } = await userAPI.getUserReplies({ userid });
+        this.replies = data;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
+      }
     },
   },
 };

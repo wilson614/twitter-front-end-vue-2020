@@ -12,26 +12,35 @@
 import { v4 as uuidv4 } from "uuid";
 
 export default {
-  data() {
-    return {
-      tabs: [
+  computed: {
+    tabs() {
+      return [
         {
           id: uuidv4(),
           title: "推文",
-          path: { name: 'profile', params: { userid: this.$route.params.userid } },
+          path: {
+            name: "profile",
+            params: { userid: this.$route.params.userid },
+          },
         },
         {
           id: uuidv4(),
           title: "推文與回覆",
-          path: { name: 'replies', params: { userid: this.$route.params.userid } },
+          path: {
+            name: "replies",
+            params: { userid: this.$route.params.userid },
+          },
         },
         {
           id: uuidv4(),
           title: "喜歡的內容",
-          path: { name: 'likes', params: { userid: this.$route.params.userid } },
+          path: {
+            name: "likes",
+            params: { userid: this.$route.params.userid },
+          },
         },
-      ],
-    };
+      ];
+    },
   },
 };
 </script>
@@ -42,14 +51,15 @@ export default {
 }
 .nav-item {
   display: flex;
-  a{
+  a {
     padding: 15px 0;
     width: 130px;
     text-align: center;
     font-size: 15px;
     font-weight: 700;
     color: $input-placeholder;
-    &:hover, &:active {
+    &:hover,
+    &:active {
       color: $button-color;
       border-bottom: 2px solid $button-color;
     }

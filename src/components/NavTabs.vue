@@ -39,7 +39,7 @@ export default {
     },
     plainText: String,
     user: {
-      type: Object,
+      type: String,
       default() {
         return {
           name: '',

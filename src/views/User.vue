@@ -4,14 +4,14 @@
       <NavBars page="normal" />
     </div>
     <div class="profile-center">
-      <NavTabs :user="currentUser" :isbackArrow="true" />
+      <NavTabs :user="currentUser.name" :isbackArrow="true" />
       <div class="profile-center-profile">
-        <UserProfile :initial-profile="profile" :current-user="currentUser" />
+        <UserProfile :initial-user="user" :currentUser="currentUser" />
       </div>
       <div class="profile-tabs">
         <UserProfileTabs />
       </div>
-      <div class="profile-tabs-content d-flex justify-content-center scrollbar" >
+      <div class="profile-tabs-content d-flex justify-content-center scrollbar">
         <router-view></router-view>
       </div>
     </div>
@@ -24,36 +24,12 @@
 <script>
 import NavBars from "./../components/NavBars.vue";
 import Popular from "./../components/Popular.vue";
-import NavTabs from '../components/NavTabs.vue'
+import NavTabs from "../components/NavTabs.vue";
 import UserProfile from "./../components/UserProfile.vue";
 import UserProfileTabs from "./../components/UserProfileTabs.vue";
-
-const dummyData = {
-  id: 2,
-  account: "@user1",
-  name: "user1",
-  avatar: "https://loremflickr.com/240/240/?random=15.971597470975652",
-  cover: "https://loremflickr.com/720/240/?random=43.394395528261676",
-  role: "user",
-  introduction:
-    "Nulla quia blanditiis occaecati voluptates dolorum.\nDolores voluptas animi itaque omnis quae et.\nDucimus est et sit est deleniti sit voluptas eius.\nQui ut ipsum",
-  followerCount: 0,
-  followingCount: 0,
-  tweetCount: 10,
-  isFollowed: false,
-};
-
-const dummyUser = {
-  id: 2,
-  name: "user1",
-  account: "@user1",
-  avatar: "https://loremflickr.com/240/240/?random=44.498223728686305",
-  role: "user",
-  cover: "https://loremflickr.com/720/240/?random=78.80177917119791",
-  followerCount: 0,
-  followingCount: 0,
-  tweetCount: 10,
-};
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -65,42 +41,44 @@ export default {
   },
   data() {
     return {
-      profile: {},
-      currentUser: {},
+      user: {
+        id: -1,
+        account: "",
+        name: "",
+        avatar: "",
+        cover: "",
+        role: "",
+        introduction: "",
+        followerCount: "",
+        followingCount: "",
+        tweetCount: "",
+        isFollowed: false,
+      },
     };
   },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
+  },
   created() {
-    const { userid: profileId } = this.$route.params;
-    this.ftechUsers(profileId);
+    const { userid: userid } = this.$route.params;
+    this.fetchUser(userid);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { userid } = to.params;
+    this.fetchUser(userid);
+    next();
   },
   methods: {
-    ftechUsers(profileId) {
-      console.log("fetchProfile id: ", profileId);
-
-      this.profile = {
-        id: dummyData.id,
-        account: dummyData.account,
-        name: dummyData.name,
-        avatar: dummyData.avatar,
-        cover: dummyData.cover,
-        role: dummyData.role,
-        introduction: dummyData.introduction,
-        followerCount: dummyData.followerCount,
-        followingCount: dummyData.followingCount,
-        tweetCount: dummyData.tweetCount,
-        isFollowed: dummyData.isFollowed,
-      };
-      this.currentUser = {
-        id: dummyUser.id,
-        name: dummyUser.name,
-        account: dummyUser.account,
-        avatar: dummyUser.avatar,
-        role: dummyUser.role,
-        cover: dummyUser.cover,
-        followerCount: dummyUser.followerCount,
-        followingCount: dummyUser.followingCount,
-        tweetCount: dummyUser.tweetCount,
-      };
+    async fetchUser(userid) {
+      try {
+        const { data } = await userAPI.get({ userid });
+        this.user = data;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
+      }
     },
   },
 };
@@ -124,6 +102,7 @@ export default {
   width: 100%;
   display: flex;
   max-width: 1245px;
+
 }
 .profile-center {
   margin: 0 2rem;
@@ -137,7 +116,7 @@ export default {
     height: 53px;
   }
   .profile-tabs-content {
-    width:100%;
+    width: 100%;
     height: 720px;
     overflow-y: scroll;
   }

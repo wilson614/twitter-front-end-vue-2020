@@ -3,7 +3,7 @@
     <div
       class="tweet-list-wrapper"
       v-infinite-scroll="loadTweets"
-      infinite-scroll-throttle-delay="500"
+      infinite-scroll-throttle-delay="100"
       infinite-scroll-disabled="busy"
       infinite-scroll-distance="10"
     >
@@ -92,8 +92,8 @@ export default {
         const { data } = await adminAPI.tweets.get({ page: this.page });
         if (data.length === 0) {
           Toast.fire({
-            icon: "warning",
-            title: "沒有推文",
+            icon: "info",
+            title: "推文資料載入完畢",
           });
           return;
         }
