@@ -53,10 +53,19 @@ export default {
   computed: {
     ...mapState({
       currentUser: 'currentUser',
+      isTweetNeedReload: 'isTweetNeedReload',
     }),
   },
+  watch: {
+    isTweetNeedReload (){
+      if (this.isTweetNeedReload) {
+        this.fetchTweets()
+        this.handleTweetsReload(false)
+      }
+    }
+  },
   methods: {
-    ...mapActions(['fetchCurrentUser']),
+    ...mapActions(['fetchCurrentUser', 'handleTweetsReload']),
     async fetchTweets() {
       try {
         const { data } = await tweetsAPI.getTweets()

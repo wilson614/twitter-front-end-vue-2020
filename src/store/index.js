@@ -8,18 +8,19 @@ export default new Vuex.Store({
   state: {
     currentUser: {
       id: -1,
-      name: "",
-      account: "",
-      avatar: "",
-      role: "",
-      cover: "",
+      name: '',
+      account: '',
+      avatar: '',
+      role: '',
+      cover: '',
       followerCount: -1,
       followingCount: -1,
       tweetCount: -1,
     },
     isAuthenticated: false,
     isAdmin: false,
-    token: "", // 新增 token 屬性
+    token: '', // 新增 token 屬性
+    isTweetNeedReload: false,
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -42,6 +43,9 @@ export default new Vuex.Store({
       state.token = ''
       localStorage.removeItem('token')
     },
+    handleTweetsReload(state, toBe) {
+      state.isTweetNeedReload = toBe
+    },
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -55,6 +59,9 @@ export default new Vuex.Store({
         commit('revokeAuthentication')
         return false // 回傳fetch api失敗
       }
+    },
+    handleTweetsReload({ commit }, toBe) {
+      commit('handleTweetsReload', toBe)
     },
   },
   modules: {},
