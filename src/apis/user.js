@@ -68,11 +68,4 @@ export default {
     return apiHelper.put(`/users/${userid}`, body, {
     })
   },
-  getCurrentUsers() {
-    console.log(getToken())
-    return apiHelper.get('/current_user', null, {
-    return apiHelper.get('/current_user', {
-      headers: { Authorization: `Bearer ${getToken()}` },
-    });
-  },
 };

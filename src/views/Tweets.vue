@@ -102,6 +102,7 @@ export default {
     },
     handleaddLiked({ isLiked }) {
       this.tweet.isLiked = isLiked
+      this.tweet.likeCount += isLiked ? 1 : -1
     },
   },
 }
