@@ -1,7 +1,7 @@
 <template>
   <!-- v-for="reply in replies" :key="reply.id" -->
   <section>
-    <div id="tweet-reply" v-for="reply in replies" :key="reply.id">
+    <div :id="`tweet-reply-${reply.id}`" v-for="reply in replies" :key="reply.id" class="tweet-reply">
       <img :src="reply.User.avatar" alt="avatar" />
       <div class="reply-content">
         <div class="user-details">
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#tweet-reply {
+.tweet-reply {
   width: 100%;
   padding: 0.938rem;
   display: flex;

@@ -85,25 +85,13 @@ export default {
         UserId: id,
         description: description,
       })
-      this.tweets.unshift({
-        UserId: id,
-        // User: {
-        //   id: this.currentUser.id,
-        // },
-        // id: '',
-        description,
-        avatar: this.currentUser.avatar,
-        name: this.currentUser.name,
-        account: this.currentUser.account,
-        likeCount: '0',
-        replyCount: '0',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
     },
     async handleCreateTweet({ UserId, description }) {
+      // loading
       try {
         const { data } = await tweetsAPI.postTweet({ UserId, description })
+        
+        this.fetchTweets()
 
         if (data.status === 'error') {
           throw new Error(data.message)

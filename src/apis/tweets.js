@@ -36,4 +36,14 @@ export default {
       headers: { Authorization: `Bearer ${getToken()}` },
     })
   },
+  addLiked(tweet_id) {
+    return apiHelper.post(`/tweets/${tweet_id}/like`, null, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
+  },
+  deleteLiked(tweet_id){
+    return apiHelper.post(`/tweets/${tweet_id}/unlike`, null, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
+  }
 }

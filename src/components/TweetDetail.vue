@@ -31,12 +31,12 @@
       <span class="reply">
         <span class="reply-count">{{ tweet.replyCount }}</span> 回覆</span
       >
-      <span class="like">
+      <span class="like cursor-pointer">
         <span class="like-count">{{ tweet.likeCount }}</span> 喜歡次數</span
       >
     </div>
     <div class="btn btn-control">
-      <div class="btn-reply" @click="showtweetReplyModal">
+      <div class="btn-reply cursor-pointer" @click="showtweetReplyModal">
         <img class="reply-icon" src="@/assets/svg/reply-lg.svg" />
       </div>
       <div class="btn-like">
