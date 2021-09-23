@@ -44,7 +44,7 @@
                     />
                   </button>
                 </div>
-                <img class="cover-img" :src="profile.cover" alt="..." />
+                <img class="cover-img" :src="user.cover" alt="..." />
                 <input
                   id="cover-edit"
                   type="file"
@@ -66,7 +66,7 @@
                     />
                   </label>
                 </div>
-                <img class="avatar" :src="profile.avatar" alt="..." />
+                <img class="avatar" :src="user.avatar" alt="..." />
                 <input
                   id="avatar-edit"
                   type="file"
@@ -81,7 +81,7 @@
             <div class="form-container">
               <div class="form-label-group">
                 <input
-                  v-model="profile.name"
+                  v-model="user.name"
                   id="name"
                   name="name"
                   type="text"
@@ -92,23 +92,23 @@
                   autofocus
                 />
                 <label class="placeholder">名稱</label>
-                <small class="word-count d-inline-block"
-                  >{{ profile.name.length }}/50</small
-                >
+                <!-- <small class="word-count d-inline-block"
+                  >{{ user.name.length }}/50</small
+                > -->
               </div>
               <div class="form-label-group">
                 <textarea
                   id="introduction"
-                  v-model="profile.introduction"
+                  v-model="user.introduction"
                   name="introduction"
                   class="form-control"
                   maxlength="160"
                   placeholder="自我介紹"
                 />
                 <label class="placeholder">自我介紹</label>
-                <small class="word-count d-inline-block"
-                  >{{ profile.introduction.length }}/160</small
-                >
+                <!-- <small class="word-count d-inline-block"
+                  >{{ user.introduction.length }}/160</small
+                > -->
               </div>
             </div>
           </section>
@@ -119,57 +119,92 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
+
+
 export default {
   name: "UserEditModal",
   props: {
-    initialProfile: {
+    initialUser: {
       type: Object,
       required: true,
     },
   },
   data() {
     return {
-      profile: {
-        ...this.initialProfile,
+      user: {
+        ...this.initialUser,
       },
     };
+  },
+  watch: {
+    initialUser (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
+      }
+    }
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
     close() {
       this.$emit("close");
       setTimeout(() => {
-        this.profile = {
-          ...this.initialProfile,
+        this.user = {
+          ...this.initialUser,
         };
       }, 500);
     },
     handleCoverChange(e) {
       const { files } = e.target;
       if (files.length === 0) {
-        this.profile.cover = "";
+        this.user.cover = "";
         return;
       } else {
         const imageURL = window.URL.createObjectURL(files[0]);
-        this.profile.cover = imageURL;
+        this.user.cover = imageURL;
       }
     },
     handleAvatarChange(e) {
       const { files } = e.target;
       if (files.length === 0) {
-        this.profile.avatar = "";
+        this.user.avatar = "";
         return;
       } else {
         const imageURL = window.URL.createObjectURL(files[0]);
-        this.profile.avatar = imageURL;
+        this.user.avatar = imageURL;
       }
     },
-    handleSubmit(e) {
+    async handleSubmit(e) {
       const form = e.target;
       const formData = new FormData(form);
-      //TODO call edit API and verify
-      //TODO if failed this.$emit("close"); & toast
-      //success
-      this.$emit("after-submit", this.profile);
+      try {
+        const user = {
+          name: this.user.name,
+          introduction: this.user.introduction,
+          avatar: this.user.avatar,
+          cover: this.user.cover,
+        };
+        console.log(user);
+        const { data } = await userAPI.editUserProfile({userid:this.currentUser.id,body:user})
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功更新個人資料",
+        });
+        this.$emit("after-submit", this.user);
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "更新失敗，請稍後再試",
+        });
+      }
     },
   },
 };

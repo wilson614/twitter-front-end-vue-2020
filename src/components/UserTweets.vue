@@ -13,7 +13,7 @@
             <span class="user created-at">{{
               isToday(tweet.createdAt)
                 ? fromNow(utcOffset(tweet.createdAt))
-                : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+                : timeFormat(utcOffset(tweet.createdAt), "MM月DD日")
             }}</span>
           </div>
           <p class="tweet-content">
@@ -51,43 +51,9 @@
 
 <script>
 import { fromNowFilter } from "./../utils/mixins";
-
-const dummyData = [
-  {
-    id: 1,
-    UserId: 2,
-    description:
-      "Modi amet nihil minus nihil modi laborum tempore nobis architecto.\nAd fuga rerum omnis amet ut consequatur pariatur \nLabore non facilis repu",
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T09:34:09.000Z",
-    likeCount: 0,
-    replyCount: 3,
-    isLiked: 0,
-    User: {
-      id: 2,
-      name: "user1",
-      account: "@user1",
-      avatar: "https://loremflickr.com/240/240/?random=15.971597470975652",
-    },
-  },
-  {
-    id: 2,
-    UserId: 2,
-    description:
-      "Modi amet nihil minus nihil modi laborum tempore nobis architecto.\nAd fuga rerum omnis amet ut consequatur pariatur \nLabore non facilis repu",
-    createdAt: "2021-09-17T07:05:56.000Z",
-    updatedAt: "2021-09-17T09:34:09.000Z",
-    likeCount: 0,
-    replyCount: 3,
-    isLiked: 0,
-    User: {
-      id: 2,
-      name: "user1",
-      account: "@user1",
-      avatar: "https://loremflickr.com/240/240/?random=15.971597470975652",
-    },
-  },
-];
+import userAPI from "./../apis/user";
+import tweetAPI from "./../apis/tweets";
+import { Toast } from "./../utils/helpers";
 
 export default {
   mixins: [fromNowFilter],
@@ -97,20 +63,56 @@ export default {
     };
   },
   created() {
-    this.fetchTweets();
+    const { userid: userid } = this.$route.params;
+    this.fetchTweets(userid);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { userid } = to.params;
+    this.fetchTweets(userid);
+    next();
   },
   methods: {
-    fetchTweets() {
-      this.tweets = dummyData;
+    async fetchTweets(userid) {
+      try {
+        const { data } = await userAPI.getUserTweet({ userid });
+        this.tweets = data;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
+      }
     },
-    doLike(id, isLike) {
-      //TODO API calling
-      const tweet = this.tweets.find((tweet) => tweet.id === id);
-      tweet.isLiked = isLike;
-      if (isLike) {
-        tweet.likeCount++;
-      } else {
-        tweet.likeCount--;
+    async doLike(tweetId, isLike) {
+      try {
+        let response;
+        if (isLike) {
+          response = await tweetAPI.likeTweet({ tweetId });
+        } else {
+          response = await tweetAPI.unlikeTweet({ tweetId });
+        }
+        const { data } = response;
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        const message = isLike ? "成功加入最愛" : "成功移除最愛";
+        Toast.fire({
+          icon: "success",
+          title: message,
+        });
+        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        tweet.isLiked = isLike;
+        if (isLike) {
+          tweet.likeCount++;
+        } else {
+          tweet.likeCount--;
+        }
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法 加入/移除 最愛",
+        });
       }
     },
   },

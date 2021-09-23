@@ -44,55 +44,8 @@
 
 <script>
 import { fromNowFilter } from "./../utils/mixins";
-
-const dummyData = [
-  {
-    id: 9,
-    UserId: 5,
-    TweetId: 48,
-    createdAt: "2021-09-19T04:49:32.000Z",
-    updatedAt: "2021-09-19T04:49:32.000Z",
-    isLiked: 0,
-    Tweet: {
-      id: 48,
-      UserId: 6,
-      description: "repellat",
-      likeCount: 1,
-      replyCount: 3,
-      createdAt: "2021-09-17T07:05:56.000Z",
-      updatedAt: "2021-09-19T04:49:32.000Z",
-      User: {
-        id: 6,
-        account: "@user5",
-        name: "user5",
-        avatar: "https://loremflickr.com/240/240/?random=58.97211358858128",
-      },
-    },
-  },
-  {
-    id: 8,
-    UserId: 5,
-    TweetId: 50,
-    createdAt: "2021-09-19T04:49:28.000Z",
-    updatedAt: "2021-09-19T04:49:28.000Z",
-    isLiked: 0,
-    Tweet: {
-      id: 50,
-      UserId: 6,
-      description: "aperiam",
-      likeCount: 1,
-      replyCount: 3,
-      createdAt: "2021-09-17T07:05:56.000Z",
-      updatedAt: "2021-09-19T04:49:28.000Z",
-      User: {
-        id: 6,
-        account: "@user5",
-        name: "user5",
-        avatar: "https://loremflickr.com/240/240/?random=58.97211358858128",
-      },
-    },
-  },
-];
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
 
 export default {
   mixins: [fromNowFilter],
@@ -102,11 +55,25 @@ export default {
     };
   },
   created() {
-    this.fetchLikes();
+    const { userid: userid } = this.$route.params;
+    this.fetchLikes(userid);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { userid } = to.params;
+    this.fetchLikes(userid);
+    next();
   },
   methods: {
-    fetchLikes() {
-      this.likes = dummyData;
+    async fetchLikes(userid) {
+      try {
+        const { data } = await userAPI.getUserLikes({ userid })
+        this.likes = data;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
+      }
     },
     unLike(id) {
       //TODO API calling

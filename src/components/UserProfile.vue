@@ -2,12 +2,12 @@
   <div class="container user-profile-container d-flex justify-content-center">
     <div class="card">
       <div class="card-top">
-        <img class="cover-img" :src="profile.cover" alt="..." />
-        <img class="avatar" :src="profile.avatar" alt="..." />
+        <img class="cover-img" :src="user.cover" alt="..." />
+        <img class="avatar" :src="user.avatar" alt="..." />
       </div>
 
       <!-- currentUser -->
-      <template v-if="profile.id === currentUser.id">
+      <template v-if="user.id === this.currentUser.id">
         <div class="btn-control current-user d-flex justify-content-end">
           <button type="button" class="btn edit-profile-btn" @click="showModal">
             編輯個人資料
@@ -24,7 +24,7 @@
           </button>
           <!-- notify -->
           <button
-            v-if="profile.isNotified"
+            v-if="user.isNotified"
             @click.stop.prevent="unNotify"
             type="submit"
             class="btn notif"
@@ -51,7 +51,7 @@
           </button>
           <!-- follow -->
           <button
-            v-if="profile.isFollowed"
+            v-if="user.isFollowed"
             @click.stop.prevent="unfollow"
             type="submit"
             class="btn following-btn"
@@ -70,16 +70,16 @@
       </template>
 
       <div class="card-body d-flex flex-column">
-        <p class="card-name">{{ profile.name }}</p>
+        <p class="card-name">{{ user.name }}</p>
         <router-link class="card-account" to="#">{{
-          profile.account
+          user.account
         }}</router-link>
         <p class="introduction my-2">
-          {{ profile.introduction }}
+          {{ user.introduction }}
         </p>
         <div class="follows d-flex">
           <div class="following-wrapper">
-            <span class="following">{{ profile.followingCount }} 個</span>
+            <span class="following">{{ user.followingCount }} 個</span>
             <router-link
               class="a-following"
               :to="{
@@ -90,7 +90,7 @@
             >
           </div>
           <div class="follower-wrapper ml-5">
-            <span class="follower">{{ profile.followerCount }} 位</span>
+            <span class="follower">{{ user.followerCount }} 位</span>
             <router-link class="a-follower" :to="{
                 name: 'followers',
                 params: { userid: this.$route.params.userid },
@@ -102,7 +102,7 @@
       </div>
     </div>
     <UserEditModal
-      :initial-profile="profile"
+      :initial-user="user"
       v-show="isModalVisible"
       @close="closeModal"
       @after-submit="handleAfterSubmit"
@@ -112,26 +112,36 @@
 
 <script>
 import UserEditModal from "./../components/UserEditModal.vue";
+import { mapState } from "vuex";
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
 
 export default {
   components: {
     UserEditModal,
   },
   props: {
-    initialProfile: {
-      type: Object,
-      required: true,
-    },
-    currentUser: {
+    initialUser: {
       type: Object,
       required: true,
     },
   },
   data() {
     return {
-      profile: this.initialProfile,
+      user: this.initialUser,
       isModalVisible: false,
     };
+  },
+  watch: {
+    initialUser (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
+      }
+    }
+  },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
     showModal() {
@@ -140,33 +150,64 @@ export default {
     closeModal() {
       this.isModalVisible = false;
     },
-    follow() {
-      //TODO emit or call api
-      this.profile.isFollowed = true;
-      this.profile.followerCount++;
+    async follow() {
+      try {
+        console.log(this.userid);
+        const { data } = await userAPI.addFollowed({ id: this.user.id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功跟隨",
+        });
+        this.user.isFollowed = true;
+        this.user.followerCount++;
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法跟隨，請稍後再試",
+        });
+      }
     },
-    unfollow() {
-      //TODO emit or call api
-      this.profile.isFollowed = false;
-      this.profile.followerCount--;
+    async unfollow() {
+      try {
+        const { data } = await userAPI.deleteFollowed({ id: this.user.id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功取消跟隨",
+        });
+        this.user.isFollowed = false;
+        this.user.followerCount--;
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法取消跟隨，請稍後再試",
+        });
+      }
     },
     notify() {
       //TODO emit or call api
-      this.profile = {
-        ...this.profile,
+      this.user = {
+        ...this.user,
         isNotified: true,
       };
     },
     unNotify() {
       //TODO emit or call api
-      this.profile = {
-        ...this.profile,
+      this.user = {
+        ...this.user,
         isNotified: false,
       };
     },
     handleAfterSubmit(data) {
-      this.profile = {
-        ...this.profile,
+      this.user = {
+        ...this.user,
         ...data,
       };
       this.isModalVisible = false;
