@@ -8,7 +8,7 @@
         <div class="user-tweet-main">
           <div class="user-info">
             <span class="user name">{{ tweet.User.name }}</span>
-            <a href="" class="user account">{{ tweet.User.account }}</a>
+            <router-link :to="`/users/${tweet.UserId}`" class="user account">{{ tweet.User.account }}</router-link>
             <span class="seperater">•</span>
             <span class="user created-at">{{
               isToday(tweet.createdAt)
@@ -16,9 +16,9 @@
                 : timeFormat(utcOffset(tweet.createdAt), "MM月DD日")
             }}</span>
           </div>
-          <p class="tweet-content">
+          <router-link :to="`/tweets/${tweet.id}`" class="tweet-content">
             {{ tweet.description }}
-          </p>
+          </router-link>
           <div class="reply-likes d-flex align-items-center">
             <div class="reply-wrapper d-flex align-items-center">
               <img class="icon reply-icon" src="../assets/svg/reply.svg" />
@@ -157,6 +157,7 @@ export default {
     font-size: 15px;
     font-weight: 500;
     line-height: 22px;
+    color: $main-text;
   }
   .reply-likes {
     margin-top: 12px;
