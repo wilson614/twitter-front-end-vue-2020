@@ -172,7 +172,6 @@ export default {
     // TODO:確認 API 狀況
     async handleSubmit() {
       try {
-        console.log('submit')
         const { id, account, name, email } = this.currentUser
 
         this.isProcessing = true
@@ -236,14 +235,6 @@ export default {
         // }
       }
     },
-    // handleSubmit(e) {
-    //   const form = e.target
-    //   const formData = new FormData(form)
-    //   // TODO: 透過 API 向伺服器更新使用者
-    //   for (let [name, value] of formData.entries()) {
-    //     console.log(name + ': ' + value)
-    //   }
-    // },
   },
 }
 </script>
