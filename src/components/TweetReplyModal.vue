@@ -54,7 +54,10 @@
                   v-model="replyContent"
                 ></textarea>
                 <img :src="currentUser.avatar" class="avatar" alt="avatar" />
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end align-items-center">
+                  <span v-show="errorMessage" class="error-message">{{
+                    errorMessage
+                  }}</span>
                   <button
                     class="btn"
                     type="submit"
@@ -99,6 +102,7 @@ export default {
   data() {
     return {
       replyContent: '',
+      errorMessage: '',
     }
   },
   computed: {
@@ -122,13 +126,15 @@ export default {
     // },
     afterCreateReply() {
       if (!this.replyContent) {
+        console.log('test space')
         this.errorMessage = '內容不可空白'
         return
       }
-      if (this.replyContent.length > 140) {
-        this.errorMessage = '字數不可超過140'
-        return
-      }
+      // if (this.replyContent.length > 140) {
+      //   console.log('test 140')
+      //   this.errorMessage = '字數不可超過 140 字'
+      //   return
+      // }
       this.handleCreateTweet({
         tweet_id: this.tweet.id,
         comment: this.replyContent,
@@ -289,7 +295,12 @@ textarea {
   font-weight: 500;
   font-family: 'Noto Sans TC';
 }
-
+.error-message {
+  margin-right: 1.25rem;
+  font-size: 15px;
+  font-weight: 500;
+  color: $input-error-msg;
+}
 .btn {
   padding: 0.625rem 0.938rem;
   font-family: inherit;
