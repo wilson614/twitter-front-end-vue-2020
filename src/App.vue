@@ -2,7 +2,7 @@
   <div id="simple-twitter">
 
     <main role="main" class="d-flex justify-content-center">
-      <router-view />
+      <router-view :key="$route.fullPath"/>
     </main>
     
   </div>
