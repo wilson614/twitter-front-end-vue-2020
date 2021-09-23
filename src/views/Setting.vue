@@ -183,7 +183,7 @@ export default {
 
         const { data } = await userAPI.updateUserSetting({
           user_id: id,
-          formdata: {
+          formData: {
             account: this.user.account,
             name: this.user.name,
             email: this.user.email,
@@ -191,21 +191,19 @@ export default {
             checkPassword: this.user.checkPassword,
           },
         })
-        console.log(data)
-        // console.log(data)
-        // if (data.status === 'error') {
-        //   throw new Error(data.message)
-        // }
-        // Toast.fire({
-        //   icon: 'success',
-        //   title: '成功更新資料',
-        // })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '成功更新資料',
+        })
 
-        // this.$store.dispatch("fetchCurrentUser");
-        // this.$router.push({ name: "User", params: { id: this.userInfo.id } });
+        this.$store.dispatch("fetchCurrentUser");
+        this.$router.push({ name: "profile", params: { userid : id } });
         this.isProcessing = false
       } catch (error) {
-        console.log('NO')
+
         // const { data } = error.response
         // if (data.message.length === 1) {
         //   if (data.message[0].error === 'Account is exists.') {

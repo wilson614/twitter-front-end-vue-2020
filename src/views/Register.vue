@@ -143,7 +143,7 @@ export default {
         }
         Toast.fire({
           icon: 'success',
-          title: data.message,
+          title: '註冊成功',
         })
         // 成功登入後轉址到登入頁
         this.$router.push('/login')
