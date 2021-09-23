@@ -69,7 +69,7 @@ export default {
           return {
             ...user,
             // FollowedCount: user.FollowedCount - 1,
-            isFollowed: !user.isFollowed,
+            isFollowed: user.isFollowed === 0 ? 1 : 0,
           }
         })
         // .sort((a, b) => b.FollowedCount - a.FollowedCount)
