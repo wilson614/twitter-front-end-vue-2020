@@ -53,13 +53,13 @@
                   rows="4"
                   v-model="replyContent"
                 ></textarea>
-                <img
-                  src="https://lh3.googleusercontent.com/a-/AOh14GjafILfVnBhDBrtDk_r4kLz4q4tpPhwo7pPWwGo=s96-c"
-                  class="avatar"
-                  alt="avatar"
-                />
+                <img :src="currentUser.avatar" class="avatar" alt="avatar" />
                 <div class="d-flex justify-content-end">
-                  <button class="btn" type="submit" @click.prevent="submit">
+                  <button
+                    class="btn"
+                    type="submit"
+                    @click.prevent="afterCreateReply"
+                  >
                     回覆
                   </button>
                 </div>
@@ -74,6 +74,10 @@
 
 <script>
 import { fromNowFilter } from '../utils/mixins'
+import { mapState } from 'vuex'
+import tweetsAPI from './../apis/tweets'
+import { Toast } from './../utils/helpers'
+import { mapActions } from 'vuex'
 
 export default {
   mixins: [fromNowFilter],
@@ -97,18 +101,53 @@ export default {
       replyContent: '',
     }
   },
+  computed: {
+    ...mapState({
+      currentUser: 'currentUser',
+    }),
+  },
   methods: {
+    ...mapActions(['handleTweetsReload']),
     close() {
       this.$emit('close')
     },
-    submit() {
-      console.log('test')
-      this.$emit('submit', {
-        id: this.tweet.id,
-        form: {
-          reply: this.replyContent,
-        },
+    // submit() {
+    //   // console.log('test')
+    //   this.$emit('submit', {
+    //     id: this.tweet.id,
+    //     form: {
+    //       reply: this.replyContent,
+    //     },
+    //   })
+    // },
+    afterCreateReply() {
+      if (!this.replyContent) {
+        this.errorMessage = '內容不可空白'
+        return
+      }
+      if (this.replyContent.length > 140) {
+        this.errorMessage = '字數不可超過140'
+        return
+      }
+      this.handleCreateTweet({
+        tweet_id: this.tweet.id,
+        comment: this.replyContent,
       })
+      this.close()
+    },
+    async handleCreateTweet({ tweet_id, comment }) {
+      try {
+        const { data } = await tweetsAPI.replyTweet({ tweet_id, comment })
+        this.handleTweetsReload(true)
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法新增回覆，請稍後再試',
+        })
+      }
     },
   },
 }

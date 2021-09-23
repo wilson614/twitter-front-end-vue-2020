@@ -22,6 +22,7 @@ import TweetDetail from '@/components/TweetDetail.vue'
 import TweetReply from '@/components/TweetReply.vue'
 import tweetsAPI from './../apis/tweets'
 import { Toast } from './../utils/helpers'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -41,7 +42,22 @@ export default {
     this.fetchReplies(this.$route.params.id)
     this.fetchTweet(this.$route.params.id)
   },
+  watch: {
+    isTweetNeedReload (){
+      if (this.isTweetNeedReload) {
+        this.fetchReplies(this.$route.params.id)
+        this.fetchTweet(this.$route.params.id)
+        this.handleTweetsReload(false)
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      isTweetNeedReload: 'isTweetNeedReload',
+    }),
+  },
   methods: {
+    ...mapActions(['handleTweetsReload']),
     // fetchReplies() {
     //   this.tweetReplies = dummyReply
     //   // TODO:確認回覆內容傳遞
@@ -51,7 +67,7 @@ export default {
       try {
         const { data } = await tweetsAPI.getReplies(tweet_id)
         console.log(data)
-        this.replies = data
+        this.replies = data.reverse()
 
       } catch (error) {
         Toast.fire({
