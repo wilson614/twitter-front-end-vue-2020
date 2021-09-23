@@ -30,19 +30,10 @@ import TweetCreate from '@/components/TweetCreate.vue'
 import tweetsAPI from './../apis/tweets'
 import { Toast } from './../utils/helpers'
 
-const dummyUser = {
-  id: 2,
-  name: 'user1',
-  account: '@user1',
-  avatar: 'https://loremflickr.com/240/240/?random=44.498223728686305',
-  role: 'user',
-  cover: 'https://loremflickr.com/720/240/?random=78.80177917119791',
-  followerCount: 0,
-  followingCount: 0,
-  tweetCount: 10,
-}
+import { mapState, mapActions } from 'vuex'
 
 export default {
+  name: 'Home',
   components: {
     NavBars,
     NavTabs,
@@ -53,46 +44,64 @@ export default {
   data() {
     return {
       tweets: [],
-      currentUser: {},
     }
   },
   created() {
     this.fetchTweets()
-    this.fetchUser()
-    // this.currentUser = dummyUser.currentUser
+    this.fetchCurrentUser()
+  },
+  computed: {
+    ...mapState({
+      currentUser: 'currentUser',
+      isTweetNeedReload: 'isTweetNeedReload',
+    }),
+  },
+  watch: {
+    isTweetNeedReload (){
+      if (this.isTweetNeedReload) {
+        this.fetchTweets()
+        this.handleTweetsReload(false)
+      }
+    }
   },
   methods: {
+    ...mapActions(['fetchCurrentUser', 'handleTweetsReload']),
     async fetchTweets() {
       try {
         const { data } = await tweetsAPI.getTweets()
         this.tweets = data
       } catch (error) {
-         Toast.fire({
+        Toast.fire({
           icon: 'error',
-          title: '無法取得推文，請稍後再試'
+          title: '無法取得推文，請稍後再試',
         })
       }
     },
-    fetchUser() {
-      this.currentUser = {
-        id: dummyUser.id,
-        avatar: dummyUser.avatar,
-      }
-    },
+    // TODO: 待修復 tweetID
     afterCreateTweet(payload) {
-      const { tweetId, description } = payload
-      this.tweets.push({
-        id: tweetId,
-        User: {
-          id: this.currentUser.id,
-          name: this.currentUser.name,
-          account: this.currentUser.account,
-          avatar: this.currentUser.avatar,
-        },
-        description,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      const { id, description } = payload
+      // console.log(payload)
+      this.handleCreateTweet({
+        UserId: id,
+        description: description,
       })
+    },
+    async handleCreateTweet({ UserId, description }) {
+      // loading
+      try {
+        const { data } = await tweetsAPI.postTweet({ UserId, description })
+        
+        this.fetchTweets()
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得推文，請稍後再試',
+        })
+      }
     },
   },
 }
@@ -115,8 +124,6 @@ export default {
 .home-center-tweet {
   width: 100%;
   height: 120px;
-  // background-color: black;
-  border-bottom: 0.625rem solid $popular-border;
 }
 
 .home-center-tweets {
@@ -124,12 +131,11 @@ export default {
   overflow-y: scroll;
 }
 
-//scrollbar樣式crad list與form panel可共用
+//TODO: 待修復 bar 不貼齊
 .scrollbar {
-  padding-left: 6px;
   // 整體的樣式
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 0.25rem;
   }
   // bar的樣式
   &::-webkit-scrollbar-thumb {

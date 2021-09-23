@@ -2,15 +2,21 @@
   <div id="popular">
     <span class="popular-title">Popular</span>
     <div class="popular-user-list" v-for="user in users" :key="user.id">
-      <img :src="user.avatar" alt="userAvatar" />
+      <router-link :to="{ name: 'profile', params: { userid: user.id } }">
+        <img :src="user.avatar" alt="userAvatar" />
+      </router-link>
       <div class="popular-user-list-ceneter">
-        <p class="user-name">{{ user.name }}</p>
-        <p class="user-account">{{ user.account }}</p>
+        <router-link :to="{ name: 'profile', params: { userid: user.id } }">
+          <p class="user-name">{{ user.name }}</p>
+        </router-link>
+        <router-link :to="{ name: 'profile', params: { userid: user.id } }">
+          <p class="user-account">{{ user.account }}</p>
+        </router-link>
       </div>
       <button
         :class="['btn', user.isFollowed && 'btn-orange']"
         type="submit"
-        @click.stop.prevent="deleteFollowed(user.id)"
+        @click.stop.prevent="deleteFollowed(user)"
       >
         {{ user.isFollowed ? '正在跟隨' : '跟隨' }}
       </button>
@@ -19,10 +25,13 @@
 </template>
 
 <script>
+// TODO: 確認無觸發實際追蹤值，API正常，但 VUE 沒有改
 import userAPI from './../apis/user'
 import { Toast } from './../utils/helpers'
+import { mapState, mapActions } from 'vuex'
 
 export default {
+  name: 'Popular',
   data() {
     return {
       users: [],
@@ -31,7 +40,13 @@ export default {
   created() {
     this.fetchTopUsers()
   },
+  computed: {
+    ...mapState({
+      currentUser: 'currentUser',
+    }),
+  },
   methods: {
+    ...mapActions(['fetchCurrentUser']),
     async fetchTopUsers() {
       try {
         const { data } = await userAPI.getTopUsers()
@@ -39,23 +54,49 @@ export default {
       } catch (error) {
         Toast.fire({
           icon: 'error',
-          title: '無法取得追蹤者，請稍後再試',
+          title: '無法取得追蹤，請稍後再試',
         })
       }
     },
-    deleteFollowed(userId) {
+    deleteFollowed(user) {
+      const { id, isFollowed } = user
+      this.handleFollow(isFollowed, id)
       this.users = this.users
         .map((user) => {
-          if (user.id !== userId) {
+          if (user.id !== id) {
             return user
           }
           return {
             ...user,
-            FollowedCount: user.FollowedCount - 1,
-            isFollowed: !user.isFollowed,
+            // FollowedCount: user.FollowedCount - 1,
+            isFollowed: user.isFollowed === 0 ? 1 : 0,
           }
         })
-        .sort((a, b) => b.FollowedCount - a.FollowedCount)
+        // .sort((a, b) => b.FollowedCount - a.FollowedCount)
+    },
+    async handleFollow(isFollowed, id) {
+      try {
+        if (isFollowed) {
+          console.log('delete')
+          let {data} = await userAPI.deleteFollowed({id})
+          
+          if (data.status === 'error') {
+            throw new Error(data.message)
+          }
+          
+        } else {
+          let {data} = await userAPI.addFollowed({id})
+          
+          if (data.status === 'error') {
+            throw new Error(data.message)
+          }
+        }
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '目前無法追蹤，請稍後再試',
+        })
+      }
     },
   },
 }
@@ -64,10 +105,10 @@ export default {
 <style lang="scss" scoped>
 #popular {
   width: 350px;
-  height: 756px;
   margin-top: 0.938rem;
   border-radius: 14px;
   background-color: $popular-bg;
+  padding-bottom: 0.688rem;
 }
 .popular-title {
   display: block;

@@ -1,5 +1,5 @@
-import { apiHelper } from "./../utils/helpers";
-const getToken = () => localStorage.getItem("token");
+import { apiHelper } from './../utils/helpers'
+const getToken = () => localStorage.getItem('token')
 
 export default {
   getTopUsers() {
@@ -40,7 +40,13 @@ export default {
   getUserFollowers({ userid }) {
     return apiHelper.get(`/users/${userid}/followers`, {
       headers: { Authorization: `Bearer ${getToken()}` },
-    });
+    })
+  },
+  // TODO: 待修復 setting api
+  updateUserSetting({ user_id, formData }) {
+    return apiHelper.put(`/users/${user_id}/setting`, formData, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
   },
   addFollowed({ id }) {
     return apiHelper.post(
@@ -60,7 +66,6 @@ export default {
   },
   editUserProfile({ userid, body }) {
     return apiHelper.put(`/users/${userid}`, body, {
-      headers: { Authorization: `Bearer ${getToken()}` },
-    });
+    })
   },
 };
