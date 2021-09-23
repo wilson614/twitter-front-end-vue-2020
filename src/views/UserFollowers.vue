@@ -248,7 +248,7 @@ export default {
 
 .follower-list {
   width: 100%;
-  height: 1440px;
+  height: 1000px;
   overflow-y: scroll;
 }
 .list {
