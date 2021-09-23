@@ -1,5 +1,5 @@
-import { apiHelper } from "./../utils/helpers";
-const getToken = () => localStorage.getItem("token");
+import { apiHelper } from './../utils/helpers'
+const getToken = () => localStorage.getItem('token')
 
 export default {
   getTopUsers() {
@@ -44,22 +44,38 @@ export default {
   },
   addFollowed({ id }) {
     return apiHelper.post(
+<<<<<<< HEAD
       "/followships",
+=======
+      '/followships',
+>>>>>>> e724eff (feat: 新增 popoular API)
       { id },
       {
         headers: { Authorization: `Bearer ${getToken()}` },
       }
+<<<<<<< HEAD
     );
+=======
+    )
+>>>>>>> e724eff (feat: 新增 popoular API)
   },
   deleteFollowed({ id }) {
     return apiHelper.delete(`/followships/${id}`, {
       headers: {
         Authorization: `Bearer ${getToken()}`,
       },
+<<<<<<< HEAD
     });
   },
   editUserProfile({ userid, body }) {
     return apiHelper.put(`/users/${userid}`, body, {
+=======
+    })
+  },
+  getCurrentUsers() {
+    console.log(getToken())
+    return apiHelper.get('/current_user', null, {
+>>>>>>> e724eff (feat: 新增 popoular API)
       headers: { Authorization: `Bearer ${getToken()}` },
     });
   },
