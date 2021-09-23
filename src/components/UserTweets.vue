@@ -17,7 +17,7 @@
             }}</span>
           </div>
           <router-link :to="`/tweets/${tweet.id}`" class="tweet-content">
-            {{ tweet.description }}
+            {{ tweet.description.slice(0, 140)+'.'}}
           </router-link>
           <div class="reply-likes d-flex align-items-center cursor-pointer">
             <div class="reply-wrapper d-flex align-items-center" @click="showtweetReplyModal(tweet)">
@@ -146,7 +146,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user-tweets-container, .user-tweet-list {
+  width: 100%;
+}
 .tweet-item {
+  width: 100%;
   padding: 10px 15px;
   border-bottom: 1px solid $popular-border;
 }
@@ -160,6 +164,7 @@ export default {
 }
 
 .user-tweet-main {
+  width: 100%;
   .user-info {
     span,
     a {
