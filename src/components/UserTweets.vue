@@ -21,7 +21,9 @@
           </router-link>
           <div class="reply-likes d-flex align-items-center">
             <div class="reply-wrapper d-flex align-items-center">
+              <router-link :to="`/tweets/${tweet.id}`">
               <img class="icon reply-icon" src="../assets/svg/reply.svg" />
+              </router-link>
               <p class="counts reply-counts">{{ tweet.replyCount }}</p>
             </div>
             <div class="like-wrapper d-flex align-items-center">

@@ -37,7 +37,6 @@
                 <div class="btn-control">
                   <button
                     v-if="follower.isFollowed"
-                    :disabled="currentUser.id !== user.id"
                     @click.stop.prevent="unfollow(follower.followerId)"
                     type="button"
                     class="btn following-btn"
@@ -46,7 +45,6 @@
                   </button>
                   <button
                     v-else
-                    :disabled="currentUser.id !== user.id"
                     @click.stop.prevent="follow(follower.followerId)"
                     type="button"
                     class="btn follow-btn"
@@ -293,16 +291,10 @@ export default {
     .following-btn {
       background-color: $button-color;
       color: $body-bg;
-      &:disabled {
-        cursor: none;
-      }
     }
     .follow-btn {
       border: 1px solid $button-color;
       color: $button-color;
-      &:disabled {
-        cursor: none;
-      }
     }
   }
   .introduction {

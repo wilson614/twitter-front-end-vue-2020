@@ -37,12 +37,20 @@
                 </div>
                 <div class="btn-control">
                   <button
+                    v-if="following.isFollowed"
+                    @click.stop.prevent="unfollow(following.followingId)"
                     type="button"
                     class="btn following-btn"
-                    :disabled="currentUser.id !== user.id"
-                    @click.stop.prevent="unFollow(following.followingId)"
                   >
                     正在跟隨
+                  </button>
+                  <button
+                    v-else
+                    @click.stop.prevent="follow(following.followingId)"
+                    type="button"
+                    class="btn follow-btn"
+                  >
+                    跟隨
                   </button>
                 </div>
               </div>
@@ -113,7 +121,7 @@ export default {
     next();
   },
   methods: {
-    ...mapActions(['handleUserReload']),
+    ...mapActions(["handleUserReload"]),
     async fetchFollowings(userid) {
       try {
         const { data } = await userAPI.getUserFollowings({ userid });
@@ -136,7 +144,30 @@ export default {
         });
       }
     },
-    async unFollow(id) {
+    async follow(id) {
+      try {
+        console.log(id);
+        const { data } = await userAPI.addFollowed({ id });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功跟隨",
+        });
+        const following = this.followings.find(
+          (following) => following.followingId === id
+        );
+        following.isFollowed = true;
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法跟隨，請稍後再試",
+        });
+      }
+    },
+    async unfollow(id) {
       try {
         const { data } = await userAPI.deleteFollowed({ id });
         if (data.status !== "success") {
@@ -146,10 +177,17 @@ export default {
           icon: "success",
           title: "成功取消跟隨",
         });
-        this.followings = this.followings.filter(
-          (following) => following.followingId !== id
-        );
-        this.handleUserReload(true);
+        if (this.user.id === this.currentUser.id) {
+          this.followings = this.followings.filter(
+            (following) => following.followingId !== id
+          );
+        } else {
+          const following = this.following.find(
+            (following) => following.followingId === id
+          );
+          following.isFollowed = false;
+        }
+        //this.handleUserReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -270,9 +308,10 @@ export default {
     .following-btn {
       background-color: $button-color;
       color: $body-bg;
-      &:disabled {
-        cursor: none;
-      }
+    }
+    .follow-btn {
+      border: 1px solid $button-color;
+      color: $button-color;
     }
   }
   .introduction {
