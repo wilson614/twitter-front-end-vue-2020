@@ -68,24 +68,25 @@ export default {
           }
           return {
             ...user,
-            FollowedCount: user.FollowedCount - 1,
+            // FollowedCount: user.FollowedCount - 1,
             isFollowed: !user.isFollowed,
           }
         })
-        .sort((a, b) => b.FollowedCount - a.FollowedCount)
+        // .sort((a, b) => b.FollowedCount - a.FollowedCount)
     },
     async handleFollow(isFollowed, id) {
       try {
-        if (isFollowed === true) {
+        if (isFollowed) {
+          console.log('delete')
           let {data} = await userAPI.deleteFollowed({id})
-
+          
           if (data.status === 'error') {
             throw new Error(data.message)
           }
           
         } else {
           let {data} = await userAPI.addFollowed({id})
-
+          
           if (data.status === 'error') {
             throw new Error(data.message)
           }
