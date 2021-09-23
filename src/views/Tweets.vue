@@ -5,7 +5,9 @@
     </div>
     <div class="tweets-center">
       <NavTabs plainText="推文" :isbackArrow="true" />
-      <div class="tweets-center-tweet"><TweetDetail :tweet="tweet" /></div>
+      <div class="tweets-center-tweet">
+        <TweetDetail :tweet="tweet" @handleaddLiked="handleaddLiked" />
+      </div>
       <div class="tweets-center-tweets">
         <TweetReply :replies="replies" />
       </div>
@@ -43,13 +45,13 @@ export default {
     this.fetchTweet(this.$route.params.id)
   },
   watch: {
-    isTweetNeedReload (){
+    isTweetNeedReload() {
       if (this.isTweetNeedReload) {
         this.fetchReplies(this.$route.params.id)
         this.fetchTweet(this.$route.params.id)
         this.handleTweetsReload(false)
       }
-    }
+    },
   },
   computed: {
     ...mapState({
@@ -68,7 +70,6 @@ export default {
         const { data } = await tweetsAPI.getReplies(tweet_id)
         console.log(data)
         this.replies = data.reverse()
-
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -98,6 +99,9 @@ export default {
         })
         // this.$router.push('/')
       }
+    },
+    handleaddLiked({ isLiked }) {
+      this.tweet.isLiked = isLiked
     },
   },
 }

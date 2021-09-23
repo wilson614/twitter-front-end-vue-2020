@@ -31,7 +31,7 @@
       <span class="reply">
         <span class="reply-count">{{ tweet.replyCount }}</span> 回覆</span
       >
-      <span class="like cursor-pointer">
+      <span class="like">
         <span class="like-count">{{ tweet.likeCount }}</span> 喜歡次數</span
       >
     </div>
@@ -39,8 +39,12 @@
       <div class="btn-reply cursor-pointer" @click="showtweetReplyModal">
         <img class="reply-icon" src="@/assets/svg/reply-lg.svg" />
       </div>
-      <div class="btn-like">
-        <img class="like-icon" src="@/assets/svg/like-lg.svg" />
+      <div
+        class="btn-like cursor-pointer"
+        @click.stop.prevent="handleLike(tweet.isLiked, tweet.id)"
+      >
+        <!-- <img class="like-icon" src="@/assets/svg/like-lg.svg" /> -->
+        <TweetLke class="like-icon" :isActive="tweet.isLiked" />
       </div>
     </div>
     <TweetReplyModal
@@ -55,11 +59,15 @@
 <script>
 import { fromNowFilter } from './../utils/mixins'
 import TweetReplyModal from '@/components/TweetReplyModal.vue'
+import TweetLke from '@/components/icon/TweetLike.vue'
+import tweetsAPI from './../apis/tweets'
+import { Toast } from './../utils/helpers'
 
 export default {
   mixins: [fromNowFilter],
   components: {
     TweetReplyModal,
+    TweetLke,
   },
   data() {
     return {
@@ -74,13 +82,13 @@ export default {
   },
   computed: {
     replyData() {
-      if(Object.keys(this.tweet).length === 0) return {}
+      if (Object.keys(this.tweet).length === 0) return {}
       const { User, ...data } = this.tweet
       return {
         name: User.name,
         account: User.account,
         avatar: User.avatar,
-        ...data
+        ...data,
       }
     },
   },
@@ -91,7 +99,31 @@ export default {
     modalClose() {
       this.isShowModal = false
     },
-    replySubmit() {},
+    handleLike(isLiked, id) {
+      this.handleaddLiked(isLiked, id)
+      this.addLiked(isLiked, id)
+    },
+    async addLiked(isLiked, id) {
+      // this.handleaddLiked(id)
+      try {
+        if (isLiked) {
+          await tweetsAPI.deleteLiked(id)
+        } else {
+          await tweetsAPI.addLiked(id)
+        }
+      } catch (error) {
+        const toastTitle = isLiked
+          ? '無法對推文按不喜歡，請稍後再試'
+          : '無法對推文按喜歡，請稍後再試'
+        Toast.fire({
+          icon: 'error',
+          title: toastTitle,
+        })
+      }
+    },
+    handleaddLiked(isLiked) {
+      this.$emit('handleaddLiked', { isLiked: !isLiked })
+    },
   },
 }
 </script>
@@ -175,6 +207,10 @@ export default {
   }
   .btn-reply {
     margin-right: 9.375rem;
+  }
+  .like-icon {
+    width: 30px;
+    height: 30px;
   }
 }
 </style>
