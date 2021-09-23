@@ -14,12 +14,12 @@
           name="email"
           type="email"
           class="form-control"
-          placeholder="帳號"
+          placeholder="Email"
           autocomplete="username"
           required
           autofocus
         />
-        <label class="placeholder">帳號</label>
+        <label class="placeholder">Email</label>
       </div>
       <div class="form-label-group">
         <input
