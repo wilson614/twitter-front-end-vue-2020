@@ -62,7 +62,7 @@ import Popular from "./../components/Popular.vue";
 import UserFollowTabs from "./../components/UserFollowTabs.vue";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   components: {
@@ -88,8 +88,18 @@ export default {
       },
     };
   },
+  watch: {
+    isUserReload() {
+      if (this.isUserReload) {
+        this.handleUserReload(false);
+        if (this.currentUser.id === this.user.id) {
+          this.fetchFollowings(this.user.id);
+        }
+      }
+    },
+  },
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
+    ...mapState(["currentUser", "isAuthenticated", "isUserReload"]),
   },
   created() {
     const { userid: userid } = this.$route.params;
@@ -103,6 +113,7 @@ export default {
     next();
   },
   methods: {
+    ...mapActions(['handleUserReload']),
     async fetchFollowings(userid) {
       try {
         const { data } = await userAPI.getUserFollowings({ userid });
@@ -138,6 +149,7 @@ export default {
         this.followings = this.followings.filter(
           (following) => following.followingId !== id
         );
+        this.handleUserReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({

@@ -46,7 +46,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(['fetchCurrentUser']),
+    ...mapActions(['fetchCurrentUser','handleUserReload']),
     async fetchTopUsers() {
       try {
         const { data } = await userAPI.getTopUsers()
@@ -88,6 +88,7 @@ export default {
             throw new Error(data.message)
           }
         }
+        this.handleUserReload(true)
       } catch (error) {
         Toast.fire({
           icon: 'error',
