@@ -53,7 +53,6 @@
 <script>
 import authorizationAPI from './../apis/authorizationAPI'
 import { Toast } from './../utils/helpers'
-
 export default {
   data() {
     return {
@@ -73,7 +72,6 @@ export default {
         return
       }
       this.isProcessing = true
-
       // 使用 authorizationAPI 的 signIn 方法
       // 並且帶入使用者填寫的 email 和 password
       authorizationAPI
@@ -83,10 +81,8 @@ export default {
         })
         .then((response) => {
           const { data } = response
-
           // 將 token 存放在 localStorage 內
           localStorage.setItem('token', data.token)
-
           // 成功登入後轉址到餐聽首頁
           this.$router.push('/')
         })
@@ -128,7 +124,6 @@ form {
     font-weight: 700;
   }
 }
-
 .form-label-group {
   position: relative;
   // border: 1px solid black;
@@ -162,7 +157,6 @@ form {
     box-shadow: 0 0 0px 1000px $input-bg inset;
   }
 }
-
 .btn-control {
   margin-top: 2em;
   .btn-login {
@@ -179,7 +173,6 @@ form {
     }
   }
 }
-
 .link-wrapper {
   margin-top: 1.5em;
   text-align: right;

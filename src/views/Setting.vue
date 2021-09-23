@@ -60,7 +60,6 @@
             class="form-control"
             placeholder="密碼"
             autocomplete="new-password"
-            required
           />
         </div>
 
@@ -74,11 +73,12 @@
             class="form-control"
             placeholder="密碼確認"
             autocomplete="new-password"
-            required
           />
         </div>
         <div class="setting-block">
-          <button class="btn" type="submit">儲存</button>
+          <button class="btn" type="submit" :disabled="isProcessing">
+            儲存
+          </button>
         </div>
       </form>
     </div>
@@ -88,17 +88,10 @@
 <script>
 import NavBars from '../components/NavBars.vue'
 import NavTabs from '../components/NavTabs.vue'
+import userAPI from './../apis/user'
+import { Toast } from './../utils/helpers'
 
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: '管理者',
-    account: '@root',
-    email: 'root@example.com',
-    image: 'https://i.pravatar.cc/300',
-  },
-  isAuthenticated: true,
-}
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -107,24 +100,152 @@ export default {
   },
   data() {
     return {
-      user: null,
+      user: {
+        account: '',
+        name: '',
+        email: '',
+        password: '',
+        checkPassword: '',
+      },
+      isProcessing: false,
     }
   },
   created() {
     this.fetchUser()
   },
+  computed: {
+    ...mapState({
+      currentUser: 'currentUser',
+    }),
+  },
   methods: {
+    // 使用 vuex 拿 currentUser
     fetchUser() {
-      this.user = dummyUser.currentUser
+      const { id, account, name, email } = this.currentUser
+
+      this.user = {
+        ...this.user,
+        id,
+        account,
+        name,
+        email,
+      }
+      this.isProcessing = false
     },
-    handleSubmit(e) {
-      const form = e.target
-      const formData = new FormData(form)
-      // TODO: 透過 API 向伺服器更新使用者
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ': ' + value)
+    checkPasswordRepeat() {
+      if (this.user.password !== this.user.checkPassword) {
+        Toast.fire({
+          icon: 'warning',
+          title: '兩次輸入的密碼不同',
+        })
+        this.password = ''
+        this.checkPassword = ''
+        this.isProcessing = false
+        return false
+      }
+      return true
+    },
+    checkAccount() {
+      //帳號格式(不能有空格)
+      if (this.user.account.indexOf(' ') !== -1) {
+        Toast.fire({
+          icon: 'warning',
+          title: '帳號不能有空格',
+        })
+        this.isProcessing = false
+        return false
+      }
+      return true
+    },
+    checkNameLength() {
+      // 名字(不能超過50字)
+      if (this.user.name.length > 50) {
+        Toast.fire({
+          icon: 'warning',
+          title: '名稱不能多於50字！',
+        })
+        this.isProcessing = false
+        return false
+      }
+      return true
+    },
+    // TODO:確認 API 狀況
+    async handleSubmit() {
+      try {
+        console.log('submit')
+        const { id, account, name, email } = this.currentUser
+
+        this.isProcessing = true
+
+        if (!this.checkPasswordRepeat()) return
+        if (!this.checkAccount()) return
+        if (!this.checkNameLength()) return
+
+        const { data } = await userAPI.updateUserSetting({
+          user_id: id,
+          formdata: {
+            account: this.user.account,
+            name: this.user.name,
+            email: this.user.email,
+            password: this.user.password,
+            checkPassword: this.user.checkPassword,
+          },
+        })
+        console.log(data)
+        // console.log(data)
+        // if (data.status === 'error') {
+        //   throw new Error(data.message)
+        // }
+        // Toast.fire({
+        //   icon: 'success',
+        //   title: '成功更新資料',
+        // })
+
+        // this.$store.dispatch("fetchCurrentUser");
+        // this.$router.push({ name: "User", params: { id: this.userInfo.id } });
+        this.isProcessing = false
+      } catch (error) {
+        console.log('NO')
+        // const { data } = error.response
+        // if (data.message.length === 1) {
+        //   if (data.message[0].error === 'Account is exists.') {
+        //     Toast.fire({
+        //       icon: 'warning',
+        //       title: '帳號已重覆註冊',
+        //     })
+        //     this.isProcessing = false
+        //     return
+        //   } else if (data.message[0].error === 'Email is exists.') {
+        //     Toast.fire({
+        //       icon: 'warning',
+        //       title: 'Email 已重覆註冊',
+        //     })
+        //     this.isProcessing = false
+        //     return
+        //   }
+        // } else if (data.message.length === 2) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: '帳號及 Email 皆已重覆註冊',
+        //   })
+        //   this.isProcessing = false
+        //   return
+        // } else {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: `無法註冊 - ${error.message}`,
+        //   })
+        // }
       }
     },
+    // handleSubmit(e) {
+    //   const form = e.target
+    //   const formData = new FormData(form)
+    //   // TODO: 透過 API 向伺服器更新使用者
+    //   for (let [name, value] of formData.entries()) {
+    //     console.log(name + ': ' + value)
+    //   }
+    // },
   },
 }
 </script>

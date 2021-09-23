@@ -2,25 +2,20 @@
   <form class="tweet-create"  @submit.stop.prevent="handleSubmit">
     <textarea v-model.trim="description" name="description" placeholder="有什麼新鮮事？" rows="3"></textarea>
     <img class="avatar" :src="currentUser.avatar" alt="avatar" />
-    <!-- <span v-if="description.length >= 140" class="error-msg">字數不可超過 140 字</span> -->
+    <!-- <span v-show="errorMessage" class="error-msg">{{errorMessage}}</span> -->
       <button class="btn" type="submit">推文</button>
-     <!-- <TweetCreateModal  v-show="isModalVisible" @close="closeModal"/> -->
   </form>
 </template>
 
 <script>
-// import TweetCreateModal from '@/components/TweetCreateModal.vue'
-import { v4 as uuidv4 } from "uuid"
+import { Toast } from './../utils/helpers'
 
 export default {
-  // components: {
-  //   TweetCreateModal,
-  // },
   data() {
     return {
-      // profile: this.initialProfile,
       isModalVisible: false,
       description: '',
+      errorMessage: '',
     };
   },
   props: {
@@ -30,17 +25,23 @@ export default {
     },
   },
   methods: {
-    // showModal() {
-    //   this.isModalVisible = true
-    // },
-    // closeModal() {
-    //   this.isModalVisible = false
-    // },
     handleSubmit () {
-      // TODO: 向 API 發送 POST 請求
-      // 伺服器新增 Comment 成功後...
+      if (!this.description) {
+        Toast.fire({
+          icon: 'error',
+          title: '內容不可空白',
+        })
+        return
+      }
+      if (this.description.length > 140) {
+        Toast.fire({
+          icon: 'error',
+          title: '字數不可超過 140 字',
+        })
+        return
+      }
       this.$emit('after-create-tweet', {
-        tweetId: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
+        id: this.currentUser.id,
         description: this.description
       })
       this.description = '' // 將表單內的資料清空
@@ -52,8 +53,9 @@ export default {
 <style lang="scss" scoped>
 .tweet-create {
   position: relative;
+  width: 100%;
   height: 120px;
-  border-bottom: 0.063rem solid $popular-border;
+  border-bottom: 0.625rem solid $popular-border;
 }
 textarea {
   width: 100%;

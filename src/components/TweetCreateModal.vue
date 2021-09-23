@@ -28,7 +28,7 @@
               <span v-show="errorMessage" class="error-message">{{
                 errorMessage
               }}</span>
-              <button @click.stop.prevent="handleCreateTweet" class="btn">
+              <button @click.stop.prevent="afterCreateTweet" class="btn">
                 推文
               </button>
             </section>
@@ -40,41 +40,63 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import tweetsAPI from './../apis/tweets'
+import { Toast } from './../utils/helpers'
 
 export default {
-  name: "TweetCreateModal",
+  name: 'TweetCreateModal',
   data() {
     return {
       newTweet: {},
-      errorMessage: "",
-    };
-  },
-  methods: {
-    close() {
-      this.$emit("close");
-      setTimeout(() => {
-        this.newTweet = {};
-        this.errorMessage = "";
-      }, 500);
-    },
-    handleCreateTweet() {
-      if (!this.newTweet.description) {
-        this.errorMessage = "內容不可空白";
-        return;
-      }
-      if (this.newTweet.description.length > 140) {
-        this.errorMessage = "字數不可超過140";
-        return;
-      }
-      //call API create tweet
-      this.close();
-    },
+      errorMessage: '',
+    }
   },
   computed: {
-    ...mapState(['currentUser', 'isAuthenticated'])
+    ...mapState(['currentUser', 'isAuthenticated']),
   },
-};
+  methods: {
+    ...mapActions(['handleTweetsReload']),
+    close() {
+      this.$emit('close')
+      setTimeout(() => {
+        this.newTweet = {}
+        this.errorMessage = ''
+      }, 500)
+    },
+    afterCreateTweet() {
+      if (!this.newTweet.description) {
+        this.errorMessage = '內容不可空白'
+        return
+      }
+      if (this.newTweet.description.length > 140) {
+        this.errorMessage = '字數不可超過140'
+        return
+      }
+      this.handleCreateTweet({
+        UserId: this.currentUser.id,
+        description: this.newTweet.description,
+      })
+      this.close()
+    },
+    async handleCreateTweet({ UserId, description }) {
+      console.log(UserId, description)
+      try {
+        const { data } = await tweetsAPI.postTweet({ UserId, description })
+
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        this.handleTweetsReload(true)
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得推文，請稍後再試',
+        })
+      }
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
