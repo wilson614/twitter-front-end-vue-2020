@@ -8,7 +8,7 @@
         <div class="user-reply-main">
           <div class="user-info">
             <span class="user name">{{ reply.User.name }}</span>
-            <a href="" class="user account">{{ reply.User.account }}</a>
+            <router-link :to="`/users/${reply.UserId}`" class="user account">{{ reply.User.account }}</router-link>
             <span class="seperater">•</span>
             <span class="user created-at">{{
               isToday(reply.createdAt)
@@ -20,10 +20,7 @@
             <span class="reply-title">回覆</span>
             <router-link
               class="reply-account"
-              :to="{
-                name: 'profile',
-                params: { userid: reply.Tweet.User.id },
-              }"
+              :to="`/users/${reply.Tweet.User.id}`"
               >{{ reply.Tweet.User.account }}</router-link
             >
           </div>
