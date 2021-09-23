@@ -35,7 +35,10 @@
                       height="20"
                     />
                   </label>
-                  <button class="cover-delete">
+                  <button
+                    class="cover-delete"
+                    @click.stop.prevent="user.cover = initialUser.cover"
+                  >
                     <img
                       src="../assets/svg/editProfile-close.svg"
                       alt=""
@@ -92,9 +95,9 @@
                   autofocus
                 />
                 <label class="placeholder">名稱</label>
-                <!-- <small class="word-count d-inline-block"
+                <small class="word-count d-inline-block"
                   >{{ user.name.length }}/50</small
-                > -->
+                >
               </div>
               <div class="form-label-group">
                 <textarea
@@ -106,9 +109,9 @@
                   placeholder="自我介紹"
                 />
                 <label class="placeholder">自我介紹</label>
-                <!-- <small class="word-count d-inline-block"
+                <small class="word-count d-inline-block"
                   >{{ user.introduction.length }}/160</small
-                > -->
+                >
               </div>
             </div>
           </section>
@@ -206,11 +209,11 @@ export default {
           avatar: this.user.avatar,
           cover: this.user.cover,
         };
-        console.log(editData)
-        this.$emit('after-submit', editData);
+        console.log(editData);
+        this.$emit("after-submit", editData);
       } catch (error) {
         this.isProcessing = false;
-        console.log(error.message)
+        console.log(error.message);
         Toast.fire({
           icon: "error",
           title: "更新失敗，請稍後再試",
