@@ -86,7 +86,6 @@ export default {
   },
   methods: {
     showtweetReplyModal() {
-      console.log('test')
       this.isShowModal = true
     },
     modalClose() {

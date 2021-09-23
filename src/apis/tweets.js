@@ -31,4 +31,9 @@ export default {
       }
     )
   },
+    getReplies(tweet_id) {
+    return apiHelper.get(`/tweets/${tweet_id}/replies`, {
+      headers: { Authorization: `Bearer ${getToken()}` },
+    })
+  },
 }
