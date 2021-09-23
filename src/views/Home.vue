@@ -28,24 +28,12 @@ import NavTabs from '../components/NavTabs.vue'
 import TweetsLatest from '@/components/TweetsLatest.vue'
 import TweetCreate from '@/components/TweetCreate.vue'
 import tweetsAPI from './../apis/tweets'
-import userAPI from './../apis/user'
 import { Toast } from './../utils/helpers'
 
-import { mapActions } from 'vuex'
-
-const dummyUser = {
-  id: 2,
-  name: 'user1',
-  account: '@user1',
-  avatar: 'https://loremflickr.com/240/240/?random=44.498223728686305',
-  role: 'user',
-  cover: 'https://loremflickr.com/720/240/?random=78.80177917119791',
-  followerCount: 0,
-  followingCount: 0,
-  tweetCount: 10,
-}
+import { mapState, mapActions } from 'vuex'
 
 export default {
+  name: 'Home',
   components: {
     NavBars,
     NavTabs,
@@ -56,16 +44,16 @@ export default {
   data() {
     return {
       tweets: [],
-      currentUser: {},
-      currentUsers: {},
     }
   },
   created() {
     this.fetchTweets()
-    // this.fetchUser()
-    // this.currentUser = dummyUser.currentUser
-    // this.fetchUserrrrrr()
     this.fetchCurrentUser()
+  },
+  computed: {
+    ...mapState({
+      currentUser: 'currentUser',
+    }),
   },
   methods: {
     ...mapActions(['fetchCurrentUser']),
@@ -80,28 +68,6 @@ export default {
         })
       }
     },
-    // fetchUser() {
-    //   this.currentUser = {
-    //     id: dummyUser.id,
-    //     avatar: dummyUser.avatar,
-    //   }
-    // },
-    async fetchUserrrrrr() {
-      try {
-        const { data } = await userAPI.getCurrentUsers()
-        console.log(data)
-        // this.data = {
-        //   id: data.id,
-        //   avatar: data.avatar,
-        // }
-      } catch (error) {
-        console.log(error)
-        Toast.fire({
-          icon: 'error',
-          title: '無法取得使用者，請稍後再試',
-        })
-      }
-    },
     afterCreateTweet(payload) {
       const { tweetId, description } = payload
       this.handleCreateTweet({
@@ -112,11 +78,13 @@ export default {
         id: tweetId,
         User: {
           id: this.currentUser.id,
-          name: this.currentUser.name,
-          account: this.currentUser.account,
-          avatar: this.currentUser.avatar,
         },
         description,
+        avatar: this.currentUser.avatar,
+        name: this.currentUser.name,
+        account: this.currentUser.account,
+        likeCount: '0',
+        replyCount: '0',
         createdAt: new Date(),
         updatedAt: new Date(),
       })
