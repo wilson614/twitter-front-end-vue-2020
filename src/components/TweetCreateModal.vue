@@ -163,7 +163,7 @@ export default {
 textarea {
   width: 100%;
   height: 100%;
-  padding: 10px calc(15px + 15px + 64px) 20px 75px;
+  padding: 15px calc(15px + 15px + 64px) 20px 75px;
   font-size: 18px;
   font-weight: 500;
   font-family: inherit;
