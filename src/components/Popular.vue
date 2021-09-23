@@ -14,6 +14,7 @@
         </router-link>
       </div>
       <button
+        v-show="currentUser.id !== user.id "
         :class="['btn', user.isFollowed && 'btn-orange']"
         type="submit"
         @click.stop.prevent="deleteFollowed(user)"
@@ -25,7 +26,6 @@
 </template>
 
 <script>
-// TODO: 確認無觸發實際追蹤值，API正常，但 VUE 沒有改
 import userAPI from './../apis/user'
 import { Toast } from './../utils/helpers'
 import { mapState, mapActions } from 'vuex'
@@ -61,32 +61,29 @@ export default {
     deleteFollowed(user) {
       const { id, isFollowed } = user
       this.handleFollow(isFollowed, id)
-      this.users = this.users
-        .map((user) => {
-          if (user.id !== id) {
-            return user
-          }
-          return {
-            ...user,
-            // FollowedCount: user.FollowedCount - 1,
-            isFollowed: user.isFollowed === 0 ? 1 : 0,
-          }
-        })
-        // .sort((a, b) => b.FollowedCount - a.FollowedCount)
+      this.users = this.users.map((user) => {
+        if (user.id !== id) {
+          return user
+        }
+        return {
+          ...user,
+          // FollowedCount: user.FollowedCount - 1,
+          isFollowed: user.isFollowed === 0 ? 1 : 0,
+        }
+      })
+      // .sort((a, b) => b.FollowedCount - a.FollowedCount)
     },
     async handleFollow(isFollowed, id) {
       try {
         if (isFollowed) {
-          console.log('delete')
-          let {data} = await userAPI.deleteFollowed({id})
-          
+          let { data } = await userAPI.deleteFollowed({ id })
+
           if (data.status === 'error') {
             throw new Error(data.message)
           }
-          
         } else {
-          let {data} = await userAPI.addFollowed({id})
-          
+          let { data } = await userAPI.addFollowed({ id })
+
           if (data.status === 'error') {
             throw new Error(data.message)
           }

@@ -48,20 +48,32 @@
         </div>
       </li>
     </ul>
+    <TweetReplyModal
+      :tweet="modalData"
+      v-if="Object.keys(modalData).length !== 0"
+      @close="modalClose"
+      @submit="replySubmit"
+    />
   </div>
 </template>
 
 <script>
 import { fromNowFilter } from "./../utils/mixins";
+import TweetReplyModal from '@/components/TweetReplyModal.vue'
 import userAPI from "./../apis/user";
 import tweetAPI from "./../apis/tweets";
 import { Toast } from "./../utils/helpers";
 
 export default {
   mixins: [fromNowFilter],
+  components: {
+    TweetReplyModal,
+  },
   data() {
     return {
       tweets: [],
+      modalData: {},
+      isShowModal: false,
     };
   },
   created() {
@@ -116,6 +128,20 @@ export default {
           title: "無法 加入/移除 最愛",
         });
       }
+    },
+
+    // TODO: 尚未完成 tweetReply 的傳入大頭貼
+    showtweetReplyModal(tweet) {
+      this.modalData = tweet
+      console.log(tweet)
+    },
+    modalClose() {
+      this.modalData = {}
+    },
+    replySubmit(formData) {
+      console.log(formData)
+      // ...api
+      this.modalClose()
     },
   },
 };

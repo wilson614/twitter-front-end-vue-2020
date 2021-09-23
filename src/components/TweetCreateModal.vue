@@ -25,12 +25,14 @@
                 placeholder="有什麼新鮮事？"
               ></textarea>
               <img class="avatar" alt="avatar" :src="currentUser.avatar" />
+              <div class="d-flex justify-content-end align-items-center">
               <span v-show="errorMessage" class="error-message">{{
                 errorMessage
               }}</span>
               <button @click.stop.prevent="afterCreateTweet" class="btn">
                 推文
               </button>
+              </div>
             </section>
           </div>
         </form>
@@ -70,7 +72,7 @@ export default {
         return
       }
       if (this.newTweet.description.length > 140) {
-        this.errorMessage = '字數不可超過140'
+        this.errorMessage = '字數不可超過 140 字'
         return
       }
       this.handleCreateTweet({
@@ -80,7 +82,6 @@ export default {
       this.close()
     },
     async handleCreateTweet({ UserId, description }) {
-      console.log(UserId, description)
       try {
         const { data } = await tweetsAPI.postTweet({ UserId, description })
 
@@ -156,11 +157,13 @@ export default {
 .modal-create-tweet {
   position: relative;
   height: 235px;
+  display: flex;
+  flex-direction: column;
 }
 textarea {
   width: 100%;
   height: 100%;
-  padding: 20px calc(15px + 15px + 64px) 20px 75px;
+  padding: 10px calc(15px + 15px + 64px) 20px 75px;
   font-size: 18px;
   font-weight: 500;
   font-family: inherit;
@@ -175,19 +178,15 @@ img {
   border-radius: 50px;
 }
 .error-message {
+  margin-right: 1.25rem;
   font-size: 15px;
   font-weight: 500;
   color: $input-error-msg;
-  position: absolute;
-  bottom: 28px;
-  right: 100px;
 }
 
 .btn {
-  position: absolute;
-  bottom: 15px;
-  right: 15px;
   padding: 0.625rem 0.938rem;
+  margin-right: 0.938rem;
   font-family: inherit;
   font-size: 18px;
   color: $button-text;

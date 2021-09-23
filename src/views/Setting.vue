@@ -172,7 +172,6 @@ export default {
     // TODO:確認 API 狀況
     async handleSubmit() {
       try {
-        console.log('submit')
         const { id, account, name, email } = this.currentUser
 
         this.isProcessing = true
@@ -204,46 +203,38 @@ export default {
         this.isProcessing = false
       } catch (error) {
 
-        // const { data } = error.response
-        // if (data.message.length === 1) {
-        //   if (data.message[0].error === 'Account is exists.') {
-        //     Toast.fire({
-        //       icon: 'warning',
-        //       title: '帳號已重覆註冊',
-        //     })
-        //     this.isProcessing = false
-        //     return
-        //   } else if (data.message[0].error === 'Email is exists.') {
-        //     Toast.fire({
-        //       icon: 'warning',
-        //       title: 'Email 已重覆註冊',
-        //     })
-        //     this.isProcessing = false
-        //     return
-        //   }
-        // } else if (data.message.length === 2) {
-        //   Toast.fire({
-        //     icon: 'warning',
-        //     title: '帳號及 Email 皆已重覆註冊',
-        //   })
-        //   this.isProcessing = false
-        //   return
-        // } else {
-        //   Toast.fire({
-        //     icon: 'warning',
-        //     title: `無法註冊 - ${error.message}`,
-        //   })
-        // }
+        const { data } = error.response
+        if (data.message.length === 1) {
+          if (data.message[0].error === 'Account is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: '帳號已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          } else if (data.message[0].error === 'Email is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: 'Email 已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          }
+        } else if (data.message.length === 2) {
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號及 Email 皆已重覆註冊',
+          })
+          this.isProcessing = false
+          return
+        } else {
+          Toast.fire({
+            icon: 'warning',
+            title: `無法註冊 - ${error.message}`,
+          })
+        }
       }
     },
-    // handleSubmit(e) {
-    //   const form = e.target
-    //   const formData = new FormData(form)
-    //   // TODO: 透過 API 向伺服器更新使用者
-    //   for (let [name, value] of formData.entries()) {
-    //     console.log(name + ': ' + value)
-    //   }
-    // },
   },
 }
 </script>

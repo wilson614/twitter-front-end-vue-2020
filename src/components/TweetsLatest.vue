@@ -213,10 +213,6 @@ export default {
   .btn-icon {
     color: $input-placeholder;
   }
-  // // TODO: 確認正確的 SVG
-  // .btn-red {
-  //   fill: $like-icon;
-  // }
   .btn-reply {
     margin-right: 3.125rem;
   }
