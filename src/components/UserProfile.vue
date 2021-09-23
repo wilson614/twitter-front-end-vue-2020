@@ -71,7 +71,7 @@
 
       <div class="card-body d-flex flex-column">
         <p class="card-name">{{ user.name }}</p>
-        <router-link class="card-account" to="#">{{
+        <router-link class="card-account" :to="`/users/${user.id}`">{{
           user.account
         }}</router-link>
         <p class="introduction my-2">

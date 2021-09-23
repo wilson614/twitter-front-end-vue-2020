@@ -3,25 +3,26 @@
     <ul class="user-like-list">
       <li v-for="like in likes" :key="like.id" class="like-item d-flex">
         <div class="user-avatar">
-          <img
-            class="avatar"
-            :src="like.Tweet.User.avatar"
-          />
+          <img class="avatar" :src="like.Tweet.User.avatar" />
         </div>
         <div class="user-like-main">
           <div class="user-info">
-            <span class="user name">{{like.Tweet.User.name}}</span>
-            <a href="" class="user account">{{like.Tweet.User.account}}</a>
+            <span class="user name">{{ like.Tweet.User.name }}</span>
+            <router-link
+              :to="`/users/${like.Tweet.User.id}`"
+              class="user account"
+              >{{ like.Tweet.User.account }}</router-link
+            >
             <span class="seperater">•</span>
             <span class="user created-at">{{
               isToday(like.Tweet.createdAt)
                 ? fromNow(utcOffset(like.Tweet.createdAt))
-                : timeFormat(utcOffset(like.Tweet.createdAt), 'MM月DD日')
+                : timeFormat(utcOffset(like.Tweet.createdAt), "MM月DD日")
             }}</span>
           </div>
-          <p class="like-content">
+          <router-link :to="`/tweets/${like.Tweet.id}`" class="like-content">
             {{ like.Tweet.description }}
-          </p>
+          </router-link>
           <div class="reply-likes d-flex align-items-center">
             <div class="reply-wrapper d-flex align-items-center">
               <img class="icon reply-icon" src="../assets/svg/reply.svg" />
@@ -66,7 +67,7 @@ export default {
   methods: {
     async fetchLikes(userid) {
       try {
-        const { data } = await userAPI.getUserLikes({ userid })
+        const { data } = await userAPI.getUserLikes({ userid });
         this.likes = data;
       } catch (error) {
         Toast.fire({
@@ -127,6 +128,7 @@ export default {
     font-size: 15px;
     font-weight: 500;
     line-height: 22px;
+    color: $main-text;
   }
   .reply-likes {
     margin-top: 12px;
