@@ -77,11 +77,11 @@
         />
       </div>
 
-      <button class="btn" type="submit">註冊</button>
+      <button class="btn" type="submit" :disabled="isProcessing">註冊</button>
 
       <div class="text-center">
         <p>
-          <router-link to="/signin">取消</router-link>
+          <router-link to="/login">取消</router-link>
         </p>
       </div>
     </form>
@@ -89,6 +89,9 @@
 </template>
 
 <script>
+import authorizationAPI from './../apis/authorizationAPI'
+import { Toast } from './../utils/helpers'
+
 export default {
   data() {
     return {
@@ -97,19 +100,105 @@ export default {
       email: '',
       password: '',
       checkPassword: '',
+      isProcessing: false,
     }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        account: this.account,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        checkPassword: this.checkPassword,
-      })
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log('data', data)
+    async handleSubmit() {
+      try {
+        this.isProcessing = true
+        if (
+          !this.account ||
+          !this.name ||
+          !this.email ||
+          !this.password ||
+          !this.checkPassword
+        ) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請確認已填寫所有欄位',
+          })
+          this.isProcessing = false
+          return
+        }
+        if (this.password !== this.checkPassword) {
+          Toast.fire({
+            icon: 'warning',
+            title: '兩次輸入的密碼不同',
+          })
+          this.password = ''
+          this.checkPassword = ''
+          this.isProcessing = false
+          return
+        }
+        const data = await authorizationAPI.signUp({
+          account: this.account,
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          checkPassword: this.checkPassword,
+        })
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        Toast.fire({
+          icon: 'success',
+          title: '註冊成功',
+        })
+        // 成功登入後轉址到登入頁
+        this.$router.push('/login')
+      } catch (error) {
+        const { data } = error.response
+
+        if (data.message.length === 1) {
+          if (data.message[0].error === 'Account is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: '帳號已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          } else if (data.message[0].error === 'Email is exists.') {
+            Toast.fire({
+              icon: 'warning',
+              title: 'Email 已重覆註冊',
+            })
+            this.isProcessing = false
+            return
+          }
+        } else if (data.message.length === 2) {
+          Toast.fire({
+            icon: 'warning',
+            title: '帳號及 Email 皆已重覆註冊',
+          })
+          this.isProcessing = false
+          return
+        } else {
+          Toast.fire({
+            icon: 'warning',
+            title: `無法註冊 - ${error.message}`,
+          })
+        }
+        // TODO:待研究較好解法
+        // if (data.message.some(errorMag => errorMag.error === 'Account is exists.')) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: '帳號已重覆註冊',
+        //   })
+        //   return
+        // } else if (data.message.some(errorMag => errorMag.error === 'Email is exists.')) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: 'Email 已重覆註冊',
+        //   })
+        //   return
+        // } else {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: `無法註冊 - ${error.message}`,
+        //   })
+        // }
+      }
     },
   },
 }
@@ -156,7 +245,6 @@ export default {
     margin-bottom: 1.875rem;
     font-size: 19px;
     @extend %form-input-style;
-    // TODO:待確認紅線
     &:not(:placeholder-shown):invalid {
       border-bottom: 3px solid $input-underline-error;
     }

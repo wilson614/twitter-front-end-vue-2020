@@ -1,16 +1,14 @@
 <template>
-  <div class="container admin-tweets-container d-flex justify-content-center">
-    <section class="navbar mr-5">
+  <div class="container admin-users-container d-flex justify-content-center">
+    <section class="navbar mr-4">
       <NavBars page="admin"/>
     </section>
     <div class="content-wrapper">
       <section class="navtabs admin-navtabs">
         <AdminNavtabs />
       </section>
-      <section
-        class="content main-content d-flex justify-content-center scrollbar"
-      >
-        <AdminTweetList />
+      <section class="content main-content d-flex scrollbar">
+        <AdminUserList />
       </section>
     </div>
   </div>
@@ -18,14 +16,14 @@
 
 <script>
 import AdminNavtabs from './../components/AdminNavtabs.vue'
-import AdminTweetList from './../components/AdminTweetList.vue'
+import AdminUserList from './../components/AdminUserList.vue'
 import NavBars from './../components/NavBars.vue'
 
 export default {
   components: {
     NavBars,
     AdminNavtabs,
-    AdminTweetList,
+    AdminUserList,
   },
 }
 </script>
@@ -44,7 +42,7 @@ export default {
     border-radius: 2px;
   }
 }
-.admin-tweets-container {
+.admin-users-container {
   width: 1300px;
   height: 100vh;
 }

@@ -3,7 +3,7 @@
     <div
       class="tweet-list-wrapper"
       v-infinite-scroll="loadTweets"
-      infinite-scroll-throttle-delay="500"
+      infinite-scroll-throttle-delay="100"
       infinite-scroll-disabled="busy"
       infinite-scroll-distance="10"
     >
@@ -24,9 +24,11 @@
                   ><a href="">{{ tweet.account }}</a></span
                 >
                 <span class="seperater">•</span>
-                <span class="created-at"
-                  >{{ tweet.createdAt | fromNow }} 小時</span
-                >
+                <span class="created-at">{{
+                  isToday(tweet.createdAt)
+                    ? fromNow(utcOffset(tweet.createdAt))
+                    : timeFormat(utcOffset(tweet.createdAt), "MM月DD日")
+                }}</span>
               </div>
               <div class="user-tweet">
                 <span class="tweet-text">
@@ -48,10 +50,9 @@
           </div>
           <div class="btn btn-control">
             <button
-              v-if="currentUser.isAdmin"
               type="button"
               class="btn btn-delete"
-              @click.stop.prevent="handleDeleteButtonClick(tweet.id)"
+              @click.stop.prevent="deleteTweet(tweet.id)"
             >
               <img src="../assets/svg/admin-X.svg" alt="" />
             </button>
@@ -65,33 +66,19 @@
 <script>
 import infiniteScroll from "vue-infinite-scroll";
 import { fromNowFilter } from "./../utils/mixins";
-
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "管理者",
-    email: "root@example.com",
-    image: "https://i.pravatar.cc/300",
-    isAdmin: true,
-  },
-  isAuthenticated: true,
-};
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
 
 export default {
   mixins: [fromNowFilter],
   directives: { infiniteScroll },
-  props: {
-    tweets: {
-      type: Array,
-      required: true,
-    },
-  },
   data() {
     return {
-      currentUser: dummyUser.currentUser,
       more: {},
       busy: false,
-      offset: 0,
+      page: 1,
+      limit: 20,
+      tweets: [],
     };
   },
   methods: {
@@ -99,28 +86,43 @@ export default {
       let isMore = this.more[id];
       this.$set(this.more, id, !isMore);
     },
-    loadTweets() {
-      console.log("load tweets");
+    async loadTweets() {
       this.busy = true;
-      setTimeout(() => {
-        //TODO call api get tweets
-        for (
-          let i = 0;
-          this.offset < this.tweets.length && i < 5;
-          i++, this.offset++
-        ) {
-          this.tweets.push(this.tweets[this.offset]);
+      try {
+        const { data } = await adminAPI.tweets.get({ page: this.page });
+        if (data.length === 0) {
+          Toast.fire({
+            icon: "info",
+            title: "推文資料載入完畢",
+          });
+          return;
         }
-        console.log(this.tweets);
+        data.forEach((tweet) => {
+          this.tweets.push(tweet);
+        });
         this.busy = false;
-      }, 1000);
+        this.page++;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得資料，請稍後再試",
+        });
+      }
     },
-    handleDeleteButtonClick (tweetId) {
-      console.log('handleDeleteButtonClick', tweetId)
-      // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
-      // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
-      this.$emit('after-delete-comment', tweetId)
-    }
+    async deleteTweet(tweetId) {
+      try {
+        const { data } = await adminAPI.tweets.delete({ tweetId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法刪除資料，請稍後再試",
+        });
+      }
+    },
   },
 };
 </script>
@@ -141,9 +143,7 @@ export default {
 }
 
 .user-avatar {
-  // border: 1px solid red;
   display: flex;
-  // align-items: center;
   height: 100%;
   .avatar {
     width: 50px;
@@ -177,7 +177,7 @@ export default {
     font-weight: 500;
   }
   .read-more-less {
-    color: $signin-link;
+    color: $input-placeholder;
   }
 }
 </style>

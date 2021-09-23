@@ -14,12 +14,12 @@
           name="email"
           type="email"
           class="form-control"
-          placeholder="帳號"
+          placeholder="Email"
           autocomplete="username"
           required
           autofocus
         />
-        <label class="placeholder">帳號</label>
+        <label class="placeholder">Email</label>
       </div>
       <div class="form-label-group">
         <input
@@ -35,7 +35,9 @@
         <label class="placeholder">密碼</label>
       </div>
       <div class="btn-control btn-login">
-        <button class="btn btn-login" type="submit">登入</button>
+        <button class="btn btn-login" type="submit" :disabled="isProcessing">
+          登入
+        </button>
       </div>
       <div class="link-wrapper">
         <router-link to="/login" class="link-wrap user-login"
@@ -47,35 +49,58 @@
 </template>
 
 <script>
+import authorizationAPI from "./../apis/authorizationAPI";
+import { Toast } from "./../utils/helpers";
 export default {
   data() {
     return {
       email: "",
       account: "",
       password: "",
+      isProcessing: false,
     };
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        email: this.email,
-        account: this.account,
-        password: this.password,
-      });
+    async handleSubmit() {
+      try {
+        if (!this.email || !this.password) {
+          Toast.fire({
+            icon: "warning",
+            title: "請填入 email 和 password",
+          });
+          return;
+        }
+        this.isProcessing = true;
 
-      //TODO: 向後端驗證管理者登入資訊是否正確
-      console.log("data", data);
+        const response = await authorizationAPI.adminLogin({
+          email: this.email,
+          password: this.password,
+        });
+        console.log(response);
+        const { data } = response;
+
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        localStorage.setItem("token", data.token);
+        this.$router.push("/admin/tweets");
+      } catch (error) {
+        Toast.fire({
+          icon: "warning",
+          title: "請確認您輸入的帳號密碼",
+        });
+        this.isProcessing = false;
+        console.log("error", error);
+      }
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-// layout
 .container {
   width: 1440px;
-  // display: flex;
-  // justify-content: center;
 }
 form {
   width: 540px;
@@ -141,7 +166,7 @@ form {
     color: $button-text;
     font-size: 18px;
     font-weight: 700;
-    box-shadow: 1px 1px 2px #a6a6a6;
+    // box-shadow: 0.5px 0.5px 0.5px #a6a6a6;
     &:hover {
       box-shadow: 1px 1px 3px $input-underline-default;
     }

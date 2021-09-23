@@ -1,0 +1,188 @@
+<template>
+  <div class="user-tweets-container d-flex justify-content-center">
+    <ul class="user-tweet-list">
+      <li v-for="tweet in tweets" :key="tweet.id" class="tweet-item d-flex">
+        <div class="user-avatar">
+          <img class="avatar" :src="tweet.User.avatar" />
+        </div>
+        <div class="user-tweet-main">
+          <div class="user-info">
+            <span class="user name">{{ tweet.User.name }}</span>
+            <router-link :to="`/users/${tweet.UserId}`" class="user account">{{ tweet.User.account }}</router-link>
+            <span class="seperater">•</span>
+            <span class="user created-at">{{
+              isToday(tweet.createdAt)
+                ? fromNow(utcOffset(tweet.createdAt))
+                : timeFormat(utcOffset(tweet.createdAt), "MM月DD日")
+            }}</span>
+          </div>
+          <router-link :to="`/tweets/${tweet.id}`" class="tweet-content">
+            {{ tweet.description }}
+          </router-link>
+          <div class="reply-likes d-flex align-items-center">
+            <div class="reply-wrapper d-flex align-items-center">
+              <img class="icon reply-icon" src="../assets/svg/reply.svg" />
+              <p class="counts reply-counts">{{ tweet.replyCount }}</p>
+            </div>
+            <div class="like-wrapper d-flex align-items-center">
+              <template v-if="tweet.isLiked">
+                <img
+                  class="icon isliked-icon"
+                  src="../assets/svg/like_fill.svg"
+                  @click.stop.prevent="doLike(tweet.id, !tweet.isLiked)"
+                />
+                <p class="counts isliked-counts">{{ tweet.likeCount }}</p>
+              </template>
+              <template v-else>
+                <img
+                  class="icon like-icon"
+                  src="../assets/svg/like.svg"
+                  @click.stop.prevent="doLike(tweet.id, !tweet.isLiked)"
+                />
+                <p class="counts like-counts">{{ tweet.likeCount }}</p>
+              </template>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import { fromNowFilter } from "./../utils/mixins";
+import userAPI from "./../apis/user";
+import tweetAPI from "./../apis/tweets";
+import { Toast } from "./../utils/helpers";
+
+export default {
+  mixins: [fromNowFilter],
+  data() {
+    return {
+      tweets: [],
+    };
+  },
+  created() {
+    const { userid: userid } = this.$route.params;
+    this.fetchTweets(userid);
+  },
+  beforeRouteUpdate(to, from, next) {
+    const { userid } = to.params;
+    this.fetchTweets(userid);
+    next();
+  },
+  methods: {
+    async fetchTweets(userid) {
+      try {
+        const { data } = await userAPI.getUserTweet({ userid });
+        this.tweets = data;
+      } catch (error) {
+        Toast.fire({
+          type: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
+      }
+    },
+    async doLike(tweetId, isLike) {
+      try {
+        let response;
+        if (isLike) {
+          response = await tweetAPI.likeTweet({ tweetId });
+        } else {
+          response = await tweetAPI.unlikeTweet({ tweetId });
+        }
+        const { data } = response;
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        const message = isLike ? "成功加入最愛" : "成功移除最愛";
+        Toast.fire({
+          icon: "success",
+          title: message,
+        });
+        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        tweet.isLiked = isLike;
+        if (isLike) {
+          tweet.likeCount++;
+        } else {
+          tweet.likeCount--;
+        }
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法 加入/移除 最愛",
+        });
+      }
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+.tweet-item {
+  padding: 10px 15px;
+  border-bottom: 1px solid $popular-border;
+}
+.user-avatar {
+  padding: 4px 10px 0 0;
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+}
+
+.user-tweet-main {
+  .user-info {
+    span,
+    a {
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+    .name {
+      font-size: 15px;
+      font-weight: 700;
+      margin-right: 8px;
+    }
+    .account,
+    .seperater,
+    .created-at {
+      font-size: 15px;
+      font-weight: 500;
+      color: $input-placeholder;
+    }
+  }
+  .tweet-content {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 22px;
+    color: $main-text;
+  }
+  .reply-likes {
+    margin-top: 12px;
+    .reply-wrapper {
+      margin-right: 3em;
+    }
+    .reply-icon,
+    .like-icon {
+      width: 15px;
+      height: 15px;
+    }
+    .isliked-icon {
+      width: 24px;
+      height: 24px;
+    }
+    .counts {
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 13px;
+      color: $input-placeholder;
+      margin-left: 1em;
+    }
+    .isliked-counts {
+      color: $like-icon;
+    }
+  }
+}
+</style>

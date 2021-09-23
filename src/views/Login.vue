@@ -35,10 +35,10 @@
         <label class="placeholder">密碼</label>
       </div>
       <div class="btn-control btn-login">
-        <button class="btn btn-login" type="submit">登入</button>
+        <button class="btn btn-login" type="submit" :disabled="isProcessing">登入</button>
       </div>
       <div class="link-wrapper">
-        <router-link to="/admin" class="link-wrap user-login"
+        <router-link to="/register" class="link-wrap user-login"
           >註冊 Alphitter</router-link
         >
         <span class="seperater">•</span>
@@ -51,27 +51,52 @@
 </template>
 
 <script>
+import authorizationAPI from './../apis/authorizationAPI'
+import { Toast } from './../utils/helpers'
 export default {
   data() {
     return {
-      email: "",
-      account: "",
-      password: "",
-    };
+      email: '',
+      account: '',
+      password: '',
+      isProcessing: false,
+    }
   },
   methods: {
-    handleSubmit() {
-      const data = JSON.stringify({
-        email: this.email,
-        account: this.account,
-        password: this.password,
-      });
-
-      //TODO: 向後端驗證管理者登入資訊是否正確
-      console.log("data", data);
+    handleSubmit(e) {
+      if (!this.email || !this.password) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請填入 email 和 password',
+        })
+        return
+      }
+      this.isProcessing = true
+      // 使用 authorizationAPI 的 signIn 方法
+      // 並且帶入使用者填寫的 email 和 password
+      authorizationAPI
+        .signIn({
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          const { data } = response
+          // 將 token 存放在 localStorage 內
+          localStorage.setItem('token', data.token)
+          // 成功登入後轉址到餐聽首頁
+          this.$router.push('/')
+        })
+        .catch((error) => {
+          Toast.fire({
+            icon: 'warning',
+            title: '請確認您輸入了正確的帳號密碼',
+          })
+          this.isProcessing = false
+          console.log('error', error)
+        })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -99,7 +124,6 @@ form {
     font-weight: 700;
   }
 }
-
 .form-label-group {
   position: relative;
   // border: 1px solid black;
@@ -130,9 +154,9 @@ form {
   }
   input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px $input-bg inset;
+    box-shadow: 0 0 0px 1000px $input-bg inset;
   }
 }
-
 .btn-control {
   margin-top: 2em;
   .btn-login {
@@ -149,7 +173,6 @@ form {
     }
   }
 }
-
 .link-wrapper {
   margin-top: 1.5em;
   text-align: right;
