@@ -1,24 +1,23 @@
-<template v-for="reply in tweetReplys" :key="reply.id">
+<template v-for="reply in tweetReplies" :key="reply.id">
   <div id="tweet-reply">
     <img
-      :src="reply.User.avatar" alt="avator"
+      :src="reply.User.avatar" alt="avatar"
     />
     <div class="reply-content">
       <div class="user-details">
-        <span class="user-name">WHO</span>
-        <span class="user-detail">請複製下面的</span>
-        <!-- <span class="user-detail">
-            {{ tweet.account }}•{{
-              isToday(tweet.createdAt)
-                ? fromNow(utcOffset(tweet.createdAt))
-                : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+        <span class="user-name">{{ reply.User.name }}</span>
+        <span class="user-detail">
+            {{ reply.User.account }}•{{
+              isToday(reply.createdAt)
+                ? fromNow(utcOffset(reply.createdAt))
+                : timeFormat(utcOffset(reply.createdAt), 'MM月DD日')
             }}
-          </span> -->
+          </span>
       </div>
       <div class="reply">
         <span>回覆&ensp;</span>
-        <a class="reply-tweet-account">@XX!!!!!X</a>
-        <div class="reply-text">Great~</div>
+        <a class="reply-tweet-account">{{ reply.Tweet.User.account }}</a>
+        <div class="reply-text">{{ reply.comment }}</div>
       </div>
     </div>
   </div>
@@ -30,8 +29,8 @@ import { fromNowFilter } from './../utils/mixins'
 export default {
   mixins: [fromNowFilter],
   props: {
-    tweetReplys: {
-      type: Array,
+    tweetReplies: {
+      type: Object,
       required: true
     }
   }

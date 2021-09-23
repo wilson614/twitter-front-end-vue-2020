@@ -28,7 +28,10 @@ import NavTabs from '../components/NavTabs.vue'
 import TweetsLatest from '@/components/TweetsLatest.vue'
 import TweetCreate from '@/components/TweetCreate.vue'
 import tweetsAPI from './../apis/tweets'
+import userAPI from './../apis/user'
 import { Toast } from './../utils/helpers'
+
+import { mapActions } from 'vuex'
 
 const dummyUser = {
   id: 2,
@@ -54,14 +57,18 @@ export default {
     return {
       tweets: [],
       currentUser: {},
+      currentUsers: {},
     }
   },
   created() {
     this.fetchTweets()
-    this.fetchUser()
+    // this.fetchUser()
     // this.currentUser = dummyUser.currentUser
+    // this.fetchUserrrrrr()
+    this.fetchCurrentUser()
   },
   methods: {
+    ...mapActions(['fetchCurrentUser']),
     async fetchTweets() {
       try {
         const { data } = await tweetsAPI.getTweets()
@@ -73,17 +80,33 @@ export default {
         })
       }
     },
-    fetchUser() {
-      this.currentUser = {
-        id: dummyUser.id,
-        avatar: dummyUser.avatar,
+    // fetchUser() {
+    //   this.currentUser = {
+    //     id: dummyUser.id,
+    //     avatar: dummyUser.avatar,
+    //   }
+    // },
+    async fetchUserrrrrr() {
+      try {
+        const { data } = await userAPI.getCurrentUsers()
+        console.log(data)
+        // this.data = {
+        //   id: data.id,
+        //   avatar: data.avatar,
+        // }
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '無法取得使用者，請稍後再試',
+        })
       }
     },
     afterCreateTweet(payload) {
       const { tweetId, description } = payload
       this.handleCreateTweet({
-         UserId: tweetId,
-         description: description
+        UserId: tweetId,
+        description: description,
       })
       this.tweets.unshift({
         id: tweetId,
@@ -106,7 +129,6 @@ export default {
           throw new Error(data.message)
         }
       } catch (error) {
-
         Toast.fire({
           icon: 'error',
           title: '無法取得推文，請稍後再試',
