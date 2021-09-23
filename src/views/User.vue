@@ -4,7 +4,7 @@
       <NavBars page="normal" />
     </div>
     <div class="profile-center">
-      <NavTabs :user="currentUser.name" :isbackArrow="true" />
+      <NavTabs :user="user" :isbackArrow="true" />
       <div class="profile-center-profile">
         <UserProfile :initial-user="user" :currentUser="currentUser" />
       </div>
