@@ -1,9 +1,20 @@
 <template>
-  <form class="tweet-create"  @submit.stop.prevent="handleSubmit">
-    <textarea v-model.trim="description" name="description" placeholder="有什麼新鮮事？" rows="3"></textarea>
+  <form class="tweet-create" @submit.stop.prevent="handleSubmit">
+    <textarea
+      v-model.trim="description"
+      name="description"
+      placeholder="有什麼新鮮事？"
+      rows="3"
+    ></textarea>
     <img class="avatar" :src="currentUser.avatar" alt="avatar" />
     <!-- <span v-show="errorMessage" class="error-msg">{{errorMessage}}</span> -->
-      <button class="btn" type="submit">推文</button>
+    <button
+      class="btn"
+      type="submit"
+      :disabled="description.trim().length === 0 || description.length > 140"
+    >
+      推文
+    </button>
   </form>
 </template>
 
@@ -16,7 +27,8 @@ export default {
       isModalVisible: false,
       description: '',
       errorMessage: '',
-    };
+      isProcessing: true,
+    }
   },
   props: {
     currentUser: {
@@ -25,7 +37,7 @@ export default {
     },
   },
   methods: {
-    handleSubmit () {
+    handleSubmit() {
       if (!this.description) {
         Toast.fire({
           icon: 'error',
@@ -42,10 +54,10 @@ export default {
       }
       this.$emit('after-create-tweet', {
         id: this.currentUser.id,
-        description: this.description
+        description: this.description,
       })
       this.description = '' // 將表單內的資料清空
-    }
+    },
   },
 }
 </script>
@@ -86,5 +98,8 @@ img {
   color: $button-text;
   background-color: $button-color;
   border-radius: 100px;
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 </style>
