@@ -1,15 +1,15 @@
 <template>
   <div id="tweetslatest">
     <div class="tweet-list" v-for="tweet in componentTweets" :key="tweet.id">
-      <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+      <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
         <img :src="tweet.avatar" alt="userAvatar" />
       </router-link>
       <div class="tweet-list-content">
         <div class="user-details">
-          <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+          <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
             <span class="user-name">{{ tweet.name }}</span>
           </router-link>
-          <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+          <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
             <span class="user-account">
               {{ tweet.account }}
             </span>

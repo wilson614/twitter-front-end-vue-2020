@@ -1,14 +1,14 @@
 <template>
   <div id="tweetdetail" v-if="Object.keys(tweet).length !== 0">
     <div class="tweet-header">
-      <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+      <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
         <img :src="tweet.User.avatar" alt="avatar" />
       </router-link>
       <div class="user-detail">
-        <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+        <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
           <span class="user-name">{{ tweet.User.name }}</span></router-link
         >
-        <router-link :to="{ name: 'profile', params: { id: tweet.UserId } }">
+        <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
           <span class="user-account">{{
             tweet.User.account
           }}</span></router-link
