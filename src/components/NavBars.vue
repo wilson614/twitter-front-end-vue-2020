@@ -26,7 +26,7 @@
     </button>
     <TweetCreateModal v-show="isModalVisible" @close="closeModal" />
     <div class="nav-bottom">
-      <div class="nav-bottom-item" @click.stop.prevent="logout()">
+      <div class="nav-bottom-item cursor-pointer" @click.stop.prevent="logout()">
         <IconLogOut class="nav-bottom-item-img" />
         <span>登出</span>
       </div>
