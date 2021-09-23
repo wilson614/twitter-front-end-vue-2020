@@ -117,7 +117,6 @@ router.beforeEach(async (to, from, next) => {
     isAuthenticated = await store.dispatch("fetchCurrentUser");
     isAdmin = store.state.isAdmin;
   }
-  //console.log(`path:${to.path},auth:${isAuthenticated},admin:${isAdmin}`) for debug
   // 如果 token 無效則轉址到登入頁
   if (!isAuthenticated && !isLoginRoute && to.name !== "register") {
     if (isAdminRoute) {

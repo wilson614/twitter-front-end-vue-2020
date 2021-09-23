@@ -45,7 +45,6 @@ export default {
   },
   // TODO: 待修復 setting api
   updateUserSetting({ user_id, formData }) {
-    console.log(Qs, Qs.stringify(formData), formData)
     return apiHelper.put(`/users/${user_id}/setting`, Qs.stringify(formData), {
       headers: { Authorization: `Bearer ${getToken()}` },
     })

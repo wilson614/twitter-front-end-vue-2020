@@ -80,7 +80,6 @@ export default {
       this.close()
     },
     async handleCreateTweet({ UserId, description }) {
-      console.log(UserId, description)
       try {
         const { data } = await tweetsAPI.postTweet({ UserId, description })
 

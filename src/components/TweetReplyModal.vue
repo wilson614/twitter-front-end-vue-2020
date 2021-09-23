@@ -115,26 +115,11 @@ export default {
     close() {
       this.$emit('close')
     },
-    // submit() {
-    //   // console.log('test')
-    //   this.$emit('submit', {
-    //     id: this.tweet.id,
-    //     form: {
-    //       reply: this.replyContent,
-    //     },
-    //   })
-    // },
     afterCreateReply() {
       if (!this.replyContent) {
-        console.log('test space')
         this.errorMessage = '內容不可空白'
         return
       }
-      // if (this.replyContent.length > 140) {
-      //   console.log('test 140')
-      //   this.errorMessage = '字數不可超過 140 字'
-      //   return
-      // }
       this.handleCreateTweet({
         tweet_id: this.tweet.id,
         comment: this.replyContent,

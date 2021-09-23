@@ -21,7 +21,6 @@
       >
         {{ user.isFollowed ? '正在跟隨' : '跟隨' }}
       </button>
-      <!-- TODO:確認自己不能跟隨自己 :disable="currentUser.id === id" -->
     </div>
   </div>
 </template>
@@ -66,10 +65,6 @@ export default {
         if (user.id !== id) {
           return user
         }
-        // if (user.id === id) {
-        //   // disable
-        //   return user
-        // }
         return {
           ...user,
           // FollowedCount: user.FollowedCount - 1,
@@ -81,7 +76,6 @@ export default {
     async handleFollow(isFollowed, id) {
       try {
         if (isFollowed) {
-          console.log('delete')
           let { data } = await userAPI.deleteFollowed({ id })
 
           if (data.status === 'error') {

@@ -60,15 +60,9 @@ export default {
   },
   methods: {
     ...mapActions(['handleTweetsReload']),
-    // fetchReplies() {
-    //   this.tweetReplies = dummyReply
-    //   // TODO:確認回覆內容傳遞
-    // },
     async fetchReplies(tweet_id) {
-      console.log(tweet_id)
       try {
         const { data } = await tweetsAPI.getReplies(tweet_id)
-        console.log(data)
         this.replies = data.reverse()
       } catch (error) {
         Toast.fire({
