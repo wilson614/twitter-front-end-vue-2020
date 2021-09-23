@@ -58,8 +58,8 @@ export default {
       },
     });
   },
-  editUserProfile({ userid, body }) {
-    return apiHelper.put(`/users/${userid}`, body, {
+  editUserProfile({ userid, formData }) {
+    return apiHelper.put(`/users/${userid}`, formData, {
       headers: { Authorization: `Bearer ${getToken()}` },
     });
   },

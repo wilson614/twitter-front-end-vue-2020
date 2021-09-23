@@ -7,7 +7,7 @@
         aria-labelledby="modalTitle"
         aria-describedby="modalDescription"
       >
-        <form @submit.stop.prevent="handleSubmit">
+        <form enctype="multipart/form-data" @submit.stop.prevent="handleSubmit">
           <header class="modal-header" id="modalTitle">
             <button
               type="button"
@@ -123,7 +123,6 @@ import { mapState } from "vuex";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
 
-
 export default {
   name: "UserEditModal",
   props: {
@@ -137,15 +136,16 @@ export default {
       user: {
         ...this.initialUser,
       },
+      isProcessing: false,
     };
   },
   watch: {
-    initialUser (newValue) {
+    initialUser(newValue) {
       this.user = {
         ...this.user,
-        ...newValue
-      }
-    }
+        ...newValue,
+      };
+    },
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
@@ -180,26 +180,37 @@ export default {
       }
     },
     async handleSubmit(e) {
-      const form = e.target;
-      const formData = new FormData(form);
       try {
-        const user = {
+        const form = e.target;
+        const formData = new FormData(form);
+
+        this.isProcessing = true;
+
+        const { data } = await userAPI.editUserProfile({
+          userid: this.user.id,
+          formData,
+        });
+
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        Toast.fire({
+          icon: "success",
+          title: "成功更新個人資料",
+        });
+
+        const editData = {
           name: this.user.name,
           introduction: this.user.introduction,
           avatar: this.user.avatar,
           cover: this.user.cover,
         };
-        console.log(user);
-        const { data } = await userAPI.editUserProfile({userid:this.currentUser.id,body:user})
-        if (data.status !== "success") {
-          throw new Error(data.message);
-        }
-        Toast.fire({
-          icon: "success",
-          title: "成功更新個人資料",
-        });
-        this.$emit("after-submit", this.user);
+        console.log(editData)
+        this.$emit('after-submit', editData);
       } catch (error) {
+        this.isProcessing = false;
+        console.log(error.message)
         Toast.fire({
           icon: "error",
           title: "更新失敗，請稍後再試",

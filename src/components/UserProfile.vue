@@ -71,7 +71,7 @@
 
       <div class="card-body d-flex flex-column">
         <p class="card-name">{{ user.name }}</p>
-        <router-link class="card-account" :to="`/users/${user.id}`">{{
+        <router-link class="card-account" to="#">{{
           user.account
         }}</router-link>
         <p class="introduction my-2">
@@ -126,12 +126,6 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      user: this.initialUser,
-      isModalVisible: false,
-    };
-  },
   watch: {
     initialUser (newValue) {
       this.user = {
@@ -139,6 +133,12 @@ export default {
         ...newValue
       }
     }
+  },
+  data() {
+    return {
+      user: this.initialUser,
+      isModalVisible: false,
+    };
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated"]),
@@ -152,7 +152,6 @@ export default {
     },
     async follow() {
       try {
-        console.log(this.userid);
         const { data } = await userAPI.addFollowed({ id: this.user.id });
         if (data.status !== "success") {
           throw new Error(data.message);
@@ -206,10 +205,8 @@ export default {
       };
     },
     handleAfterSubmit(data) {
-      this.user = {
-        ...this.user,
-        ...data,
-      };
+      console.log(data)
+      this.user = { ...this.user, ...data }
       this.isModalVisible = false;
     },
   },
