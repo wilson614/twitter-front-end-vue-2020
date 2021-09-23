@@ -76,7 +76,9 @@
           />
         </div>
         <div class="setting-block">
-          <button class="btn" type="submit" :disabled="isProcessing">儲存</button>
+          <button class="btn" type="submit" :disabled="isProcessing">
+            儲存
+          </button>
         </div>
       </form>
     </div>
@@ -86,8 +88,8 @@
 <script>
 import NavBars from '../components/NavBars.vue'
 import NavTabs from '../components/NavTabs.vue'
-// import userAPI from './../apis/user'
-// import { Toast } from './../utils/helpers'
+import userAPI from './../apis/user'
+import { Toast } from './../utils/helpers'
 
 import { mapState } from 'vuex'
 
@@ -130,127 +132,112 @@ export default {
       }
       this.isProcessing = false
     },
+    checkPasswordRepeat() {
+      if (this.user.password !== this.user.checkPassword) {
+        Toast.fire({
+          icon: 'warning',
+          title: '兩次輸入的密碼不同',
+        })
+        this.password = ''
+        this.checkPassword = ''
+        this.isProcessing = false
+        return false
+      }
+      return true
+    },
+    checkAccount() {
+      //帳號格式(不能有空格)
+      if (this.user.account.indexOf(' ') !== -1) {
+        Toast.fire({
+          icon: 'warning',
+          title: '帳號不能有空格',
+        })
+        this.isProcessing = false
+        return false
+      }
+      return true
+    },
+    checkNameLength() {
+      // 名字(不能超過50字)
+      if (this.user.name.length > 50) {
+        Toast.fire({
+          icon: 'warning',
+          title: '名稱不能多於50字！',
+        })
+        this.isProcessing = false
+        return false
+      }
+      return true
+    },
     // TODO:確認 API 狀況
-    //async handleSubmit() {
-    //   try {
-    //     const { id, account, name, email } = this.currentUser
+    async handleSubmit() {
+      try {
+        console.log('submit')
+        const { id, account, name, email } = this.currentUser
 
-    //     this.isProcessing = true
+        this.isProcessing = true
 
-    //     // 欄位已填寫
-    //     if (
-    //       !account ||
-    //       !name ||
-    //       !email
-    //     ) {
-    //       Toast.fire({
-    //         icon: 'warning',
-    //         title: '請確認已填寫所有欄位',
-    //       })
-    //       this.isProcessing = false
-    //       return
-    //     }
+        if (!this.checkPasswordRepeat()) return
+        if (!this.checkAccount()) return
+        if (!this.checkNameLength()) return
 
-    //     // 密碼相同
-    //     if (this.password !== this.checkPassword) {
-    //       Toast.fire({
-    //         icon: 'warning',
-    //         title: '兩次輸入的密碼不同',
-    //       })
-    //       this.password = ''
-    //       this.checkPassword = ''
-    //       this.isProcessing = false
-    //       return
-    //     }
+        const { data } = await userAPI.updateUserSetting({
+          user_id: id,
+          formdata: {
+            account: this.user.account,
+            name: this.user.name,
+            email: this.user.email,
+            password: this.user.password,
+            checkPassword: this.user.checkPassword,
+          },
+        })
+        console.log(data)
+        // console.log(data)
+        // if (data.status === 'error') {
+        //   throw new Error(data.message)
+        // }
+        // Toast.fire({
+        //   icon: 'success',
+        //   title: '成功更新資料',
+        // })
 
-    //     //帳號格式(不能有空格)
-    //     if (this.account.indexOf(" ") !== -1) {
-    //       Toast.fire({
-    //         icon: "warning",
-    //         title: "帳號不能有空格",
-    //       });
-    //       this.isProcessing = false;
-    //       return;
-    //     }
-    //     // 名字(不能超過50字)
-    //      if (this.name.length > 50) {
-    //       Toast.fire({
-    //         icon: "warning",
-    //         title: "名稱不能多於50字！",
-    //       });
-    //       this.isProcessing = false;
-    //       return;
-    //     }
-
-    //     //確認email格式
-    //     if (
-    //       this.email.indexOf("@") === -1 ||
-    //       this.email.indexOf(".com") === -1
-    //     ) {
-    //       Toast.fire({
-    //         icon: "warning",
-    //         title: "email須含有 @ 與.com 等字元",
-    //       });
-    //       this.isProcessing = false;
-    //       return;
-    //     }
-        
-    //     const { formData } = await userAPI.updateUserSetting({
-
-    //       account: account,
-    //       name: name,
-    //       email: email,
-    //       // password: this.password,
-    //       // checkPassword: this.checkPassword,
-    //     })
-
-    //     console.log(data)
-    //     if (data.status === 'error') {
-    //       throw new Error(data.message)
-    //     }
-    //     Toast.fire({
-    //       icon: 'success',
-    //       title: '成功更新資料',
-    //     })
-
-    //     this.$store.dispatch("fetchCurrentUser");
-    //     this.$router.push({ name: "User", params: { id: this.userInfo.id } });
-    //     this.isProcessing = false;
-
-    //   } catch (error) {
-    //     const { data } = error.response
-
-    //     if (data.message.length === 1) {
-    //       if (data.message[0].error === 'Account is exists.') {
-    //         Toast.fire({
-    //           icon: 'warning',
-    //           title: '帳號已重覆註冊',
-    //         })
-    //         this.isProcessing = false
-    //         return
-    //       } else if (data.message[0].error === 'Email is exists.') {
-    //         Toast.fire({
-    //           icon: 'warning',
-    //           title: 'Email 已重覆註冊',
-    //         })
-    //         this.isProcessing = false
-    //         return
-    //       }
-    //     } else if (data.message.length === 2) {
-    //       Toast.fire({
-    //         icon: 'warning',
-    //         title: '帳號及 Email 皆已重覆註冊',
-    //       })
-    //       this.isProcessing = false
-    //       return
-    //     } else {
-    //       Toast.fire({
-    //         icon: 'warning',
-    //         title: `無法註冊 - ${error.message}`,
-    //       })
-    //     }
-    //   }
-    // },
+        // this.$store.dispatch("fetchCurrentUser");
+        // this.$router.push({ name: "User", params: { id: this.userInfo.id } });
+        this.isProcessing = false
+      } catch (error) {
+        console.log('NO')
+        // const { data } = error.response
+        // if (data.message.length === 1) {
+        //   if (data.message[0].error === 'Account is exists.') {
+        //     Toast.fire({
+        //       icon: 'warning',
+        //       title: '帳號已重覆註冊',
+        //     })
+        //     this.isProcessing = false
+        //     return
+        //   } else if (data.message[0].error === 'Email is exists.') {
+        //     Toast.fire({
+        //       icon: 'warning',
+        //       title: 'Email 已重覆註冊',
+        //     })
+        //     this.isProcessing = false
+        //     return
+        //   }
+        // } else if (data.message.length === 2) {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: '帳號及 Email 皆已重覆註冊',
+        //   })
+        //   this.isProcessing = false
+        //   return
+        // } else {
+        //   Toast.fire({
+        //     icon: 'warning',
+        //     title: `無法註冊 - ${error.message}`,
+        //   })
+        // }
+      }
+    },
     // handleSubmit(e) {
     //   const form = e.target
     //   const formData = new FormData(form)
