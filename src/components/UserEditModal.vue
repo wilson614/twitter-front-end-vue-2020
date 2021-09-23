@@ -110,7 +110,7 @@
                 />
                 <label class="placeholder">自我介紹</label>
                 <small class="word-count d-inline-block"
-                  >{{ user.introduction.length }}/160</small
+                  >{{ user.introduction? user.introduction.length : 0 }}/160</small
                 >
               </div>
             </div>

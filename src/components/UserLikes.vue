@@ -21,7 +21,7 @@
             }}</span>
           </div>
           <router-link :to="`/tweets/${like.Tweet.id}`" class="like-content">
-            {{ like.Tweet.description }}
+            {{ like.Tweet.description.slice(0, 140)+'.' }}
           </router-link>
           <div class="reply-likes d-flex align-items-center">
             <div class="reply-wrapper d-flex align-items-center">
@@ -32,7 +32,7 @@
               <img
                 class="icon isliked-icon"
                 src="../assets/svg/like_fill.svg"
-                @click.stop.prevent="unLike(like.id)"
+                @click.stop.prevent="unLike(like.Tweet.id)"
               />
               <p class="counts isliked-counts">{{ like.Tweet.likeCount }}</p>
             </div>
@@ -47,6 +47,7 @@
 import { fromNowFilter } from "./../utils/mixins";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
+import tweetAPI from "./../apis/tweets";
 
 export default {
   mixins: [fromNowFilter],
@@ -76,9 +77,24 @@ export default {
         });
       }
     },
-    unLike(id) {
-      //TODO API calling
-      this.likes = this.likes.filter((like) => like.id !== id);
+    async unLike(tweetId) {
+      try {
+        const { data } = await tweetAPI.unlikeTweet({ tweetId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        Toast.fire({
+          icon: "success",
+          title: "成功移除最愛",
+        });
+        this.likes = this.likes.filter((like) => like.Tweet.id !== tweetId);
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: "error",
+          title: "無法 加入/移除 最愛",
+        });
+      }
     },
   },
 };

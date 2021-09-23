@@ -22,6 +22,7 @@ export default new Vuex.Store({
     isAdmin: false,
     token: '', // 新增 token 屬性
     isTweetNeedReload: false,
+    isUserReload: false,
   },
   mutations: {
     setCurrentUser(state, currentUser) {
@@ -47,6 +48,9 @@ export default new Vuex.Store({
     handleTweetsReload(state, toBe) {
       state.isTweetNeedReload = toBe
     },
+    handleUserReload(state, isReload) {
+      state.isUserReload = isReload
+    },
   },
   actions: {
     async fetchCurrentUser({ commit }) {
@@ -63,6 +67,9 @@ export default new Vuex.Store({
     },
     handleTweetsReload({ commit }, toBe) {
       commit('handleTweetsReload', toBe)
+    },
+    handleUserReload({ commit }, isReload) {
+      commit('handleUserReload', isReload)
     },
   },
   modules: {},

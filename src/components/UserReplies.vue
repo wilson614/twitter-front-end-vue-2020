@@ -24,7 +24,7 @@
               >{{ reply.Tweet.User.account }}</router-link
             >
           </div>
-          <p class="reply-content">{{ reply.comment }}</p>
+          <p class="reply-content">{{ reply.comment.slice(0, 140)+'.' }}</p>
         </div>
       </li>
     </ul>

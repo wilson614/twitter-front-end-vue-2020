@@ -15,7 +15,7 @@
               src="../assets/svg/reply.svg"
               alt=""
             />
-            <span class="tweet-count ml-1">{{ user.tweetCount }}k</span>
+            <span class="tweet-count ml-1">{{ user.tweetCount }}</span>
           </div>
           <div class="like-count-wrapper d-flex align-items-center ml-4">
             <img
@@ -23,7 +23,7 @@
               src="../assets/svg/like.svg"
               alt=""
             />
-            <span class="like-count ml-1">{{ user.likeCount }}k</span>
+            <span class="like-count ml-1">{{ user.likeCount }}</span>
           </div>
         </div>
         <div class="follows mt-2">
