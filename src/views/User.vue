@@ -12,7 +12,7 @@
         <UserProfileTabs />
       </div>
       <div class="profile-tabs-content d-flex justify-content-center scrollbar">
-        <router-view></router-view>
+        <router-view v-if="isRouterAlive"></router-view>
       </div>
     </div>
     <div class="profile-right">
@@ -29,7 +29,7 @@ import UserProfile from "./../components/UserProfile.vue";
 import UserProfileTabs from "./../components/UserProfileTabs.vue";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   components: {
@@ -41,6 +41,7 @@ export default {
   },
   data() {
     return {
+      isRouterAlive: true,
       user: {
         id: -1,
         account: "",
@@ -56,8 +57,26 @@ export default {
       },
     };
   },
+  watch: {
+    isTweetNeedReload() {
+      if (this.isTweetNeedReload) {
+        this.handleTweetsReload(false);
+        if (this.currentUser.id === this.user.id) {
+          this.reload();
+        }
+      }
+    },
+    isUserReload() {
+      if (this.isUserReload) {
+        this.handleUserReload(false);
+        if (this.currentUser.id === this.user.id) {
+          this.fetchUser(this.user.id);
+        }
+      }
+    },
+  },
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
+    ...mapState(["currentUser", "isAuthenticated", "isTweetNeedReload","isUserReload"]),
   },
   created() {
     const { userid: userid } = this.$route.params;
@@ -69,6 +88,11 @@ export default {
     next();
   },
   methods: {
+    ...mapActions(["handleTweetsReload","handleUserReload"]),
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => (this.isRouterAlive = true));
+    },
     async fetchUser(userid) {
       try {
         const { data } = await userAPI.get({ userid });
@@ -102,7 +126,6 @@ export default {
   width: 100%;
   display: flex;
   max-width: 1245px;
-
 }
 .profile-center {
   margin: 0 2rem;
