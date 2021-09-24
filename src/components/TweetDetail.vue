@@ -10,7 +10,7 @@
         >
         <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
           <span class="user-account">{{
-            tweet.User.account
+            '@'+tweet.User.account
           }}</span></router-link
         >
       </div>

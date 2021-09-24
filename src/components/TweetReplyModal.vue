@@ -26,7 +26,7 @@
             <div class="tweet-content-detail">
               <div class="tweet-content-user">
                 <span class="user-name">{{ tweet.name }}</span>
-                <span class="user-account">{{ tweet.account }}</span>
+                <span class="user-account">{{ '@'+tweet.account }}</span>
                 <span class="time"
                   >・{{
                     isToday(tweet.createdAt)

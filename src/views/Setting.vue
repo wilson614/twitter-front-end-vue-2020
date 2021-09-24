@@ -7,7 +7,12 @@
       <NavTabs plainText="帳戶設定" />
       <form class="setting-form" @submit.stop.prevent="handleSubmit">
         <div class="form-label-group">
+          <!-- <span
+            style="position: absolute; font-size: 18px; top: 20px; left: 10px"
+            >@</span
+          > -->
           <label for="account">帳號</label>
+           <!-- style="padding-left: 1.5em" -->
           <input
             id="account"
             v-model="user.account"
@@ -197,11 +202,10 @@ export default {
           title: '成功更新資料',
         })
 
-        this.$store.dispatch("fetchCurrentUser");
-        this.$router.push({ name: "profile", params: { userid : id } });
+        this.$store.dispatch('fetchCurrentUser')
+        this.$router.push({ name: 'profile', params: { userid: id } })
         this.isProcessing = false
       } catch (error) {
-
         const { data } = error.response
         if (data.message.length === 1) {
           if (data.message[0].error === 'Account is exists.') {
