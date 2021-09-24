@@ -11,7 +11,7 @@
           </router-link>
           <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
             <span class="user-account">
-              {{ tweet.account }}
+              {{ '@'+tweet.account }}
             </span>
           </router-link>
           <span class="time">

@@ -2,10 +2,14 @@
   <!-- v-for="reply in replies" :key="reply.id" -->
   <section>
     <div :id="`tweet-reply-${reply.id}`" v-for="reply in replies" :key="reply.id" class="tweet-reply">
+      <router-link :to="{ name: 'profile', params: { userid: reply.User.id } }">
       <img :src="reply.User.avatar" alt="avatar" />
+      </router-link>
       <div class="reply-content">
         <div class="user-details">
+          <router-link :to="{ name: 'profile', params: { userid: reply.User.id } }">
           <span class="user-name">{{ reply.User.name }}</span>
+          </router-link>
           <span class="user-detail">
             {{ reply.User.account }}•{{
               isToday(reply.createdAt)
@@ -16,7 +20,7 @@
         </div>
         <div class="reply">
           <span>回覆&ensp;</span>
-          <a class="reply-tweet-account">{{ reply.Tweet.User.account }}</a>
+          <router-link :to="{ name: 'profile', params: { userid: reply.Tweet.User.id } }" class="reply-tweet-account">{{ '@'+reply.Tweet.User.account }}</router-link>
           <div class="reply-text">{{ reply.comment }}</div>
         </div>
       </div>

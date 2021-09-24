@@ -10,7 +10,7 @@
           <p class="user-name">{{ user.name }}</p>
         </router-link>
         <router-link :to="{ name: 'profile', params: { userid: user.id } }">
-          <p class="user-account">{{ user.account }}</p>
+          <p class="user-account">{{ '@'+user.account }}</p>
         </router-link>
       </div>
       <button
