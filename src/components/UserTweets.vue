@@ -9,7 +9,7 @@
           <div class="user-info">
             <span class="user name">{{ tweet.User.name }}</span>
             <router-link :to="`/users/${tweet.UserId}`" class="user account">{{
-              tweet.User.account
+              '@'+tweet.User.account
             }}</router-link>
             <span class="seperater">•</span>
             <span class="user created-at">{{
