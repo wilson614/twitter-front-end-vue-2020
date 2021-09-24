@@ -72,7 +72,7 @@
       <div class="card-body d-flex flex-column">
         <p class="card-name">{{ user.name }}</p>
         <router-link class="card-account" to="#">{{
-          user.account
+          '@'+user.account
         }}</router-link>
         <p class="introduction my-2">
           {{ user.introduction }}
