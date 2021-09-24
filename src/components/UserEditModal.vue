@@ -390,6 +390,7 @@ export default {
     }
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px $input-bg inset;
+      box-shadow: 0 0 0px 1000px $input-bg inset;
     }
     .word-count {
       position: absolute;

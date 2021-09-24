@@ -26,7 +26,7 @@
             <div class="tweet-content-detail">
               <div class="tweet-content-user">
                 <span class="user-name">{{ tweet.name }}</span>
-                <span class="user-account">{{ tweet.account }}</span>
+                <span class="user-account">{{ '@' + tweet.account }}</span>
                 <span class="time"
                   >・{{
                     isToday(tweet.createdAt)
@@ -95,6 +95,7 @@ export default {
           avatar: '',
           createdAt: '',
           description: '',
+          id: '',
         }
       },
     },
@@ -212,6 +213,8 @@ export default {
     img {
       width: 50px;
       height: 50px;
+      object-fit: cover;
+      flex-shrink: 0;
       border-radius: 50px;
     }
     &::after {
