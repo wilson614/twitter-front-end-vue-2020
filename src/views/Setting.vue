@@ -169,7 +169,6 @@ export default {
       }
       return true
     },
-    // TODO:確認 API 狀況
     async handleSubmit() {
       try {
         const { id, account, name, email } = this.currentUser

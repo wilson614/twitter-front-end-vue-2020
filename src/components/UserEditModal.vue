@@ -140,6 +140,8 @@ export default {
         ...this.initialUser,
       },
       isProcessing: false,
+      avatarChange: false,
+      coverChange: false,
     };
   },
   watch: {
@@ -160,6 +162,8 @@ export default {
         this.user = {
           ...this.initialUser,
         };
+        this.coverChange = false;
+        this.avatarChange = false;
       }, 500);
     },
     handleCoverChange(e) {
@@ -170,6 +174,7 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0]);
         this.user.cover = imageURL;
+        this.coverChange = true;
       }
     },
     handleAvatarChange(e) {
@@ -180,36 +185,44 @@ export default {
       } else {
         const imageURL = window.URL.createObjectURL(files[0]);
         this.user.avatar = imageURL;
+        this.avatarChange = true;
       }
     },
     async handleSubmit(e) {
       try {
         const form = e.target;
-        const formData = new FormData(form);
-
+        let formData = new FormData(form);
         this.isProcessing = true;
-
+        if(!this.avatarChange){
+          formData.set('avatar', this.initialUser.avatar)
+        }
+        if(!this.coverChange){
+          formData.set('cover', this.initialUser.cover)
+        }
+        if(!this.iscoverChange&&!this.isAvatarChange){
+          formData = {
+            name: this.user.name,
+            introduction: this.user.introduction,
+            avatar: this.user.avatar,
+            cover: this.user.cover,
+          }}
         const { data } = await userAPI.editUserProfile({
           userid: this.user.id,
           formData,
         });
-
         if (data.status !== "success") {
           throw new Error(data.message);
         }
-
         Toast.fire({
           icon: "success",
           title: "成功更新個人資料",
         });
-
         const editData = {
           name: this.user.name,
           introduction: this.user.introduction,
           avatar: this.user.avatar,
           cover: this.user.cover,
         };
-        console.log(editData);
         this.$emit("after-submit", editData);
       } catch (error) {
         this.isProcessing = false;
