@@ -95,6 +95,7 @@ export default {
           avatar: '',
           createdAt: '',
           description: '',
+          id: '',
         }
       },
     },

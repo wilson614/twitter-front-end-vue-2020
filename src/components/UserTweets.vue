@@ -68,7 +68,6 @@ import TweetReplyModal from '@/components/TweetReplyModal.vue'
 import userAPI from './../apis/user'
 import tweetAPI from './../apis/tweets'
 import { Toast } from './../utils/helpers'
-
 export default {
   mixins: [fromNowFilter],
   components: {
@@ -134,7 +133,6 @@ export default {
         })
       }
     },
-
     showtweetReplyModal(tweet) {
       this.modalData = {
         name: tweet.User.name,
@@ -142,14 +140,15 @@ export default {
         avatar: tweet.User.avatar,
         createdAt: tweet.createdAt,
         description: tweet.description,
+        id: tweet.id,
+        // comment: '',
       }
-      console.log(tweet)
     },
     modalClose() {
       this.modalData = {}
     },
     replySubmit(formData) {
-      console.log(formData)
+        console.log(formData)
       // ...api
       this.modalClose()
     },
@@ -175,7 +174,6 @@ export default {
     border-radius: 50%;
   }
 }
-
 .user-tweet-main {
   width: 100%;
   .user-info {
