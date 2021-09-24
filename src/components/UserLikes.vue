@@ -21,7 +21,7 @@
             }}</span>
           </div>
           <router-link :to="`/tweets/${like.Tweet.id}`" class="like-content">
-            {{ like.Tweet.description.slice(0, 140) + '.' }}
+            {{ like.Tweet.description }}
           </router-link>
           <div class="reply-likes d-flex align-items-center">
             <div
