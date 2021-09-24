@@ -113,7 +113,6 @@ export default {
         })
       }
     },
-    // TODO: 尚未完成資料傳遞
     showtweetReplyModal(like) {
       this.modalData = {
         name: like.Tweet.User.name,
