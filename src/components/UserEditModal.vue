@@ -194,18 +194,12 @@ export default {
         let formData = new FormData(form);
         this.isProcessing = true;
         if(!this.avatarChange){
-          formData.set('avatar', this.initialUser.avatar)
+          formData.delete('avatar')
         }
         if(!this.coverChange){
-          formData.set('cover', this.initialUser.cover)
+          formData.delete('cover')
         }
-        if(!this.iscoverChange&&!this.isAvatarChange){
-          formData = {
-            name: this.user.name,
-            introduction: this.user.introduction,
-            avatar: this.user.avatar,
-            cover: this.user.cover,
-          }}
+
         const { data } = await userAPI.editUserProfile({
           userid: this.user.id,
           formData,
