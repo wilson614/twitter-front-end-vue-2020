@@ -120,6 +120,7 @@ export default {
         avatar: like.Tweet.User.avatar,
         createdAt: like.Tweet.createdAt,
         description: like.Tweet.description,
+        id: like.TweetId,
       }
     },
     modalClose() {
