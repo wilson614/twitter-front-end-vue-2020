@@ -8,7 +8,7 @@
         <div class="user-reply-main">
           <div class="user-info">
             <span class="user name">{{ reply.User.name }}</span>
-            <router-link :to="`/users/${reply.UserId}`" class="user account">{{ reply.User.account }}</router-link>
+            <router-link :to="`/users/${reply.UserId}`" class="user account">{{ '@'+reply.User.account }}</router-link>
             <span class="seperater">•</span>
             <span class="user created-at">{{
               isToday(reply.createdAt)

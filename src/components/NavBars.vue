@@ -76,7 +76,7 @@ export default {
               name: "profile",
               params: { userid: this.currentUser.id },
             },
-            isActive: [],
+            isActive: ["replies", "likes"],
             icon: () => import("@/components/icon/NavProfile.vue"),
           },
           {

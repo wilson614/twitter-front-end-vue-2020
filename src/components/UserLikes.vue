@@ -11,7 +11,7 @@
             <router-link
               :to="`/users/${like.Tweet.User.id}`"
               class="user account"
-              >{{ like.Tweet.User.account }}</router-link
+              >{{ '@'+like.Tweet.User.account }}</router-link
             >
             <span class="seperater">•</span>
             <span class="user created-at">{{
