@@ -4,7 +4,7 @@
       <NavBars />
     </div>
     <div class="chat-center">
-      <NavTabs plainText="上線使用者" />
+      <NavTabs plainText="上線使用者" :account="onlineCount"/>
       <div v-for="user in onlineUsers" :key="user.id" class="chat-center-online">
         <a class="online-user-block">
           <img
@@ -67,6 +67,27 @@
                 <img src="@/assets/svg/send.svg" alt="home icon" />
               </button>
             </div>
+            <!-- <div>{{ typing?'有人輸入中...':'' }}</div> -->
+        </div>
+      </div>
+      <!-- 聊天室輸入框 -->
+      <div class="chat-input">
+        <div class="input-group">
+          <input
+            v-model="message"
+            type="text"
+            class="form-control"
+            placeholder="輸入訊息..."
+            @keyup.enter="sendMessage"
+          />
+          <div class="input-group-append">
+            <button
+              @click.stop.prevent="sendMessage"
+              class="btn-submit"
+              type="submit"
+            >
+              <img src="@/assets/svg/send.svg" alt="home icon" />
+            </button>
           </div>
         </div>
       </div>
@@ -75,9 +96,9 @@
 </template>
 
 <script>
-import NavBars from "@/components/NavBars.vue";
-import NavTabs from "@/components/NavTabs.vue";
-import { mapState } from "vuex";
+import NavBars from '@/components/NavBars.vue'
+import NavTabs from '@/components/NavTabs.vue'
+import { mapState } from 'vuex'
 //stocket io
 import Vue from "vue";
 import store from "../store";
@@ -92,27 +113,27 @@ const socket = io('http://b7f0-150-117-52-218.ngrok.io', {
 Vue.use(VueSocketIOExt, socket, { store });
 
 export default {
-  name: "Chat",
+  name: 'Chat',
   components: {
     NavBars,
     NavTabs,
   },
   data() {
     return {
-      onlineCount: 0,
+      onlineCount: 5,
       users: {
-        name: "",
-        account: "",
-        avatar: "",
+        name: '',
+        account: '',
+        avatar: '',
       },
-      chatTime: "",
-      message: "",
+      chatTime: '',
+      message: '',
       records: [],
       onlineUsers: {},
     };
   },
-  created(){
-    this.$socket.client.emit("joinRoom")
+  created() {
+    this.$socket.client.emit('joinRoom')
   },
   mounted() {
     this.$socket.$subscribe("allMsg", (obj) => {
@@ -141,13 +162,19 @@ export default {
       console.log("disconnectMsg");
       console.log(obj);
     });
+    this.$socket.$subscribe("chatMsg", (msg) => {
+      console.log(msg);
+    });
+    this.$socket.$subscribe("connect", () => {
+      console.log("emit received from server");
+    });
   },
   socket: {
     connect() {
-      console.log("socket connected");
+      console.log('socket connected')
     },
     login(value) {
-      console.log(value);
+      console.log(value)
     },
     disconnect(){
       console.log("socket disconnected")
@@ -155,12 +182,11 @@ export default {
   },
   methods: {
     sendMessage() {
-      if (this.message === "") {
-        return;
+      if (this.message === '') {
+        return
       }
-      console.log("send new message");
-
-      this.$socket.client.emit("chat message", {
+      console.log('send new message')
+      this.$socket.client.emit('chat message', {
         UserId: this.currentUser.id,
         message: this.message,
         createdAt: new Date()
@@ -169,9 +195,9 @@ export default {
     },
   },
   computed: {
-    ...mapState(["currentUser"]),
+    ...mapState(['currentUser']),
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -219,67 +245,51 @@ export default {
 
 // 聊天室
 .chat-right {
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
   height: 100vh;
 }
 
 .chatroom {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  margin-top: auto;
+  overflow-y: scroll;
+  padding: 2.5rem 0.938rem 0 0.938rem;
 }
 
 .chat-content {
-  flex-grow: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  padding: 1.5em 0;
-  border-bottom: 1px solid $popular-border;
+  height: 100%;
 }
 
-.msg-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-.input-group {
-  height: 55px;
-  border-bottom: 1px solid $popular-border;
-}
-.chat-time {
-  font-size: 13px;
-  font-weight: 400;
-  color: #657786;
-}
-
-.left-other {
+// 別人傳來
+.client {
   display: flex;
   margin-bottom: 1em;
-  .img-panel {
-    display: flex;
-    flex-direction: column-reverse;
-    .chat-avatar {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin: 0 10px 20px 10px;
-    }
+}
+.right-msg-panel {
+  display: flex;
+  align-items: flex-end;
+  .chat-avatar {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.625rem;
   }
-  .left-msg-panel {
+}
+.left-msg-panel {
+  .chat-msg {
     max-width: 365px;
-    .chat-msg {
-      font-size: 15px;
-      font-weight: 400;
-      background-color: #e6ecf0;
-      border-radius: 25px 25px 25px 0;
-      padding: 10px 15px 15px 15px;
-    }
+    font-size: 15px;
+    font-weight: 400;
+    background-color: #e6ecf0;
+    border-radius: 25px 25px 25px 0;
+    padding: 0.625rem 0.938rem;
   }
 }
 
-.right-self {
+// 自己的
+.self {
   display: flex;
   justify-content: end;
   margin-bottom: 1em;
@@ -288,22 +298,29 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: end;
-    padding-right: 10px;
     .chat-msg {
       font-size: 15px;
       font-weight: 400;
       background-color: $button-color;
       color: $body-bg;
       border-radius: 25px 25px 0 25px;
-      padding: 10px 15px 15px 15px;
+      padding: 0.625rem 0.938rem;
     }
   }
 }
 
+// 共用時間 part
+.chat-time {
+  font-size: 13px;
+  font-weight: 400;
+  color: $input-placeholder;
+}
+
+// 上線狀態
 .center-info {
   display: flex;
   justify-content: center;
-  margin-bottom: 1em;
+  margin-bottom: 0.938rem;
   .chat-notif {
     background-color: #e5e5e5;
     color: #657786;
@@ -312,6 +329,15 @@ export default {
     padding: 7px 14px;
     border-radius: 50px;
   }
+}
+
+// 輸入框
+.input-group {
+  height: 55px;
+  display: flex;
+  align-items: center;
+  padding: 12px 5px 12px 15px;
+  border-top: 1px solid $popular-border;
 }
 
 input {
@@ -326,10 +352,15 @@ input {
   }
 }
 
-.input-group {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px 5px 12px 15px;
+.scrollbar {
+  // 整體的樣式
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+  // bar的樣式
+  &::-webkit-scrollbar-thumb {
+    background-color: $popular-border;
+    border-radius: 2px;
+  }
 }
 </style>

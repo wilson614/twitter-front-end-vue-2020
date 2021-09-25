@@ -1,5 +1,5 @@
 <template>
-  <div class="tweet-list-title">
+  <div class="navtab-list-title">
     <router-link :to="{ name: 'Home' }">
       <i
         class="fas fa-arrow-left arrow"
@@ -17,6 +17,9 @@
         <span class="name">{{ user.name }}</span>
         <span class="tweetCount">{{ user.tweetCount }}&ensp;推文</span>
       </div>
+    </template>
+    <template v-if="account">
+      <span class="online-account">&ensp;({{ account }})</span>
     </template>
   </div>
 </template>
@@ -47,18 +50,24 @@ export default {
       },
     },
     isbackArrow: Boolean,
+    account: Number,
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.tweet-list-title {
+.navtab-list-title {
   height: 55px;
   padding: 0.813rem 0 0.875rem 1.25rem;
   display: flex;
   align-items: center;
   border-bottom: 1px solid $popular-border;
   .list-title {
+    margin-bottom: 4px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .online-account {
     margin-bottom: 4px;
     font-size: 18px;
     font-weight: 700;
