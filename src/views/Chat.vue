@@ -163,10 +163,10 @@ export default {
       console.log("disconnectMsg");
       console.log(obj);
     });
-    this.$socket.on("chatMsg", (msg) => {
+    this.$socket.$subscribe("chatMsg", (msg) => {
       console.log(msg);
     });
-    this.$socket.on("connect", () => {
+    this.$socket.$subscribe("connect", () => {
       console.log("emit received from server");
     });
   },
@@ -187,7 +187,6 @@ export default {
         return;
       }
       console.log("send new message");
-
       this.$socket.client.emit("chat message", {
         UserId: this.currentUser.id,
         message: this.message,
