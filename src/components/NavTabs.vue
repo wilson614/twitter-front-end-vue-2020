@@ -18,6 +18,9 @@
         <span class="tweetCount">{{ user.tweetCount }}&ensp;推文</span>
       </div>
     </template>
+    <template v-if="account">
+      <span class="online-account">&ensp;({{ account }})</span>
+    </template>
   </div>
 </template>
 
@@ -47,6 +50,7 @@ export default {
       },
     },
     isbackArrow: Boolean,
+    account: Number,
   },
 }
 </script>
@@ -59,6 +63,11 @@ export default {
   align-items: center;
   border-bottom: 1px solid $popular-border;
   .list-title {
+    margin-bottom: 4px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .online-account {
     margin-bottom: 4px;
     font-size: 18px;
     font-weight: 700;

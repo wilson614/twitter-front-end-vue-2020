@@ -4,7 +4,7 @@
       <NavBars />
     </div>
     <div class="chat-center">
-      <NavTabs plainText="上線使用者" />
+      <NavTabs plainText="上線使用者" :account="onlineCount"/>
       <div v-for="user in onlineUsers" :key="user.id" class="chat-center-online">
         <a class="online-user-block">
           <img
