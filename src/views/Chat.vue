@@ -68,7 +68,6 @@
               </button>
             </div>
             <!-- <div>{{ typing?'有人輸入中...':'' }}</div> -->
-          </div>
         </div>
       </div>
       <!-- 聊天室輸入框 -->
@@ -97,9 +96,9 @@
 </template>
 
 <script>
-import NavBars from "@/components/NavBars.vue";
-import NavTabs from "@/components/NavTabs.vue";
-import { mapState } from "vuex";
+import NavBars from '@/components/NavBars.vue'
+import NavTabs from '@/components/NavTabs.vue'
+import { mapState } from 'vuex'
 //stocket io
 import Vue from "vue";
 import store from "../store";
@@ -114,7 +113,7 @@ const socket = io('http://b7f0-150-117-52-218.ngrok.io', {
 Vue.use(VueSocketIOExt, socket, { store });
 
 export default {
-  name: "Chat",
+  name: 'Chat',
   components: {
     NavBars,
     NavTabs,
@@ -123,18 +122,18 @@ export default {
     return {
       onlineCount: 5,
       users: {
-        name: "",
-        account: "",
-        avatar: "",
+        name: '',
+        account: '',
+        avatar: '',
       },
-      chatTime: "",
-      message: "",
+      chatTime: '',
+      message: '',
       records: [],
       onlineUsers: {},
     };
   },
-  created(){
-    this.$socket.client.emit("joinRoom")
+  created() {
+    this.$socket.client.emit('joinRoom')
   },
   mounted() {
     this.$socket.$subscribe("allMsg", (obj) => {
@@ -172,10 +171,10 @@ export default {
   },
   socket: {
     connect() {
-      console.log("socket connected");
+      console.log('socket connected')
     },
     login(value) {
-      console.log(value);
+      console.log(value)
     },
     disconnect(){
       console.log("socket disconnected")
@@ -183,11 +182,11 @@ export default {
   },
   methods: {
     sendMessage() {
-      if (this.message === "") {
-        return;
+      if (this.message === '') {
+        return
       }
-      console.log("send new message");
-      this.$socket.client.emit("chat message", {
+      console.log('send new message')
+      this.$socket.client.emit('chat message', {
         UserId: this.currentUser.id,
         message: this.message,
         createdAt: new Date()
@@ -196,9 +195,9 @@ export default {
     },
   },
   computed: {
-    ...mapState(["currentUser"]),
+    ...mapState(['currentUser']),
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -255,52 +254,42 @@ export default {
 .chatroom {
   margin-top: auto;
   overflow-y: scroll;
+  padding: 2.5rem 0.938rem;
 }
 
 .chat-content {
-  padding: 1.5em 0;
   height: 100%;
 }
 
-.msg-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.chat-time {
-  font-size: 13px;
-  font-weight: 400;
-  color: #657786;
-}
-
-.left-other {
+// 別人傳來
+.client {
   display: flex;
   margin-bottom: 1em;
-  .img-panel {
-    display: flex;
-    flex-direction: column-reverse;
-    .chat-avatar {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin: 0 10px 20px 10px;
-    }
+}
+.right-msg-panel {
+  display: flex;
+  align-items: flex-end;
+  .chat-avatar {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 0.625rem;
   }
-  .left-msg-panel {
+}
+.left-msg-panel {
+  .chat-msg {
     max-width: 365px;
-    .chat-msg {
-      font-size: 15px;
-      font-weight: 400;
-      background-color: #e6ecf0;
-      border-radius: 25px 25px 25px 0;
-      padding: 10px 15px 15px 15px;
-    }
+    font-size: 15px;
+    font-weight: 400;
+    background-color: #e6ecf0;
+    border-radius: 25px 25px 25px 0;
+    padding: 0.625rem 0.938rem;
   }
 }
 
-.right-self {
+// 自己的
+.self {
   display: flex;
   justify-content: end;
   margin-bottom: 1em;
@@ -309,18 +298,25 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: end;
-    padding-right: 10px;
     .chat-msg {
       font-size: 15px;
       font-weight: 400;
       background-color: $button-color;
       color: $body-bg;
       border-radius: 25px 25px 0 25px;
-      padding: 10px 15px 15px 15px;
+      padding: 0.625rem 0.938rem;
     }
   }
 }
 
+// 共用時間 part
+.chat-time {
+  font-size: 13px;
+  font-weight: 400;
+  color: $input-placeholder;
+}
+
+// 上線狀態
 .center-info {
   display: flex;
   justify-content: center;
@@ -335,6 +331,7 @@ export default {
   }
 }
 
+// 輸入框
 .input-group {
   height: 55px;
   display: flex;
