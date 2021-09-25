@@ -69,6 +69,36 @@ export default {
             isActive: ["tweets"],
             icon: () => import("@/components/icon/NavHome.vue"),
           },
+          // {
+          //   name: "profile",
+          //   text: "通知",
+          //   to: {
+          //     name: "",
+          //     params: { userid: this.currentUser.id },
+          //   },
+          //   isActive: [],
+          //   icon: () => import("@/components/icon/NavProfile.vue"),
+          // },
+          {
+            name: "chat",
+            text: "公開聊天室",
+            to: {
+              name: "chat",
+              // params: { userid: this.currentUser.id },
+            },
+            isActive: [],
+            icon: () => import("@/components/icon/NavNotify.vue"),
+          },
+          // {
+          //   name: "profile",
+          //   text: "私人訊息",
+          //   to: {
+          //     name: "profile",
+          //     params: { userid: this.currentUser.id },
+          //   },
+          //   isActive: [],
+          //   icon: () => import("@/components/icon/NavProfile.vue"),
+          // },
           {
             name: "profile",
             text: "個人資料",
