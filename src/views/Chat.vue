@@ -117,7 +117,7 @@ export default {
   },
   data() {
     return {
-      onlineCount: 0,
+      onlineCount: 5,
       users: {
         name: "",
         account: "",
