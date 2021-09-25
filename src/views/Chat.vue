@@ -240,29 +240,16 @@ export default {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  // height: 100vh;
+  height: 100vh;
 }
 
 .chatroom {
-  // display: flex;
-  // flex-direction: column;
-  // height: 100vh;
-  // flex-basis: 0;
+  margin-top: auto;
 }
 
 .chat-content {
-  // flex-grow: 1;
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: end;
   padding: 1.5em 0;
   height: 100%;
-  // height: 1092px;
-}
-
-.chat-input {
-  margin-top: auto;
-  // flex-basis: 55px;
 }
 
 .msg-container {
