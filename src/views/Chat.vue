@@ -74,9 +74,15 @@
       <!-- 聊天室輸入框 -->
       <div class="chat-input">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="輸入訊息..." />
+          <input v-model="message"
+              type="text"
+              class="form-control"
+              placeholder="輸入訊息..."
+              @keyup.enter="sendMessage"/>
           <div class="input-group-append">
-            <button class="btn-submit" type="submit">
+            <button @click.stop.prevent="sendMessage"
+                class="btn-submit"
+                type="submit">
               <img src="@/assets/svg/send.svg" alt="home icon" />
             </button>
           </div>
