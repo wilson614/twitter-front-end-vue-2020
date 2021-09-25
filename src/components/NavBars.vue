@@ -87,7 +87,7 @@ export default {
               // params: { userid: this.currentUser.id },
             },
             isActive: [],
-            icon: () => import("@/components/icon/NavProfile.vue"),
+            icon: () => import("@/components/icon/NavNotify.vue"),
           },
           // {
           //   name: "profile",
