@@ -254,7 +254,7 @@ export default {
 .chatroom {
   margin-top: auto;
   overflow-y: scroll;
-  padding: 2.5rem 0.938rem 0 2.5rem;
+  padding: 2.5rem 0.938rem 0 0.938rem;
 }
 
 .chat-content {
