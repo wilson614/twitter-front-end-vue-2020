@@ -74,15 +74,19 @@
       <!-- 聊天室輸入框 -->
       <div class="chat-input">
         <div class="input-group">
-          <input v-model="message"
-              type="text"
-              class="form-control"
-              placeholder="輸入訊息..."
-              @keyup.enter="sendMessage"/>
+          <input
+            v-model="message"
+            type="text"
+            class="form-control"
+            placeholder="輸入訊息..."
+            @keyup.enter="sendMessage"
+          />
           <div class="input-group-append">
-            <button @click.stop.prevent="sendMessage"
-                class="btn-submit"
-                type="submit">
+            <button
+              @click.stop.prevent="sendMessage"
+              class="btn-submit"
+              type="submit"
+            >
               <img src="@/assets/svg/send.svg" alt="home icon" />
             </button>
           </div>
@@ -245,6 +249,7 @@ export default {
 
 .chatroom {
   margin-top: auto;
+  overflow-y: scroll;
 }
 
 .chat-content {
@@ -314,7 +319,7 @@ export default {
 .center-info {
   display: flex;
   justify-content: center;
-  margin-bottom: 1em;
+  margin-bottom: 0.938rem;
   .chat-notif {
     background-color: #e5e5e5;
     color: #657786;
@@ -342,6 +347,18 @@ input {
   &::placeholder {
     color: $main-text;
     opacity: 40%;
+  }
+}
+
+.scrollbar {
+  // 整體的樣式
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+  // bar的樣式
+  &::-webkit-scrollbar-thumb {
+    background-color: $popular-border;
+    border-radius: 2px;
   }
 }
 </style>
