@@ -163,6 +163,12 @@ export default {
       console.log("disconnectMsg");
       console.log(obj);
     });
+    this.$socket.on("chatMsg", (msg) => {
+      console.log(msg);
+    });
+    this.$socket.on("connect", () => {
+      console.log("emit received from server");
+    });
   },
   socket: {
     connect() {
