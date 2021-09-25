@@ -5,14 +5,14 @@
     </div>
     <div class="chat-center">
       <NavTabs plainText="上線使用者" />
-      <div class="chat-center-online">
+      <div v-for="user in onlineUsers" :key="user.id" class="chat-center-online">
         <a class="online-user-block">
           <img
-            src="https://loremflickr.com/240/240/?lock=53.96615135591365"
+            :src="user.avatar"
             alt="avatar"
           />
-          <span class="user-name">假:NAME</span>
-          <span class="user-account">假:@用戶名稱</span>
+          <span class="user-name">{{user.name}}</span>
+          <span class="user-account">{{user.account}}</span>
         </a>
       </div>
     </div>
@@ -21,49 +21,49 @@
         <NavTabs plainText="公開聊天室" />
         <div class="chatroom d-flex flex-column">
           <div class="chat-content">
-            <div class="msg-container">
-              <div class="left-other">
+            <div class="msg-container" v-for="record in records" :key="record.index">
+              <div class="left-other" v-if="!record.broadcast&&record.User.id !== currentUser.id">
                 <div class="img-panel">
                   <img
                     class="chat-avatar"
-                    src="https://loremflickr.com/240/240/?random=82.34086245031686"
-                    alt=""
+                    :src="record.User.avatar"
                   />
                 </div>
-
                 <div class="left-msg-panel">
                   <p class="chat-msg">
-                    left msgleft msgleft msgleft msgleft msgleft msgleft msgleft
-                    msgleft msgleft msgleft msgleft msgleft msgleft msgleft
-                    msgleft msgleft msgleft msgleft msgleft msg
+                    {{record.message}}
                   </p>
-                  <p class="chat-time">下午4:00</p>
+                  <p class="chat-time">{{record.createdAt}}</p>
                 </div>
               </div>
-
-              <div class="right-self">
+              <div class="right-self" v-if="!record.broadcast&&record.User.id === currentUser.id">
                 <div class="right-msg-panel">
                   <p class="chat-msg">
-                    right panelright panelright panelright panelright panelright
-                    panelright panelright panelright panelright panelright
-                    panelright panelright panelright panelright panelright
-                    panelright panel
+                    {{record.message}}
                   </p>
-                  <p class="chat-time">下午6:08</p>
+                  <p class="chat-time">{{record.createdAt}}</p>
                 </div>
               </div>
-
-              <div class="center-info">
-                <p class="chat-notif">Ralph Edward 離線</p>
+              <div class="center-info" v-if="record.broadcast">
+                <p class="chat-notif">{{record.broadcast}}</p>
               </div>
-              <!-- <div>{{ typing?'有人輸入中...':'' }}</div> -->
             </div>
           </div>
           <!-- 聊天室輸入框 -->
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="輸入訊息..." />
+            <input
+              v-model="message"
+              type="text"
+              class="form-control"
+              placeholder="輸入訊息..."
+              @keyup.enter="sendMessage"
+            />
             <div class="input-group-append">
-              <button class="btn-submit" type="submit">
+              <button
+                @click.stop.prevent="sendMessage"
+                class="btn-submit"
+                type="submit"
+              >
                 <img src="@/assets/svg/send.svg" alt="home icon" />
               </button>
             </div>
@@ -75,16 +75,103 @@
 </template>
 
 <script>
-import NavBars from '@/components/NavBars.vue'
-import NavTabs from '@/components/NavTabs.vue'
+import NavBars from "@/components/NavBars.vue";
+import NavTabs from "@/components/NavTabs.vue";
+import { mapState } from "vuex";
+//stocket io
+import Vue from "vue";
+import store from "../store";
+import VueSocketIOExt from "vue-socket.io-extended";
+import { io } from "socket.io-client";
+
+const token = localStorage.getItem("token");
+const socket = io('http://b7f0-150-117-52-218.ngrok.io', {
+  query: { token: token }
+})
+
+Vue.use(VueSocketIOExt, socket, { store });
 
 export default {
-  name: 'Chat',
+  name: "Chat",
   components: {
     NavBars,
     NavTabs,
   },
-}
+  data() {
+    return {
+      onlineCount: 0,
+      users: {
+        name: "",
+        account: "",
+        avatar: "",
+      },
+      chatTime: "",
+      message: "",
+      records: [],
+      onlineUsers: {},
+    };
+  },
+  created(){
+    this.$socket.client.emit("joinRoom")
+  },
+  mounted() {
+    this.$socket.$subscribe("allMsg", (obj) => {
+      console.log("received all records");
+      console.log(obj);
+      this.records = obj;
+    });
+    this.$socket.$subscribe("welcome message", (obj) => {
+      console.log("welcome message");
+      console.log(obj);
+      this.records.push(obj)
+    });
+    this.$socket.$subscribe("onlineUser", (obj) => {
+      console.log("onlineUser");
+      console.log(obj);
+      this.onlineUsers = obj;
+    });
+    this.$socket.$subscribe("chatMsg", (msg) => {
+      console.log(msg);
+      this.records.push(msg);
+    });
+    this.$socket.$subscribe("connect", () => {
+      console.log("emit received from server");
+    });
+    this.$socket.$subscribe("disconnectMsg", (obj) => {
+      console.log("disconnectMsg");
+      console.log(obj);
+    });
+  },
+  socket: {
+    connect() {
+      console.log("socket connected");
+    },
+    login(value) {
+      console.log(value);
+    },
+    disconnect(){
+      console.log("socket disconnected")
+    },
+  },
+  methods: {
+    sendMessage() {
+      if (this.message === "") {
+        return;
+      }
+      console.log("send new message");
+
+      this.$socket.client.emit("chat message", {
+        UserId: this.currentUser.id,
+        message: this.message,
+        createdAt: new Date()
+      });
+      this.message = "";
+    },
+  },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
