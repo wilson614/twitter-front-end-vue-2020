@@ -79,44 +79,41 @@
 </template>
 
 <script>
-import NavBars from '@/components/NavBars.vue'
-import NavTabs from '@/components/NavTabs.vue'
-import { mapState } from 'vuex'
+import NavBars from "@/components/NavBars.vue";
+import NavTabs from "@/components/NavTabs.vue";
+import { mapState } from "vuex";
 //stocket io
 import Vue from "vue";
 import store from "../store";
 import VueSocketIOExt from "vue-socket.io-extended";
 import { io } from "socket.io-client";
-
 const token = localStorage.getItem("token");
 const socket = io('http://b7f0-150-117-52-218.ngrok.io', {
   query: { token: token }
 })
-
 Vue.use(VueSocketIOExt, socket, { store });
-
 export default {
-  name: 'Chat',
+  name: "Chat",
   components: {
     NavBars,
     NavTabs,
   },
   data() {
     return {
-      onlineCount: 5,
+      onlineCount: 0,
       users: {
-        name: '',
-        account: '',
-        avatar: '',
+        name: "",
+        account: "",
+        avatar: "",
       },
-      chatTime: '',
-      message: '',
+      chatTime: "",
+      message: "",
       records: [],
       onlineUsers: {},
     };
   },
-  created() {
-    this.$socket.client.emit('joinRoom')
+  created(){
+    this.$socket.client.emit("joinRoom")
   },
   mounted() {
     this.$socket.$subscribe("allMsg", (obj) => {
@@ -145,19 +142,13 @@ export default {
       console.log("disconnectMsg");
       console.log(obj);
     });
-    this.$socket.$subscribe("chatMsg", (msg) => {
-      console.log(msg);
-    });
-    this.$socket.$subscribe("connect", () => {
-      console.log("emit received from server");
-    });
   },
   socket: {
     connect() {
-      console.log('socket connected')
+      console.log("socket connected");
     },
     login(value) {
-      console.log(value)
+      console.log(value);
     },
     disconnect(){
       console.log("socket disconnected")
@@ -165,11 +156,11 @@ export default {
   },
   methods: {
     sendMessage() {
-      if (this.message === '') {
-        return
+      if (this.message === "") {
+        return;
       }
-      console.log('send new message')
-      this.$socket.client.emit('chat message', {
+      console.log("send new message");
+      this.$socket.client.emit("chat message", {
         UserId: this.currentUser.id,
         message: this.message,
         createdAt: new Date()
@@ -178,9 +169,9 @@ export default {
     },
   },
   computed: {
-    ...mapState(['currentUser']),
+    ...mapState(["currentUser"]),
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
