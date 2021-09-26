@@ -24,6 +24,11 @@ const routes = [
     name: 'Home',
     component: Home,
   },
+  {
+    path: '/tweets/:id',
+    name: 'tweets',
+    component: () => import('../views/Tweets.vue'),
+  },
   // {
   //   path: '/notify',
   //   name: 'notify',
