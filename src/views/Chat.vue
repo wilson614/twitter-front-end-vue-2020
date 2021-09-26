@@ -240,6 +240,7 @@ export default {
 .right-msg-panel {
   display: flex;
   align-items: flex-end;
+  max-width: 400px;
   .chat-avatar {
     display: inline-block;
     width: 40px;
@@ -249,6 +250,7 @@ export default {
   }
 }
 .left-msg-panel {
+  word-wrap:break-word;
   .chat-msg {
     max-width: 365px;
     font-size: 15px;
@@ -269,7 +271,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: end;
+    word-wrap:break-word;
     .chat-msg {
+      max-width: 365px;
       font-size: 15px;
       font-weight: 400;
       background-color: $button-color;
