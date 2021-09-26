@@ -13,7 +13,7 @@
         <a class="online-user-block">
           <img :src="user.avatar" alt="avatar" />
           <span class="user-name">{{ user.name }}</span>
-          <span class="user-account">{{ '@'+user.account }}</span>
+          <span class="user-account">{{ '@' + user.account }}</span>
         </a>
       </div>
     </div>
@@ -136,33 +136,41 @@ export default {
     this.$socket.client.emit('joinRoom')
   },
   mounted() {
-    this.scrollToEnd();
-    this.$socket.$subscribe('allMsg', (obj) => {
+    this.scrollToEnd()
+    this.$socket.client.on('allMsg', (obj) => {
       console.log('received all records')
       console.log(obj)
       this.records = obj
     })
-    this.$socket.$subscribe('broadcast', (obj) => {
+    this.$socket.client.on('broadcast', (obj) => {
       console.log('broadcast')
       console.log(obj)
       this.records.push(obj)
     })
-    this.$socket.$subscribe('onlineUser', (obj) => {
+    this.$socket.client.on('onlineUser', (obj) => {
       console.log('onlineUser')
       console.log(obj)
       this.onlineUsers = obj
     })
-    this.$socket.$subscribe('chatMsg', (msg) => {
+    this.$socket.client.on('chatMsg', (msg) => {
       console.log(msg)
       this.records.push(msg)
     })
-    this.$socket.$subscribe('connect', () => {
+    this.$socket.client.on('connect', () => {
       console.log('emit received from server')
     })
-    this.$socket.$subscribe('disconnectMsg', (obj) => {
+    this.$socket.client.on('disconnectMsg', (obj) => {
       console.log('disconnectMsg')
       console.log(obj)
     })
+  },
+  beforeDestroy() {
+    this.$socket.client.off('allMsg')
+    this.$socket.client.off('broadcast')
+    this.$socket.client.off('onlineUser')
+    this.$socket.client.off('chatMsg')
+    this.$socket.client.off('connect')
+    this.$socket.client.off('disconnectMsg')
   },
   socket: {
     connect() {
@@ -189,12 +197,12 @@ export default {
       this.message = ''
     },
     scrollToEnd() {
-      const content = this.$refs.chatroom;
-      content.scrollTop = content.scrollHeight;
+      const content = this.$refs.chatroom
+      content.scrollTop = content.scrollHeight
     },
   },
   updated() {
-    this.scrollToEnd();
+    this.scrollToEnd()
   },
   computed: {
     ...mapState(['currentUser']),
