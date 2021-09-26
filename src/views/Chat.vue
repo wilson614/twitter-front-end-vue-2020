@@ -5,50 +5,47 @@
     </div>
     <div class="chat-center">
       <NavTabs plainText="上線使用者" :account="onlineCount" />
-      <div class="chat-center-online">
+      <div v-for="user in onlineUsers" :key="user.id" class="chat-center-online">
         <a class="online-user-block">
           <img
-            src="https://loremflickr.com/240/240/?lock=53.96615135591365"
+            :src="user.avatar"
             alt="avatar"
           />
-          <span class="user-name">假:NAME</span>
-          <span class="user-account">假:@用戶名稱</span>
+          <span class="user-name">{{user.name}}</span>
+          <span class="user-account">{{user.account}}</span>
         </a>
       </div>
     </div>
     <div class="chat-right">
       <NavTabs plainText="公開聊天室" />
       <div class="chatroom scrollbar">
-        <div class="chat-content">
-            <div class="client">
+        <div v-for="record in records" :key="record.index" class="chat-content">
+            <div v-if="!record.broadcast && record.User.id !== currentUser.id" class="client">
               <div class="right-msg-panel">
                 <img
                   class="chat-avatar"
-                  src="https://loremflickr.com/240/240/?random=82.34086245031686"
-                  alt=""
+                  :src="record.User.avatar"
+                  alt="avatar"
                 />
               </div>
               <div class="left-msg-panel">
                 <p class="chat-msg">
-                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                  amet sint.
+                  {{record.message}}
                 </p>
-                <p class="chat-time">下午4:00</p>
+                <p class="chat-time">{{record.createdAt}}</p>
               </div>
             </div>
-            <div class="self">
+            <div v-if="!record.broadcast && record.User.id === currentUser.id" class="self">
               <div class="right-msg-panel">
                 <p class="chat-msg">
-                  Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
-                  ullamco cillum dolor. Voluptate exercitation incididunt
-                  aliquip deserunt reprehenderit elit laborum.
+                 {{record.message}}
                 </p>
-                <p class="chat-time">下午6:08</p>
+                <p class="chat-time">{{record.createdAt}}</p>
               </div>
             </div>
 
-            <div class="center-info">
-              <p class="chat-notif">Ralph Edward 離線</p>
+            <div v-if="record.broadcast" class="center-info">
+              <p class="chat-notif">{{record.broadcast}}</p>
             </div>
             <!-- <div>{{ typing?'有人輸入中...':'' }}</div> -->
         </div>
@@ -88,7 +85,7 @@ import store from "../store";
 import VueSocketIOExt from "vue-socket.io-extended";
 import { io } from "socket.io-client";
 const token = localStorage.getItem("token");
-const socket = io('http://b7f0-150-117-52-218.ngrok.io', {
+const socket = io('http://15c5-49-216-185-136.ngrok.io', {
   query: { token: token }
 })
 Vue.use(VueSocketIOExt, socket, { store });
@@ -232,7 +229,7 @@ export default {
 }
 
 .chat-content {
-  height: 100%;
+  // height: 100%;
 }
 
 // 別人傳來
