@@ -19,7 +19,7 @@
     </div>
     <div class="chat-right">
       <NavTabs plainText="公開聊天室" />
-      <div class="chatroom scrollbar">
+      <div class="chatroom scrollbar" ref="chatroom">
         <div v-for="record in records" :key="record.index" class="chat-content">
           <div
             v-if="!record.broadcast && record.User.id !== currentUser.id"
@@ -136,6 +136,7 @@ export default {
     this.$socket.client.emit('joinRoom')
   },
   mounted() {
+    this.scrollToEnd();
     this.$socket.$subscribe('allMsg', (obj) => {
       console.log('received all records')
       console.log(obj)
@@ -187,6 +188,13 @@ export default {
       })
       this.message = ''
     },
+    scrollToEnd() {
+      const content = this.$refs.chatroom;
+      content.scrollTop = content.scrollHeight;
+    },
+  },
+  updated() {
+    this.scrollToEnd();
   },
   computed: {
     ...mapState(['currentUser']),
