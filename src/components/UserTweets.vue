@@ -36,6 +36,7 @@
                 <img
                   class="icon isliked-icon"
                   src="../assets/svg/like_fill.svg"
+                  :disabled="isProcessing"
                   @click.stop.prevent="doLike(tweet.id, !tweet.isLiked)"
                 />
                 <p class="counts isliked-counts">{{ tweet.likeCount }}</p>
@@ -44,6 +45,7 @@
                 <img
                   class="icon like-icon"
                   src="../assets/svg/like.svg"
+                  :disabled="isProcessing"
                   @click.stop.prevent="doLike(tweet.id, !tweet.isLiked)"
                 />
                 <p class="counts like-counts">{{ tweet.likeCount }}</p>
@@ -78,6 +80,7 @@ export default {
       tweets: [],
       modalData: {},
       isShowModal: false,
+      isProcessing: false,
     }
   },
   created() {
@@ -103,6 +106,10 @@ export default {
     },
     async doLike(tweetId, isLike) {
       try {
+        if(this.isProcessing){
+          return;
+        }
+        this.isProcessing = true
         let response
         if (isLike) {
           response = await tweetAPI.likeTweet({ tweetId })
@@ -118,6 +125,8 @@ export default {
           icon: 'success',
           title: message,
         })
+        this.isProcessing = false
+
         const tweet = this.tweets.find((tweet) => tweet.id === tweetId)
         tweet.isLiked = isLike
         if (isLike) {
@@ -131,6 +140,7 @@ export default {
           icon: 'error',
           title: '無法 加入/移除 最愛',
         })
+        this.isProcessing = false
       }
     },
     showtweetReplyModal(tweet) {
