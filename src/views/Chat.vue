@@ -35,10 +35,10 @@
               <p class="chat-time">
                 {{
                   isToday(record.createdAt)
-                    ? fromNow(utcOffset(record.createdAt))
+                    ? fromNow(utcOffset(record.createdAt), 'A hh:mm')
                     : timeFormat(
                         utcOffset(record.createdAt),
-                        'A hh:MM'
+                        'MM月DD日 A hh:MM'
                       )
                 }}
               </p>
@@ -250,10 +250,6 @@ export default {
   margin-top: auto;
   overflow-y: scroll;
   padding: 2.5rem 0.938rem 0 0.938rem;
-}
-
-.chat-content {
-  // height: 100%;
 }
 
 // 別人傳來
