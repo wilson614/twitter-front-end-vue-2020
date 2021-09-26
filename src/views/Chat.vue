@@ -13,7 +13,7 @@
         <a class="online-user-block">
           <img :src="user.avatar" alt="avatar" />
           <span class="user-name">{{ user.name }}</span>
-          <span class="user-account">{{ user.account }}</span>
+          <span class="user-account">{{ '@'+user.account }}</span>
         </a>
       </div>
     </div>
@@ -108,7 +108,7 @@ import store from '../store'
 import VueSocketIOExt from 'vue-socket.io-extended'
 import { io } from 'socket.io-client'
 const token = localStorage.getItem('token')
-const socket = io('http://15c5-49-216-185-136.ngrok.io', {
+const socket = io('https://good-simple-twitter.herokuapp.com/', {
   query: { token: token },
 })
 Vue.use(VueSocketIOExt, socket, { store })
@@ -141,8 +141,8 @@ export default {
       console.log(obj)
       this.records = obj
     })
-    this.$socket.$subscribe('welcome message', (obj) => {
-      console.log('welcome message')
+    this.$socket.$subscribe('broadcast', (obj) => {
+      console.log('broadcast')
       console.log(obj)
       this.records.push(obj)
     })
@@ -347,6 +347,8 @@ input {
 }
 
 .scrollbar {
+  scroll-behavior: smooth;
+  scroll-snap-align: end;
   // 整體的樣式
   &::-webkit-scrollbar {
     width: 0.25rem;
