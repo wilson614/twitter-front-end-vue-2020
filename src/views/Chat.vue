@@ -4,70 +4,71 @@
       <NavBars />
     </div>
     <div class="chat-center">
-      <NavTabs plainText="上線使用者" :account="onlineCount"/>
-      <div v-for="user in onlineUsers" :key="user.id" class="chat-center-online">
+      <NavTabs plainText="上線使用者" :account="onlineUsers.length" />
+      <div
+        v-for="user in onlineUsers"
+        :key="user.id"
+        class="chat-center-online"
+      >
         <a class="online-user-block">
-          <img
-            :src="user.avatar"
-            alt="avatar"
-          />
-          <span class="user-name">{{user.name}}</span>
-          <span class="user-account">{{user.account}}</span>
+          <img :src="user.avatar" alt="avatar" />
+          <span class="user-name">{{ user.name }}</span>
+          <span class="user-account">{{ '@'+user.account }}</span>
         </a>
       </div>
     </div>
     <div class="chat-right">
-      <div class="public-chat-container">
-        <NavTabs plainText="公開聊天室" />
-        <div class="chatroom d-flex flex-column">
-          <div class="chat-content">
-            <div class="msg-container" v-for="record in records" :key="record.index">
-              <div class="left-other" v-if="!record.broadcast&&record.User.id !== currentUser.id">
-                <div class="img-panel">
-                  <img
-                    class="chat-avatar"
-                    :src="record.User.avatar"
-                  />
-                </div>
-                <div class="left-msg-panel">
-                  <p class="chat-msg">
-                    {{record.message}}
-                  </p>
-                  <p class="chat-time">{{record.createdAt}}</p>
-                </div>
-              </div>
-              <div class="right-self" v-if="!record.broadcast&&record.User.id === currentUser.id">
-                <div class="right-msg-panel">
-                  <p class="chat-msg">
-                    {{record.message}}
-                  </p>
-                  <p class="chat-time">{{record.createdAt}}</p>
-                </div>
-              </div>
-              <div class="center-info" v-if="record.broadcast">
-                <p class="chat-notif">{{record.broadcast}}</p>
-              </div>
+      <NavTabs plainText="公開聊天室" />
+      <div class="chatroom scrollbar">
+        <div v-for="record in records" :key="record.index" class="chat-content">
+          <div
+            v-if="!record.broadcast && record.User.id !== currentUser.id"
+            class="client"
+          >
+            <div class="right-msg-panel">
+              <img class="chat-avatar" :src="record.User.avatar" alt="avatar" />
+            </div>
+            <div class="left-msg-panel">
+              <p class="chat-msg">
+                {{ record.message }}
+              </p>
+              <p class="chat-time">
+                {{
+                  isToday(record.createdAt)
+                    ? fromNow(utcOffset(record.createdAt), 'A hh:mm')
+                    : timeFormat(
+                        utcOffset(record.createdAt),
+                        'MM月DD日 A hh:MM'
+                      )
+                }}
+              </p>
             </div>
           </div>
-          <!-- 聊天室輸入框 -->
-          <div class="input-group">
-            <input
-              v-model="message"
-              type="text"
-              class="form-control"
-              placeholder="輸入訊息..."
-              @keyup.enter="sendMessage"
-            />
-            <div class="input-group-append">
-              <button
-                @click.stop.prevent="sendMessage"
-                class="btn-submit"
-                type="submit"
-              >
-                <img src="@/assets/svg/send.svg" alt="home icon" />
-              </button>
+          <div
+            v-if="!record.broadcast && record.User.id === currentUser.id"
+            class="self"
+          >
+            <div class="right-msg-panel">
+              <p class="chat-msg">
+                {{ record.message }}
+              </p>
+              <p class="chat-time">
+                {{
+                  isToday(record.createdAt)
+                    ? fromNow(utcOffset(record.createdAt))
+                    : timeFormat(
+                        utcOffset(record.createdAt),
+                        'A hh:MM•YYYY年MM月DD日'
+                      )
+                }}
+              </p>
             </div>
-            <!-- <div>{{ typing?'有人輸入中...':'' }}</div> -->
+          </div>
+
+          <div v-if="record.broadcast" class="center-info">
+            <p class="chat-notif">{{ record.broadcast }}</p>
+          </div>
+          <!-- <div>{{ typing?'有人輸入中...':'' }}</div> -->
         </div>
       </div>
       <!-- 聊天室輸入框 -->
@@ -99,20 +100,20 @@
 import NavBars from '@/components/NavBars.vue'
 import NavTabs from '@/components/NavTabs.vue'
 import { mapState } from 'vuex'
+import { fromNowFilter } from './../utils/mixins'
+
 //stocket io
-import Vue from "vue";
-import store from "../store";
-import VueSocketIOExt from "vue-socket.io-extended";
-import { io } from "socket.io-client";
-
-const token = localStorage.getItem("token");
-const socket = io('http://b7f0-150-117-52-218.ngrok.io', {
-  query: { token: token }
+import Vue from 'vue'
+import store from '../store'
+import VueSocketIOExt from 'vue-socket.io-extended'
+import { io } from 'socket.io-client'
+const token = localStorage.getItem('token')
+const socket = io('https://good-simple-twitter.herokuapp.com/', {
+  query: { token: token },
 })
-
-Vue.use(VueSocketIOExt, socket, { store });
-
+Vue.use(VueSocketIOExt, socket, { store })
 export default {
+  mixins: [fromNowFilter],
   name: 'Chat',
   components: {
     NavBars,
@@ -120,7 +121,6 @@ export default {
   },
   data() {
     return {
-      onlineCount: 5,
       users: {
         name: '',
         account: '',
@@ -130,44 +130,38 @@ export default {
       message: '',
       records: [],
       onlineUsers: {},
-    };
+    }
   },
   created() {
     this.$socket.client.emit('joinRoom')
   },
   mounted() {
-    this.$socket.$subscribe("allMsg", (obj) => {
-      console.log("received all records");
-      console.log(obj);
-      this.records = obj;
-    });
-    this.$socket.$subscribe("welcome message", (obj) => {
-      console.log("welcome message");
-      console.log(obj);
+    this.$socket.$subscribe('allMsg', (obj) => {
+      console.log('received all records')
+      console.log(obj)
+      this.records = obj
+    })
+    this.$socket.$subscribe('broadcast', (obj) => {
+      console.log('broadcast')
+      console.log(obj)
       this.records.push(obj)
-    });
-    this.$socket.$subscribe("onlineUser", (obj) => {
-      console.log("onlineUser");
-      console.log(obj);
-      this.onlineUsers = obj;
-    });
-    this.$socket.$subscribe("chatMsg", (msg) => {
-      console.log(msg);
-      this.records.push(msg);
-    });
-    this.$socket.$subscribe("connect", () => {
-      console.log("emit received from server");
-    });
-    this.$socket.$subscribe("disconnectMsg", (obj) => {
-      console.log("disconnectMsg");
-      console.log(obj);
-    });
-    this.$socket.$subscribe("chatMsg", (msg) => {
-      console.log(msg);
-    });
-    this.$socket.$subscribe("connect", () => {
-      console.log("emit received from server");
-    });
+    })
+    this.$socket.$subscribe('onlineUser', (obj) => {
+      console.log('onlineUser')
+      console.log(obj)
+      this.onlineUsers = obj
+    })
+    this.$socket.$subscribe('chatMsg', (msg) => {
+      console.log(msg)
+      this.records.push(msg)
+    })
+    this.$socket.$subscribe('connect', () => {
+      console.log('emit received from server')
+    })
+    this.$socket.$subscribe('disconnectMsg', (obj) => {
+      console.log('disconnectMsg')
+      console.log(obj)
+    })
   },
   socket: {
     connect() {
@@ -176,8 +170,8 @@ export default {
     login(value) {
       console.log(value)
     },
-    disconnect(){
-      console.log("socket disconnected")
+    disconnect() {
+      console.log('socket disconnected')
     },
   },
   methods: {
@@ -189,9 +183,9 @@ export default {
       this.$socket.client.emit('chat message', {
         UserId: this.currentUser.id,
         message: this.message,
-        createdAt: new Date()
-      });
-      this.message = "";
+        createdAt: new Date(),
+      })
+      this.message = ''
     },
   },
   computed: {
@@ -257,10 +251,6 @@ export default {
   padding: 2.5rem 0.938rem 0 0.938rem;
 }
 
-.chat-content {
-  height: 100%;
-}
-
 // 別人傳來
 .client {
   display: flex;
@@ -269,6 +259,7 @@ export default {
 .right-msg-panel {
   display: flex;
   align-items: flex-end;
+  max-width: 400px;
   .chat-avatar {
     display: inline-block;
     width: 40px;
@@ -278,6 +269,7 @@ export default {
   }
 }
 .left-msg-panel {
+  word-wrap: break-word;
   .chat-msg {
     max-width: 365px;
     font-size: 15px;
@@ -298,7 +290,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: end;
+    word-wrap: break-word;
     .chat-msg {
+      max-width: 365px;
       font-size: 15px;
       font-weight: 400;
       background-color: $button-color;
@@ -353,6 +347,8 @@ input {
 }
 
 .scrollbar {
+  scroll-behavior: smooth;
+  scroll-snap-align: end;
   // 整體的樣式
   &::-webkit-scrollbar {
     width: 0.25rem;
