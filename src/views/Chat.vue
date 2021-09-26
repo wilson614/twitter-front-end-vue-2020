@@ -4,68 +4,51 @@
       <NavBars />
     </div>
     <div class="chat-center">
-      <NavTabs plainText="上線使用者" :account="onlineCount"/>
-      <div v-for="user in onlineUsers" :key="user.id" class="chat-center-online">
+      <NavTabs plainText="上線使用者" :account="onlineCount" />
+      <div class="chat-center-online">
         <a class="online-user-block">
           <img
-            :src="user.avatar"
+            src="https://loremflickr.com/240/240/?lock=53.96615135591365"
             alt="avatar"
           />
-          <span class="user-name">{{user.name}}</span>
-          <span class="user-account">{{user.account}}</span>
+          <span class="user-name">假:NAME</span>
+          <span class="user-account">假:@用戶名稱</span>
         </a>
       </div>
     </div>
     <div class="chat-right">
-      <div class="public-chat-container">
-        <NavTabs plainText="公開聊天室" />
-        <div class="chatroom d-flex flex-column">
-          <div class="chat-content">
-            <div class="msg-container" v-for="record in records" :key="record.index">
-              <div class="left-other" v-if="!record.broadcast&&record.User.id !== currentUser.id">
-                <div class="img-panel">
-                  <img
-                    class="chat-avatar"
-                    :src="record.User.avatar"
-                  />
-                </div>
-                <div class="left-msg-panel">
-                  <p class="chat-msg">
-                    {{record.message}}
-                  </p>
-                  <p class="chat-time">{{record.createdAt}}</p>
-                </div>
+      <NavTabs plainText="公開聊天室" />
+      <div class="chatroom scrollbar">
+        <div class="chat-content">
+            <div class="client">
+              <div class="right-msg-panel">
+                <img
+                  class="chat-avatar"
+                  src="https://loremflickr.com/240/240/?random=82.34086245031686"
+                  alt=""
+                />
               </div>
-              <div class="right-self" v-if="!record.broadcast&&record.User.id === currentUser.id">
-                <div class="right-msg-panel">
-                  <p class="chat-msg">
-                    {{record.message}}
-                  </p>
-                  <p class="chat-time">{{record.createdAt}}</p>
-                </div>
-              </div>
-              <div class="center-info" v-if="record.broadcast">
-                <p class="chat-notif">{{record.broadcast}}</p>
+              <div class="left-msg-panel">
+                <p class="chat-msg">
+                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+                  amet sint.
+                </p>
+                <p class="chat-time">下午4:00</p>
               </div>
             </div>
-          </div>
-          <!-- 聊天室輸入框 -->
-          <div class="input-group">
-            <input
-              v-model="message"
-              type="text"
-              class="form-control"
-              placeholder="輸入訊息..."
-              @keyup.enter="sendMessage"
-            />
-            <div class="input-group-append">
-              <button
-                @click.stop.prevent="sendMessage"
-                class="btn-submit"
-                type="submit"
-              >
-                <img src="@/assets/svg/send.svg" alt="home icon" />
-              </button>
+            <div class="self">
+              <div class="right-msg-panel">
+                <p class="chat-msg">
+                  Nulla Lorem mollit cupidatat irure. Laborum magna nulla duis
+                  ullamco cillum dolor. Voluptate exercitation incididunt
+                  aliquip deserunt reprehenderit elit laborum.
+                </p>
+                <p class="chat-time">下午6:08</p>
+              </div>
+            </div>
+
+            <div class="center-info">
+              <p class="chat-notif">Ralph Edward 離線</p>
             </div>
             <!-- <div>{{ typing?'有人輸入中...':'' }}</div> -->
         </div>
