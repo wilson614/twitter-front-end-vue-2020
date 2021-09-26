@@ -4,7 +4,7 @@
       <NavBars />
     </div>
     <div class="chat-center">
-      <NavTabs plainText="上線使用者" :account="onlineCount" />
+      <NavTabs plainText="上線使用者" :account="onlineUsers.length" />
       <div
         v-for="user in onlineUsers"
         :key="user.id"
@@ -121,7 +121,6 @@ export default {
   },
   data() {
     return {
-      onlineCount: 0,
       users: {
         name: '',
         account: '',
