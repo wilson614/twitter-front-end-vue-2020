@@ -115,6 +115,7 @@ export default {
 }
 
 .home-center {
+  max-width: 495px;
   margin: 0 2.5rem;
   flex-grow: 1;
   border-left: 1px solid $popular-border;

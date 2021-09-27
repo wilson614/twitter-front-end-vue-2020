@@ -202,7 +202,7 @@ export default {
 }
 .user-tweet {
   margin: 0.375rem 0 0.625rem;
-  max-width: 21.875rem;
+  max-width: 25rem;
   color: $main-text;
   font-size: 15px;
   font-weight: 500;

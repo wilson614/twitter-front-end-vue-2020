@@ -74,7 +74,7 @@ export default {
   }
 }
 .reply {
-  max-width: 21.875rem;
+  max-width: 25rem;
   span {
     margin-right: 0.5px;
     font-size: 15px;
