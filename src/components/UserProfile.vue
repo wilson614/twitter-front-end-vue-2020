@@ -72,7 +72,7 @@
       <div class="card-body d-flex flex-column">
         <p class="card-name">{{ user.name }}</p>
         <router-link class="card-account" to="#">{{
-          '@'+user.account
+          "@" + user.account
         }}</router-link>
         <p class="introduction my-2">
           {{ user.introduction }}
@@ -91,7 +91,9 @@
           </div>
           <div class="follower-wrapper ml-5">
             <span class="follower">{{ user.followerCount }} 位</span>
-            <router-link class="a-follower" :to="{
+            <router-link
+              class="a-follower"
+              :to="{
                 name: 'followers',
                 params: { userid: this.$route.params.userid },
               }"
@@ -127,12 +129,12 @@ export default {
     },
   },
   watch: {
-    initialUser (newValue) {
+    initialUser(newValue) {
       this.user = {
         ...this.user,
-        ...newValue
-      }
-    }
+        ...newValue,
+      };
+    },
   },
   data() {
     return {
@@ -163,7 +165,7 @@ export default {
         this.user.isFollowed = true;
         this.user.followerCount++;
       } catch (error) {
-        console.log(error)
+        console.log(error);
         Toast.fire({
           icon: "error",
           title: "無法跟隨，請稍後再試",
@@ -183,7 +185,7 @@ export default {
         this.user.isFollowed = false;
         this.user.followerCount--;
       } catch (error) {
-        console.log(error)
+        console.log(error);
         Toast.fire({
           icon: "error",
           title: "無法取消跟隨，請稍後再試",
@@ -205,8 +207,8 @@ export default {
       };
     },
     handleAfterSubmit(data) {
-      console.log(data)
-      this.user = { ...this.user, ...data }
+      console.log(data);
+      this.user = { ...this.user, ...data };
       this.isModalVisible = false;
     },
   },
@@ -249,6 +251,8 @@ export default {
     color: $input-placeholder;
   }
   .introduction {
+    max-width: 570px;
+    word-wrap: break-word;
     font-size: 14px;
     font-weight: 400;
   }

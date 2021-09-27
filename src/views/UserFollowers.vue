@@ -252,8 +252,12 @@ export default {
 .list {
   width: 100%;
 }
-.content, .introduction {
+.content {
   width: 100%;
+}
+.introduction {
+  max-width: 500px;
+  word-wrap: break-word;
 }
 .item {
   width: 100%;

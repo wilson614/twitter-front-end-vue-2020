@@ -11,17 +11,19 @@
             <router-link
               :to="`/users/${like.Tweet.User.id}`"
               class="user account"
-              >{{ '@'+like.Tweet.User.account }}</router-link
+              >{{ "@" + like.Tweet.User.account }}</router-link
             >
             <span class="seperater">•</span>
             <span class="user created-at">{{
               isToday(like.Tweet.createdAt)
                 ? fromNow(utcOffset(like.Tweet.createdAt))
-                : timeFormat(utcOffset(like.Tweet.createdAt), 'MM月DD日')
+                : timeFormat(utcOffset(like.Tweet.createdAt), "MM月DD日")
             }}</span>
           </div>
-          <router-link :to="`/tweets/${like.Tweet.id}`" class="like-content">
-            {{ like.Tweet.description }}
+          <router-link :to="`/tweets/${like.Tweet.id}`">
+            <p class="like-content">
+              {{ like.Tweet.description }}
+            </p>
           </router-link>
           <div class="reply-likes d-flex align-items-center">
             <div
@@ -55,11 +57,11 @@
 </template>
 
 <script>
-import { fromNowFilter } from './../utils/mixins'
-import userAPI from './../apis/user'
-import TweetReplyModal from '@/components/TweetReplyModal.vue'
-import { Toast } from './../utils/helpers'
-import tweetAPI from './../apis/tweets'
+import { fromNowFilter } from "./../utils/mixins";
+import userAPI from "./../apis/user";
+import TweetReplyModal from "@/components/TweetReplyModal.vue";
+import { Toast } from "./../utils/helpers";
+import tweetAPI from "./../apis/tweets";
 
 export default {
   mixins: [fromNowFilter],
@@ -71,46 +73,46 @@ export default {
       likes: [],
       modalData: {},
       isShowModal: false,
-    }
+    };
   },
   created() {
-    const { userid: userid } = this.$route.params
-    this.fetchLikes(userid)
+    const { userid: userid } = this.$route.params;
+    this.fetchLikes(userid);
   },
   beforeRouteUpdate(to, from, next) {
-    const { userid } = to.params
-    this.fetchLikes(userid)
-    next()
+    const { userid } = to.params;
+    this.fetchLikes(userid);
+    next();
   },
   methods: {
     async fetchLikes(userid) {
       try {
-        const { data } = await userAPI.getUserLikes({ userid })
-        this.likes = data
+        const { data } = await userAPI.getUserLikes({ userid });
+        this.likes = data;
       } catch (error) {
         Toast.fire({
-          type: 'error',
-          title: '無法取得使用者資料，請稍後再試',
-        })
+          type: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
       }
     },
     async unLike(tweetId) {
       try {
-        const { data } = await tweetAPI.unlikeTweet({ tweetId })
-        if (data.status !== 'success') {
-          throw new Error(data.message)
+        const { data } = await tweetAPI.unlikeTweet({ tweetId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
         }
         Toast.fire({
-          icon: 'success',
-          title: '成功移除最愛',
-        })
-        this.likes = this.likes.filter((like) => like.Tweet.id !== tweetId)
+          icon: "success",
+          title: "成功移除最愛",
+        });
+        this.likes = this.likes.filter((like) => like.Tweet.id !== tweetId);
       } catch (error) {
-        console.log(error)
+        console.log(error);
         Toast.fire({
-          icon: 'error',
-          title: '無法 加入/移除 最愛',
-        })
+          icon: "error",
+          title: "無法 加入/移除 最愛",
+        });
       }
     },
     showtweetReplyModal(like) {
@@ -121,18 +123,18 @@ export default {
         createdAt: like.Tweet.createdAt,
         description: like.Tweet.description,
         id: like.TweetId,
-      }
+      };
     },
     modalClose() {
-      this.modalData = {}
+      this.modalData = {};
     },
     replySubmit(formData) {
-      console.log(formData)
+      console.log(formData);
       // ...api
-      this.modalClose()
+      this.modalClose();
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -176,6 +178,8 @@ export default {
     }
   }
   .like-content {
+    max-width: 500px;
+    word-wrap: break-word;
     font-size: 15px;
     font-weight: 500;
     line-height: 22px;
