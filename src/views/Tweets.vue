@@ -110,6 +110,7 @@ export default {
 }
 
 .tweets-center {
+  max-width: 21.875rem;
   margin: 0 2.5rem;
   flex-grow: 1;
   border-left: 1px solid $popular-border;

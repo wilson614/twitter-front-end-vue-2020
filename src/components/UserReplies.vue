@@ -21,7 +21,7 @@
             <router-link
               class="reply-account"
               :to="`/users/${reply.Tweet.User.id}`"
-              >{{ reply.Tweet.User.account }}</router-link
+              >{{ '@'+reply.Tweet.User.account }}</router-link
             >
           </div>
           <p class="reply-content">{{ reply.comment }}</p>

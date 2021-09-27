@@ -202,10 +202,14 @@ export default {
 }
 .user-tweet {
   margin: 0.375rem 0 0.625rem;
+  max-width: 21.875rem;
   color: $main-text;
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
+  .tweet-text {
+    overflow-wrap: break-word;
+  }
 }
 
 .btn-control {

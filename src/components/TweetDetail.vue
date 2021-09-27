@@ -5,12 +5,16 @@
         <img :src="tweet.User.avatar" alt="avatar" />
       </router-link>
       <div class="user-detail">
-        <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
+        <router-link
+          :to="{ name: 'profile', params: { userid: tweet.UserId } }"
+        >
           <span class="user-name">{{ tweet.User.name }}</span></router-link
         >
-        <router-link :to="{ name: 'profile', params: { userid: tweet.UserId } }">
+        <router-link
+          :to="{ name: 'profile', params: { userid: tweet.UserId } }"
+        >
           <span class="user-account">{{
-            '@'+tweet.User.account
+            '@' + tweet.User.account
           }}</span></router-link
         >
       </div>
@@ -166,6 +170,7 @@ export default {
   line-height: 34px;
   font-size: 23px;
   font-weight: 500;
+  word-wrap: break-word;
 }
 
 .tweet-detail {

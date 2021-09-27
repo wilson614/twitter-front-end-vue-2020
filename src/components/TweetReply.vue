@@ -1,6 +1,6 @@
 <template>
   <!-- v-for="reply in replies" :key="reply.id" -->
-  <section>
+  <div>
     <div :id="`tweet-reply-${reply.id}`" v-for="reply in replies" :key="reply.id" class="tweet-reply">
       <router-link :to="{ name: 'profile', params: { userid: reply.User.id } }">
       <img :src="reply.User.avatar" alt="avatar" />
@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -85,6 +85,7 @@ export default {
     margin-top: 0.25rem;
     font-size: 15px;
     font-weight: 400;
+    word-wrap: break-word;
   }
 }
 </style>
