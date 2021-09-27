@@ -55,6 +55,10 @@ export default {
     border-radius: 50px;
   }
 }
+
+.reply-content {
+  overflow: auto;
+}
 // TODO:待確認 span 行高
 .user-details {
   .user-name {
@@ -70,6 +74,7 @@ export default {
   }
 }
 .reply {
+  max-width: 21.875rem;
   span {
     margin-right: 0.5px;
     font-size: 15px;
