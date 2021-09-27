@@ -1,6 +1,6 @@
 <template>
   <!-- v-for="reply in replies" :key="reply.id" -->
-  <section>
+  <div>
     <div :id="`tweet-reply-${reply.id}`" v-for="reply in replies" :key="reply.id" class="tweet-reply">
       <router-link :to="{ name: 'profile', params: { userid: reply.User.id } }">
       <img :src="reply.User.avatar" alt="avatar" />
@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -55,6 +55,10 @@ export default {
     border-radius: 50px;
   }
 }
+
+.reply-content {
+  overflow: auto;
+}
 // TODO:待確認 span 行高
 .user-details {
   .user-name {
@@ -70,6 +74,7 @@ export default {
   }
 }
 .reply {
+  max-width: 21.875rem;
   span {
     margin-right: 0.5px;
     font-size: 15px;
@@ -85,6 +90,7 @@ export default {
     margin-top: 0.25rem;
     font-size: 15px;
     font-weight: 400;
+    word-wrap: break-word;
   }
 }
 </style>
