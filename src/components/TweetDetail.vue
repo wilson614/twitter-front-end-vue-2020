@@ -136,6 +136,7 @@ export default {
 #tweetdetail {
   width: 100%;
   padding: 0.938rem 0.938rem 0.625rem 0.938rem;
+  overflow: auto;
 }
 
 .tweet-header {
@@ -166,6 +167,8 @@ export default {
 }
 
 .tweet-text {
+  display: inline-block;
+  width: 100%;
   margin: 1.125rem 0;
   line-height: 34px;
   font-size: 23px;
