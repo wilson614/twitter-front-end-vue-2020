@@ -229,6 +229,7 @@ export default {
 }
 
 .tweet-content-detail {
+  max-width: 30.938rem;
   .user-name {
     font-size: 15px;
     font-weight: 700;
@@ -248,6 +249,7 @@ export default {
   font-size: 15px;
   font-weight: 400;
   line-height: 22px;
+  word-wrap: break-word;
 }
 
 .tweet-account {
