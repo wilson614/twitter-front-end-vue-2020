@@ -9,17 +9,19 @@
           <div class="user-info">
             <span class="user name">{{ tweet.User.name }}</span>
             <router-link :to="`/users/${tweet.UserId}`" class="user account">{{
-              '@'+tweet.User.account
+              "@" + tweet.User.account
             }}</router-link>
             <span class="seperater">•</span>
             <span class="user created-at">{{
               isToday(tweet.createdAt)
                 ? fromNow(utcOffset(tweet.createdAt))
-                : timeFormat(utcOffset(tweet.createdAt), 'MM月DD日')
+                : timeFormat(utcOffset(tweet.createdAt), "MM月DD日")
             }}</span>
           </div>
-          <router-link :to="`/tweets/${tweet.id}`" class="tweet-content">
-            {{ tweet.description }}
+          <router-link :to="`/tweets/${tweet.id}`">
+            <p class="tweet-content">
+              {{ tweet.description }}
+            </p>
           </router-link>
           <div class="reply-likes d-flex align-items-center">
             <div
@@ -65,11 +67,11 @@
 </template>
 
 <script>
-import { fromNowFilter } from './../utils/mixins'
-import TweetReplyModal from '@/components/TweetReplyModal.vue'
-import userAPI from './../apis/user'
-import tweetAPI from './../apis/tweets'
-import { Toast } from './../utils/helpers'
+import { fromNowFilter } from "./../utils/mixins";
+import TweetReplyModal from "@/components/TweetReplyModal.vue";
+import userAPI from "./../apis/user";
+import tweetAPI from "./../apis/tweets";
+import { Toast } from "./../utils/helpers";
 export default {
   mixins: [fromNowFilter],
   components: {
@@ -81,66 +83,66 @@ export default {
       modalData: {},
       isShowModal: false,
       isProcessing: false,
-    }
+    };
   },
   created() {
-    const { userid: userid } = this.$route.params
-    this.fetchTweets(userid)
+    const { userid: userid } = this.$route.params;
+    this.fetchTweets(userid);
   },
   beforeRouteUpdate(to, from, next) {
-    const { userid } = to.params
-    this.fetchTweets(userid)
-    next()
+    const { userid } = to.params;
+    this.fetchTweets(userid);
+    next();
   },
   methods: {
     async fetchTweets(userid) {
       try {
-        const { data } = await userAPI.getUserTweet({ userid })
-        this.tweets = data
+        const { data } = await userAPI.getUserTweet({ userid });
+        this.tweets = data;
       } catch (error) {
         Toast.fire({
-          type: 'error',
-          title: '無法取得使用者資料，請稍後再試',
-        })
+          type: "error",
+          title: "無法取得使用者資料，請稍後再試",
+        });
       }
     },
     async doLike(tweetId, isLike) {
       try {
-        if(this.isProcessing){
+        if (this.isProcessing) {
           return;
         }
-        this.isProcessing = true
-        let response
+        this.isProcessing = true;
+        let response;
         if (isLike) {
-          response = await tweetAPI.likeTweet({ tweetId })
+          response = await tweetAPI.likeTweet({ tweetId });
         } else {
-          response = await tweetAPI.unlikeTweet({ tweetId })
+          response = await tweetAPI.unlikeTweet({ tweetId });
         }
-        const { data } = response
-        if (data.status !== 'success') {
-          throw new Error(data.message)
+        const { data } = response;
+        if (data.status !== "success") {
+          throw new Error(data.message);
         }
-        const message = isLike ? '成功加入最愛' : '成功移除最愛'
+        const message = isLike ? "成功加入最愛" : "成功移除最愛";
         Toast.fire({
-          icon: 'success',
+          icon: "success",
           title: message,
-        })
-        this.isProcessing = false
+        });
+        this.isProcessing = false;
 
-        const tweet = this.tweets.find((tweet) => tweet.id === tweetId)
-        tweet.isLiked = isLike
+        const tweet = this.tweets.find((tweet) => tweet.id === tweetId);
+        tweet.isLiked = isLike;
         if (isLike) {
-          tweet.likeCount++
+          tweet.likeCount++;
         } else {
-          tweet.likeCount--
+          tweet.likeCount--;
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         Toast.fire({
-          icon: 'error',
-          title: '無法 加入/移除 最愛',
-        })
-        this.isProcessing = false
+          icon: "error",
+          title: "無法 加入/移除 最愛",
+        });
+        this.isProcessing = false;
       }
     },
     showtweetReplyModal(tweet) {
@@ -152,18 +154,18 @@ export default {
         description: tweet.description,
         id: tweet.id,
         // comment: '',
-      }
+      };
     },
     modalClose() {
-      this.modalData = {}
+      this.modalData = {};
     },
     replySubmit(formData) {
-        console.log(formData)
+      console.log(formData);
       // ...api
-      this.modalClose()
+      this.modalClose();
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -206,6 +208,8 @@ export default {
     }
   }
   .tweet-content {
+    max-width: 500px;
+    word-wrap: break-word;
     font-size: 15px;
     font-weight: 500;
     line-height: 22px;

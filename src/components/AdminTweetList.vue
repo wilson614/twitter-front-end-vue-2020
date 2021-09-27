@@ -176,6 +176,11 @@ export default {
     font-size: 15px;
     font-weight: 500;
   }
+  .tweet-text {
+    display: inline-block;
+    max-width: 900px;
+    word-wrap: break-word;
+  }
   .read-more-less {
     color: $input-placeholder;
   }
