@@ -231,6 +231,8 @@ export default {
   .cover-img {
     width: 600px;
     height: 200px;
+    object-fit: cover;
+    object-position: center;
   }
   .avatar {
     position: absolute;
@@ -240,6 +242,8 @@ export default {
     height: 140px;
     border-radius: 50%;
     border: 4px solid $body-bg;
+    object-fit: cover;
+    object-position: center;
   }
 }
 

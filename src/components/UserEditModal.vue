@@ -319,6 +319,8 @@ export default {
     .cover-img {
       width: 600px;
       height: 200px;
+      object-fit: cover;
+      object-position: center;
     }
   }
   .form-group-avatar {
@@ -332,6 +334,8 @@ export default {
       border-radius: 50%;
       border: 4px solid $body-bg;
       z-index: 0;
+      object-fit: cover;
+      object-position: center;
     }
     .label-control {
       width: 22px;
