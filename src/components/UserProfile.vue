@@ -114,7 +114,7 @@
 
 <script>
 import UserEditModal from "./../components/UserEditModal.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
 
@@ -143,9 +143,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
+    ...mapState(["currentUser", "isAuthenticated", "isPopularReload"]),
   },
   methods: {
+    ...mapActions(["handlePopularReload"]),
     showModal() {
       this.isModalVisible = true;
     },
@@ -164,6 +165,7 @@ export default {
         });
         this.user.isFollowed = true;
         this.user.followerCount++;
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -184,6 +186,7 @@ export default {
         });
         this.user.isFollowed = false;
         this.user.followerCount--;
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({

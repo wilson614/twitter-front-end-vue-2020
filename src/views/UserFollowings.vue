@@ -35,7 +35,10 @@
                     >{{ following.account }}</router-link
                   >
                 </div>
-                <div class="btn-control">
+                <div
+                  class="btn-control"
+                  v-if="currentUser.id !== following.followingId"
+                >
                   <button
                     v-if="following.isFollowed"
                     @click.stop.prevent="unfollow(following.followingId)"
@@ -121,7 +124,7 @@ export default {
     next();
   },
   methods: {
-    ...mapActions(["handleUserReload"]),
+    ...mapActions(["handleUserReload", "handlePopularReload"]),
     async fetchFollowings(userid) {
       try {
         const { data } = await userAPI.getUserFollowings({ userid });
@@ -159,6 +162,7 @@ export default {
           (following) => following.followingId === id
         );
         following.isFollowed = true;
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -188,6 +192,7 @@ export default {
           following.isFollowed = false;
         }
         //this.handleUserReload(true);
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
