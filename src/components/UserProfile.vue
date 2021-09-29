@@ -2,8 +2,8 @@
   <div class="container user-profile-container d-flex justify-content-center">
     <div class="card">
       <div class="card-top">
-        <img class="cover-img" :src="user.cover" alt="..." />
-        <img class="avatar" :src="user.avatar" alt="..." />
+        <img class="cover-img" :src="user.cover | emptyImage" alt="..." />
+        <img class="avatar" :src="user.avatar | emptyImage" alt="..." />
       </div>
 
       <!-- currentUser -->
@@ -117,8 +117,10 @@ import UserEditModal from "./../components/UserEditModal.vue";
 import { mapState, mapActions } from "vuex";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
+import { emptyImageFilter } from './../utils/mixins'
 
 export default {
+  mixins: [emptyImageFilter],
   components: {
     UserEditModal,
   },

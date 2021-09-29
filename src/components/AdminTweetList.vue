@@ -116,6 +116,10 @@ export default {
           throw new Error(data.message);
         }
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId);
+        Toast.fire({
+          icon: "success",
+          title: "已刪除推文資料",
+        });
       } catch (error) {
         Toast.fire({
           icon: "error",
