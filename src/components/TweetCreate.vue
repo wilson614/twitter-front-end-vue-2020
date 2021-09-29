@@ -1,21 +1,30 @@
 <template>
-  <form class="tweet-create" @submit.stop.prevent="handleSubmit">
-    <textarea
-      v-model.trim="description"
-      name="description"
-      placeholder="有什麼新鮮事？"
-      rows="3"
-    ></textarea>
-    <img class="avatar" :src="currentUser.avatar" alt="avatar" />
-    <!-- <span v-show="errorMessage" class="error-msg">{{errorMessage}}</span> -->
-    <button
-      class="btn"
-      type="submit"
-      :disabled="description.trim().length === 0 || description.length > 140"
-    >
-      推文
-    </button>
-  </form>
+  <section>
+    <form class="tweet-create" @submit.stop.prevent="handleSubmit">
+      <textarea
+        v-model.trim="description"
+        name="description"
+        placeholder="有什麼新鮮事？"
+        rows="3"
+      ></textarea>
+      <img class="avatar" :src="currentUser.avatar" alt="avatar" />
+      <div class="d-flex justify-content-end align-items-center">
+        <!-- <span v-show="errorMessage" class="error-msg">{{errorMessage}}</span> -->
+        <small class="word-count d-inline-block"
+          >{{ description ? description.length : 0 }}/140</small
+        >
+        <button
+          class="btn"
+          type="submit"
+          :disabled="
+            description.trim().length === 0 || description.length > 140
+          "
+        >
+          推文
+        </button>
+      </div>
+    </form>
+  </section>
 </template>
 
 <script>
@@ -66,13 +75,14 @@ export default {
 .tweet-create {
   position: relative;
   width: 100%;
-  height: 120px;
+  // height: 100%;
+  padding: 0.938rem;
   border-bottom: 0.625rem solid $popular-border;
 }
 textarea {
   width: 100%;
   height: 100%;
-  padding: 1.313rem 0 0 4.688rem;
+  padding: 0 0 0 4.063rem;
   font-size: 18px;
   font-weight: 500;
   font-family: inherit;
@@ -80,17 +90,22 @@ textarea {
 }
 img {
   position: absolute;
-  top: 10px;
+  top: 15px;
   left: 15px;
   width: 50px;
   height: 50px;
   margin-right: 0.625rem;
   border-radius: 50px;
 }
+
+.word-count {
+  margin-right: 1rem;
+  font-size: 15px;
+  font-weight: 500;
+  color: $input-placeholder;
+}
+
 .btn {
-  position: absolute;
-  bottom: 10px;
-  right: 15px;
   padding: 0.625rem 0.938rem;
   margin-bottom: 2.5px;
   font-family: inherit;
