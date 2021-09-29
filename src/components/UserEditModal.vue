@@ -18,7 +18,7 @@
               <i class="fas fa-times" style="font-size: 22px"></i>
             </button>
             <slot name="header"> 編輯個人資料 </slot>
-            <button type="submit" class="btn-save" aria-label="Save modal">
+            <button type="submit" class="btn-save" aria-label="Save modal" :disabled="isProcessing">
               儲存
             </button>
           </header>
