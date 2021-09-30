@@ -10,94 +10,100 @@
           <p class="user-name">{{ user.name }}</p>
         </router-link>
         <router-link :to="{ name: 'profile', params: { userid: user.id } }">
-          <p class="user-account">{{ '@'+user.account }}</p>
+          <p class="user-account">{{ "@" + user.account }}</p>
         </router-link>
       </div>
       <button
-        v-show="currentUser.id !== user.id "
+        v-show="currentUser.id !== user.id"
         :class="['btn', user.isFollowed && 'btn-orange']"
         type="submit"
         @click.stop.prevent="deleteFollowed(user)"
       >
-        {{ user.isFollowed ? '正在跟隨' : '跟隨' }}
+        {{ user.isFollowed ? "正在跟隨" : "跟隨" }}
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import userAPI from './../apis/user'
-import { Toast } from './../utils/helpers'
-import { mapState, mapActions } from 'vuex'
+import userAPI from "./../apis/user";
+import { Toast } from "./../utils/helpers";
+import { mapState, mapActions } from "vuex";
 
 export default {
-  name: 'Popular',
+  name: "Popular",
   data() {
     return {
       users: [],
-    }
+    };
   },
   created() {
-    this.fetchTopUsers()
+    this.fetchTopUsers();
   },
   computed: {
-    ...mapState({
-      currentUser: 'currentUser',
-    }),
+    ...mapState(["currentUser", "isPopularReload"])
   },
-  methods: {
-    ...mapActions(['fetchCurrentUser','handleUserReload']),
-    async fetchTopUsers() {
-      try {
-        const { data } = await userAPI.getTopUsers()
-        this.users = data.topUsers
-      } catch (error) {
-        Toast.fire({
-          icon: 'error',
-          title: '無法取得追蹤，請稍後再試',
-        })
+  watch: {
+    isPopularReload() {
+      if (this.isPopularReload) {
+        this.handlePopularReload(false);
+        this.fetchTopUsers()
       }
     },
-    deleteFollowed(user) {
-      const { id, isFollowed } = user
-      this.handleFollow(isFollowed, id)
+  },
+  methods: {
+    ...mapActions(["fetchCurrentUser", "handleUserReload", "handlePopularReload"]),
+    async fetchTopUsers() {
+      try {
+        const { data } = await userAPI.getTopUsers();
+        this.users = data.topUsers;
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得追蹤，請稍後再試",
+        });
+      }
+    },
+    async deleteFollowed(user) {
+      const { id, isFollowed } = user;
+      await this.handleFollow(isFollowed, id);
       this.users = this.users.map((user) => {
         if (user.id !== id) {
-          return user
+          return user;
         }
         return {
           ...user,
           // FollowedCount: user.FollowedCount - 1,
           isFollowed: user.isFollowed === 0 ? 1 : 0,
-        }
-      })
+        };
+      });
       // .sort((a, b) => b.FollowedCount - a.FollowedCount)
     },
     async handleFollow(isFollowed, id) {
       try {
         if (isFollowed) {
-          let { data } = await userAPI.deleteFollowed({ id })
+          let { data } = await userAPI.deleteFollowed({ id });
 
-          if (data.status === 'error') {
-            throw new Error(data.message)
+          if (data.status === "error") {
+            throw new Error(data.message);
           }
         } else {
-          let { data } = await userAPI.addFollowed({ id })
+          let { data } = await userAPI.addFollowed({ id });
 
-          if (data.status === 'error') {
-            throw new Error(data.message)
+          if (data.status === "error") {
+            throw new Error(data.message);
           }
         }
-        this.handleUserReload(true)
+        this.handleUserReload(true);
       } catch (error) {
         Toast.fire({
-          icon: 'error',
-          title: '目前無法追蹤，請稍後再試',
-        })
+          icon: "error",
+          title: "目前無法追蹤，請稍後再試",
+        });
       }
     },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

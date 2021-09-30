@@ -2,8 +2,8 @@
   <div class="container user-profile-container d-flex justify-content-center">
     <div class="card">
       <div class="card-top">
-        <img class="cover-img" :src="user.cover" alt="..." />
-        <img class="avatar" :src="user.avatar" alt="..." />
+        <img class="cover-img" :src="user.cover | emptyImage" alt="..." />
+        <img class="avatar" :src="user.avatar | emptyImage" alt="..." />
       </div>
 
       <!-- currentUser -->
@@ -114,11 +114,13 @@
 
 <script>
 import UserEditModal from "./../components/UserEditModal.vue";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
+import { emptyImageFilter } from './../utils/mixins'
 
 export default {
+  mixins: [emptyImageFilter],
   components: {
     UserEditModal,
   },
@@ -143,9 +145,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
+    ...mapState(["currentUser", "isAuthenticated", "isPopularReload"]),
   },
   methods: {
+    ...mapActions(["handlePopularReload"]),
     showModal() {
       this.isModalVisible = true;
     },
@@ -164,6 +167,7 @@ export default {
         });
         this.user.isFollowed = true;
         this.user.followerCount++;
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -184,6 +188,7 @@ export default {
         });
         this.user.isFollowed = false;
         this.user.followerCount--;
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -226,6 +231,8 @@ export default {
   .cover-img {
     width: 600px;
     height: 200px;
+    object-fit: cover;
+    object-position: center;
   }
   .avatar {
     position: absolute;
@@ -235,6 +242,8 @@ export default {
     height: 140px;
     border-radius: 50%;
     border: 4px solid $body-bg;
+    object-fit: cover;
+    object-position: center;
   }
 }
 
