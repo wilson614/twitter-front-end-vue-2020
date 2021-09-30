@@ -26,9 +26,8 @@
               ></textarea>
               <img class="avatar" alt="avatar" :src="currentUser.avatar" />
               <div class="d-flex justify-content-end align-items-center">
-              <span v-show="errorMessage" class="error-message">{{
-                errorMessage
-              }}</span>
+              <span v-show="errorMessage" class="error-message">{{errorMessage}}</span>
+              <small class="word-count d-inline-block">{{ newTweet.description ? newTweet.description.length : 0 }}/140</small>
               <button @click.stop.prevent="afterCreateTweet" class="btn">
                 推文
               </button>
@@ -182,6 +181,13 @@ img {
   font-size: 15px;
   font-weight: 500;
   color: $input-error-msg;
+}
+
+.word-count {
+  margin-right: 1rem;
+  font-size: 15px;
+  font-weight: 500;
+  color: $input-placeholder;
 }
 
 .btn {

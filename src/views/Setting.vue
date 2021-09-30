@@ -12,7 +12,7 @@
             >@</span
           > -->
           <label for="account">帳號</label>
-           <!-- style="padding-left: 1.5em" -->
+          <!-- style="padding-left: 1.5em" -->
           <input
             id="account"
             v-model="user.account"
@@ -137,6 +137,22 @@ export default {
       }
       this.isProcessing = false
     },
+    checkInputNoChange() {
+      if (
+        !this.account ||
+        !this.name ||
+        !this.email ||
+        !this.password ||
+        !this.checkPassword
+      ) {
+        Toast.fire({
+          icon: 'warning',
+          title: '欄位無異動，確認是否修改帳戶設定',
+        })
+        this.isProcessing = false
+        return
+      }
+    },
     checkPasswordRepeat() {
       if (this.user.password !== this.user.checkPassword) {
         Toast.fire({
@@ -180,6 +196,7 @@ export default {
 
         this.isProcessing = true
 
+        if (!this.checkInputNoChange()) return
         if (!this.checkPasswordRepeat()) return
         if (!this.checkAccount()) return
         if (!this.checkNameLength()) return

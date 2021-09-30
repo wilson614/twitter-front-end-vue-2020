@@ -124,7 +124,7 @@ export default {
 
 .home-center-tweet {
   width: 100%;
-  height: 120px;
+  // height: 120px;
 }
 
 .home-center-tweets {

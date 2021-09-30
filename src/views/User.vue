@@ -66,14 +66,15 @@ export default {
         }
       }
     },
-    isUserReload() {
-      if (this.isUserReload) {
-        this.handleUserReload(false);
-        if (this.currentUser.id === this.user.id) {
+    isUserReload: {
+      handler: function () {
+        if (this.isUserReload) {
+          this.handleUserReload(false);
           this.fetchUser(this.user.id);
         }
-      }
-    },
+      },
+      immediate: true,
+    }
   },
   computed: {
     ...mapState(["currentUser", "isAuthenticated", "isTweetNeedReload","isUserReload"]),

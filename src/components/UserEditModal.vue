@@ -18,7 +18,7 @@
               <i class="fas fa-times" style="font-size: 22px"></i>
             </button>
             <slot name="header"> 編輯個人資料 </slot>
-            <button type="submit" class="btn-save" aria-label="Save modal">
+            <button type="submit" class="btn-save" aria-label="Save modal" :disabled="isProcessing">
               儲存
             </button>
           </header>
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
 
@@ -156,6 +156,7 @@ export default {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
+    ...mapActions(['fetchCurrentUser']),
     close() {
       this.$emit("close");
       setTimeout(() => {
@@ -218,6 +219,7 @@ export default {
           cover: this.user.cover,
         };
         this.$emit("after-submit", editData);
+        this.fetchCurrentUser()
       } catch (error) {
         this.isProcessing = false;
         console.log(error.message);
@@ -319,6 +321,8 @@ export default {
     .cover-img {
       width: 600px;
       height: 200px;
+      object-fit: cover;
+      object-position: center;
     }
   }
   .form-group-avatar {
@@ -332,6 +336,8 @@ export default {
       border-radius: 50%;
       border: 4px solid $body-bg;
       z-index: 0;
+      object-fit: cover;
+      object-position: center;
     }
     .label-control {
       width: 22px;

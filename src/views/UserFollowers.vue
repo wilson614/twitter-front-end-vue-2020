@@ -34,7 +34,10 @@
                     >{{ follower.account }}</router-link
                   >
                 </div>
-                <div class="btn-control">
+                <div
+                  class="btn-control"
+                  v-if="currentUser.id !== follower.followerId"
+                >
                   <button
                     v-if="follower.isFollowed"
                     @click.stop.prevent="unfollow(follower.followerId)"
@@ -69,7 +72,7 @@ import Popular from "./../components/Popular.vue";
 import UserFollowTabs from "./../components/UserFollowTabs.vue";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   components: {
@@ -97,7 +100,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["currentUser", "isAuthenticated"]),
+    ...mapState(["currentUser", "isAuthenticated", "isUserReload"]),
   },
   created() {
     const { userid: userid } = this.$route.params;
@@ -112,7 +115,16 @@ export default {
     this.fetchUser(userid);
     next();
   },
+  watch: {
+    isUserReload() {
+      if (this.isUserReload) {
+        this.handleUserReload(false);
+        this.fetchFollowers(this.user.id);
+      }
+    },
+  },
   methods: {
+    ...mapActions(["handleUserReload", "handlePopularReload"]),
     async fetchFollowers(userid) {
       try {
         const { data } = await userAPI.getUserFollowers({ userid });
@@ -150,6 +162,7 @@ export default {
           (follower) => follower.followerId === id
         );
         follower.isFollowed = true;
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
@@ -172,6 +185,7 @@ export default {
           (follower) => follower.followerId === id
         );
         follower.isFollowed = false;
+        this.handlePopularReload(true);
       } catch (error) {
         console.log(error);
         Toast.fire({
