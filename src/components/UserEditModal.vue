@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import userAPI from "./../apis/user";
 import { Toast } from "./../utils/helpers";
 
@@ -156,6 +156,7 @@ export default {
     ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
+    ...mapActions(['fetchCurrentUser']),
     close() {
       this.$emit("close");
       setTimeout(() => {
@@ -218,6 +219,7 @@ export default {
           cover: this.user.cover,
         };
         this.$emit("after-submit", editData);
+        this.fetchCurrentUser()
       } catch (error) {
         this.isProcessing = false;
         console.log(error.message);
