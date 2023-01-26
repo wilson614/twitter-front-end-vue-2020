@@ -108,7 +108,7 @@ import store from '../store'
 import VueSocketIOExt from 'vue-socket.io-extended'
 import { io } from 'socket.io-client'
 const token = localStorage.getItem('token')
-const socket = io('https://good-simple-twitter.herokuapp.com/', {
+const socket = io('https://twitter-ac.up.railway.app/', {
   query: { token: token },
 })
 Vue.use(VueSocketIOExt, socket, { store })
